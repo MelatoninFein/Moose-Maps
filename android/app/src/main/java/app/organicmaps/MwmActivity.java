@@ -2019,7 +2019,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
     stopTrackRecording();
   }
 
-  private void onTrackRecordingOptionSelected()
+  public void onTrackRecordingOptionSelected()
   {
     if (TrackRecorder.nativeIsTrackRecordingEnabled())
       toggleTrackRecordingPP();

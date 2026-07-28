@@ -32,6 +32,7 @@
   <dimen name="cycling_chart_height">160dp</dimen>
   <dimen name="cycling_thumbnail_size">64dp</dimen>
   <dimen name="cycling_zone_bar_height">28dp</dimen>
+  <dimen name="cycling_status_dot">10dp</dimen>
   <dimen name="cycling_sparkline_width">56dp</dimen>
   <dimen name="cycling_sparkline_height">28dp</dimen>
 

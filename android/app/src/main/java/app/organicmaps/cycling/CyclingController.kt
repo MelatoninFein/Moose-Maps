@@ -49,6 +49,14 @@ class CyclingController(
     private val liveCadence: SensorTileView = root.findViewById(R.id.live_cadence)
     private val livePower: SensorTileView = root.findViewById(R.id.live_power)
 
+    private val rideStatus: LinearLayout = root.findViewById(R.id.cycling_ride_status)
+    private val rideStatusText: TextView = root.findViewById(R.id.ride_status_text)
+
+    /** Accumulated while riding, so the status line does not re-parse the ride file every second. */
+    private var rideStartedAtMs = 0L
+    private var rideDistanceMetres = 0.0
+    private var lastFix: Location? = null
+
     private val segmentBanner: LinearLayout = root.findViewById(R.id.cycling_segment_banner)
     private val segmentName: TextView = root.findViewById(R.id.segment_name)
     private val segmentElapsed: TextView = root.findViewById(R.id.segment_elapsed)
@@ -124,6 +132,7 @@ class CyclingController(
         gpsSpeedMps = if (location.hasSpeed()) location.speed.toDouble() else gpsSpeedMps
         // Bookmarks don't move, but the rider does - recompute bearings on each fix, not more often.
         compass.waypoints = CompassWaypoints.nearest(location.latitude, location.longitude)
+        updateRideStatus(location)
         updateSegment(location)
         bindSensors(sensors.snapshot.value ?: SensorSnapshot.EMPTY)
     }
@@ -197,6 +206,41 @@ class CyclingController(
      */
     private fun applyRideMode(riding: Boolean) {
         compass.visibility = View.VISIBLE
+        rideStatus.visibility = if (riding) View.VISIBLE else View.GONE
+        if (riding && rideStartedAtMs == 0L) {
+            rideStartedAtMs = System.currentTimeMillis()
+            rideDistanceMetres = 0.0
+            lastFix = null
+        } else if (!riding) {
+            rideStartedAtMs = 0L
+        }
+    }
+
+    /** Elapsed and distance while riding, so a rider can see the ride is actually being recorded. */
+    private fun updateRideStatus(location: Location) {
+        if (!RideMode.isRiding) {
+            lastFix = null
+            return
+        }
+        lastFix?.let { previous ->
+            rideDistanceMetres += app.organicmaps.cycling.rides.RideStatistics.haversineMetres(
+                previous.latitude,
+                previous.longitude,
+                location.latitude,
+                location.longitude,
+            )
+        }
+        lastFix = location
+
+        val elapsed = (System.currentTimeMillis() - rideStartedAtMs) / 1000
+        val clock = String.format(
+            java.util.Locale.getDefault(),
+            "%d:%02d:%02d",
+            elapsed / 3600,
+            (elapsed % 3600) / 60,
+            elapsed % 60,
+        )
+        rideStatusText.text = "$clock · ${CyclingFormatter.distanceText(rideDistanceMetres)}"
     }
 
     private fun bindSensors(snapshot: SensorSnapshot) {

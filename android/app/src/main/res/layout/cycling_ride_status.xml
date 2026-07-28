@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Proof a ride is being recorded, and a way to end it.
+
+  Without this the only sign was a small upstream icon, so a rider had no idea whether the last
+  hour was being logged - and finishing meant hunting through the menu. Top-left, clear of the
+  compass and the button column.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/cycling_ride_status"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_alignParentTop="true"
+  android:layout_alignParentStart="true"
+  android:background="@drawable/cycling_panel_bg"
+  android:gravity="center_vertical"
+  android:orientation="horizontal"
+  android:paddingStart="@dimen/margin_half"
+  android:paddingTop="@dimen/margin_quarter"
+  android:paddingEnd="@dimen/margin_quarter"
+  android:paddingBottom="@dimen/margin_quarter"
+  android:visibility="gone"
+  tools:visibility="visible">
+
+  <View
+    android:id="@+id/ride_status_dot"
+    android:layout_width="@dimen/cycling_status_dot"
+    android:layout_height="@dimen/cycling_status_dot"
+    android:layout_marginEnd="@dimen/margin_half"
+    android:background="@drawable/cycling_recording_dot" />
+
+  <TextView
+    android:id="@+id/ride_status_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:lines="1"
+    android:textAppearance="@style/MwmTextAppearance.Body3"
+    tools:text="1:24:06 · 38.2 km" />
+
+  <ImageView
+    android:id="@+id/ride_status_stop"
+    android:layout_width="@dimen/cycling_icon_size"
+    android:layout_height="@dimen/cycling_icon_size"
+    android:layout_marginStart="@dimen/margin_half"
+    android:background="?selectableItemBackgroundBorderless"
+    android:contentDescription="@string/cycling_ride_stop"
+    app:srcCompat="@drawable/ic_cycling_pause"
+    app:tint="?iconTint" />
+</LinearLayout>

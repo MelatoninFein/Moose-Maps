@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- Compass colours for the dark theme; the light values live in values/cycling.xml. -->
 <resources>
   <color name="bg_compass">#CC202124</color>
