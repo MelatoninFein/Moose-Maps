@@ -304,10 +304,13 @@ def allowedPermissions = [
     "name='android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK'",
     "name='android.permission.FOREGROUND_SERVICE_DATA_SYNC'",
     "name='android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE'",
-    // cycling sensors over Bluetooth Low Energy
+    // cycling sensors over Bluetooth Low Energy.
+    // These strings must reproduce `aapt2 dump permissions` output exactly: the checker compares
+    // with equality or a full regex match, so every attribute aapt2 prints has to appear here.
+    // That includes usesPermissionFlags on BLUETOOTH_SCAN and maxSdkVersion on the legacy pair.
     "name='android.permission.BLUETOOTH' maxSdkVersion='30'",
     "name='android.permission.BLUETOOTH_ADMIN' maxSdkVersion='30'",
-    "name='android.permission.BLUETOOTH_SCAN'",
+    "name='android.permission.BLUETOOTH_SCAN' usesPermissionFlags='neverForLocation'",
     "name='android.permission.BLUETOOTH_CONNECT'",
     // notifications
     "name='android.permission.POST_NOTIFICATIONS'",
