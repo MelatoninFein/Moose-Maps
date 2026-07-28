@@ -3,6 +3,7 @@ package app.organicmaps.cycling.rides
 import android.content.Context
 import app.organicmaps.sdk.util.log.Logger
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
@@ -61,9 +62,10 @@ class SegmentStore(context: Context) {
                 points = parsed,
             )
         }
-    } catch (e: Exception) {
-        // Anything unparseable is simply "not a segment". The caller tells the rider, which is a
-        // better signal than a log line, and keeping this free of Android types makes it testable.
+    } catch (e: JSONException) {
+        // Anything unparseable is simply "not a segment", and the caller tells the rider - a better
+        // signal than a log line. Deliberately not logged: Logger needs Android, and this has to
+        // stay callable from a plain unit test, which is where the parsing is actually verified.
         null
     }
 

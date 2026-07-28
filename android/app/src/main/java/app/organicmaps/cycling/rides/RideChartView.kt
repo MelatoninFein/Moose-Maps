@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import app.organicmaps.R
+import app.organicmaps.cycling.CyclingFormatter
 import kotlin.math.max
 
 /**
@@ -30,6 +31,9 @@ class RideChartView @JvmOverloads constructor(
 
     /** One drawable series, already reduced to plain numbers. */
     private data class Series(val label: String, val colour: Int, val values: List<Double?>)
+
+    /** The drawable area, once the axis labels have taken their margin. */
+    private data class Plot(val left: Float, val right: Float, val top: Float, val bottom: Float)
 
     private val linePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
@@ -58,10 +62,61 @@ class RideChartView @JvmOverloads constructor(
     var showPower = false
         set(value) { field = value; invalidate() }
 
+    /**
+     * The sample being inspected, or null when nothing is.
+     *
+     * A chart says a rider hit 168 bpm somewhere; it never said where. Dragging along it marks the
+     * same moment on the route above, which is the question anyone actually has about a hard patch.
+     */
+    var highlightIndex: Int? = null
+        set(value) {
+            field = value
+            invalidate()
+        }
+
+    /** Notified as the rider drags, so the trace can mark the same sample. */
+    var onScrub: ((Int?) -> Unit)? = null
+
+    private val highlightPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = dp(1f)
+    }
+    private val readoutPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        textSize = dp(11f)
+        isFakeBoldText = true
+    }
+
     init {
         axisPaint.color = ContextCompat.getColor(context, R.color.divider)
         labelPaint.color = ContextCompat.getColor(context, R.color.text_dark_subtitle)
+        highlightPaint.color = ContextCompat.getColor(context, R.color.text_dark_subtitle)
     }
+
+    override fun onTouchEvent(event: android.view.MotionEvent): Boolean {
+        if (samples.size < 2) {
+            return false
+        }
+        when (event.actionMasked) {
+            android.view.MotionEvent.ACTION_DOWN, android.view.MotionEvent.ACTION_MOVE -> {
+                // The chart lives in a ScrollView, so the drag has to be claimed or the page
+                // scrolls away underneath the finger instead of scrubbing.
+                parent?.requestDisallowInterceptTouchEvent(true)
+                val left = dp(4f)
+                val right = width - dp(4f)
+                val fraction = ((event.x - left) / (right - left)).coerceIn(0f, 1f)
+                highlightIndex = (fraction * (samples.size - 1)).toInt()
+                onScrub?.invoke(highlightIndex)
+            }
+            android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+                parent?.requestDisallowInterceptTouchEvent(false)
+                // The mark stays after the finger lifts: it is there to be read, not held.
+                performClick()
+            }
+        }
+        return true
+    }
+
+    override fun performClick(): Boolean = super.performClick()
 
     override fun onDraw(canvas: Canvas) {
         val points = samples
@@ -83,7 +138,7 @@ class RideChartView @JvmOverloads constructor(
 
         val series = buildList {
             if (showHeartRate) add(Series("HR", HR_COLOUR, points.map { it.heartRateBpm?.toDouble() }))
-            if (showSpeed) add(Series("Speed", SPEED_COLOUR, points.map { it.gpsSpeedMps ?: it.sensorSpeedMps }))
+            if (showSpeed) add(Series(SPEED_LABEL, SPEED_COLOUR, points.map { it.gpsSpeedMps ?: it.sensorSpeedMps }))
             if (showCadence) add(Series("Cad", CADENCE_COLOUR, points.map { it.cadenceRpm?.toDouble() }))
             if (showPower) add(Series("Pwr", POWER_COLOUR, points.map { it.powerWatts?.toDouble() }))
         }
@@ -119,11 +174,36 @@ class RideChartView @JvmOverloads constructor(
             canvas.drawText(entry.label, labelX, height - dp(4f), labelPaint)
             labelX += labelPaint.measureText(entry.label) + dp(12f)
         }
+
+        drawHighlight(canvas, series, points, Plot(left, right, top, bottom))
+    }
+
+    /** The scrub line and the figures at that moment, so the mark is readable, not just placed. */
+    private fun drawHighlight(canvas: Canvas, series: List<Series>, points: List<RideSample>, plot: Plot) {
+        val index = highlightIndex?.coerceIn(0, points.size - 1) ?: return
+        val x = plot.left + (plot.right - plot.left) * index / (points.size - 1).toFloat()
+        canvas.drawLine(x, plot.top, x, plot.bottom, highlightPaint)
+
+        var readoutX = plot.left
+        series.forEach { entry ->
+            val value = entry.values.getOrNull(index) ?: return@forEach
+            // Speed is stored in metres per second; everything else is already in its own unit.
+            val shown = if (entry.label == SPEED_LABEL) {
+                CyclingFormatter.speedValue(value)
+            } else {
+                value.toInt().toString()
+            }
+            val text = "${entry.label} $shown"
+            readoutPaint.color = entry.colour
+            canvas.drawText(text, readoutX, plot.top + dp(10f), readoutPaint)
+            readoutX += readoutPaint.measureText(text) + dp(10f)
+        }
     }
 
     private fun dp(value: Float) = value * resources.displayMetrics.density
 
     private companion object {
+        const val SPEED_LABEL = "Speed"
         val HR_COLOUR = Color.rgb(0xE5, 0x39, 0x35)
         val SPEED_COLOUR = Color.rgb(0x21, 0x96, 0xF3)
         val CADENCE_COLOUR = Color.rgb(0x43, 0xA0, 0x47)

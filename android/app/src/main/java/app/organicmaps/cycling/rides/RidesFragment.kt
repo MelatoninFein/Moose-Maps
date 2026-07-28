@@ -105,7 +105,9 @@ class RidesFragment : BaseMwmFragment() {
             if (title != null) stamp else null,
             CyclingFormatter.distanceText(summary.distanceMetres),
             formatDuration(summary.movingMillis),
-            summary.averageSpeedMps?.let { "${CyclingFormatter.speedValue(it)} ${CyclingFormatter.speedUnit(requireContext())}" },
+            summary.averageSpeedMps?.let {
+                "${CyclingFormatter.speedValue(it)} ${CyclingFormatter.speedUnit(requireContext())}"
+            },
             summary.averageHeartRateBpm?.let { "$it ${getString(R.string.cycling_unit_bpm)}" },
         ).joinToString(" · ")
 

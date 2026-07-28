@@ -38,6 +38,19 @@ class RideTraceView @JvmOverloads constructor(
     }
     private val arrowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
 
+    /**
+     * White fill with a dark ring, so the marker stays visible over any colour the trace takes -
+     * a single-colour dot disappears into whichever part of the gradient it lands on.
+     */
+    private val markerPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    /** The sample marked on the route, driven by scrubbing the chart. */
+    var highlightIndex: Int? = null
+        set(value) {
+            field = value
+            invalidate()
+        }
+
     var metric: Metric = Metric.SPEED
         set(value) {
             field = value
@@ -110,6 +123,20 @@ class RideTraceView @JvmOverloads constructor(
                 arrowPaint.color = linePaint.color
                 drawArrow(canvas, x1, y1, x2, y2)
             }
+        }
+
+        // The moment being inspected on the chart below, marked on the road where it happened.
+        highlightIndex?.coerceIn(0, points.size - 1)?.let { index ->
+            val sample = points[index]
+            val x = projectX(sample.longitude)
+            val y = projectY(sample.latitude)
+            markerPaint.style = Paint.Style.FILL
+            markerPaint.color = android.graphics.Color.WHITE
+            canvas.drawCircle(x, y, dp(6f), markerPaint)
+            markerPaint.style = Paint.Style.STROKE
+            markerPaint.strokeWidth = dp(2f)
+            markerPaint.color = android.graphics.Color.BLACK
+            canvas.drawCircle(x, y, dp(6f), markerPaint)
         }
     }
 

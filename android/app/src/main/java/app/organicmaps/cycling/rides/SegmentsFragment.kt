@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -18,6 +19,7 @@ import java.io.IOException
 import app.organicmaps.R
 import app.organicmaps.base.BaseMwmFragment
 import app.organicmaps.cycling.CyclingFormatter
+import app.organicmaps.sdk.util.log.Logger
 import app.organicmaps.util.WindowInsetUtils.ScrollableContentInsetsListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.concurrent.TimeUnit
@@ -61,7 +63,12 @@ class SegmentsFragment : BaseMwmFragment() {
                 // into memory.
                 String(stream.readBytes().take(MAX_IMPORT_BYTES).toByteArray())
             }
-        } catch (e: Exception) {
+        } catch (e: IOException) {
+            Logger.w(TAG, "Could not read the picked file: ${e.message}")
+            null
+        } catch (e: SecurityException) {
+            // The chooser can hand back a URI the app is not allowed to open.
+            Logger.w(TAG, "No access to the picked file: ${e.message}")
             null
         }
 
@@ -125,10 +132,8 @@ class SegmentsFragment : BaseMwmFragment() {
                 }
             }
 
-            row.findViewById<ImageView>(R.id.segment_row_share).setOnClickListener { shareSegment(segment) }
-
-            row.findViewById<ImageView>(R.id.segment_row_delete).setOnClickListener {
-                confirmDelete(segment, runs.size, root)
+            row.findViewById<ImageView>(R.id.segment_row_menu).setOnClickListener { anchor ->
+                showRowMenu(anchor, segment, runs.size, root)
             }
             list.addView(row)
         }
@@ -159,6 +164,47 @@ class SegmentsFragment : BaseMwmFragment() {
         "${index + 1}.  ${formatDuration(run.elapsedMillis)}   $date$heartRate$pb"
     }.joinToString("\n")
 
+    private fun showRowMenu(anchor: View, segment: Segment, runCount: Int, root: View) {
+        androidx.appcompat.widget.PopupMenu(requireContext(), anchor).apply {
+            menu.add(0, MENU_RENAME, 0, R.string.cycling_ride_rename)
+            menu.add(0, MENU_SHARE, 1, R.string.cycling_segment_share)
+            menu.add(0, MENU_DELETE, 2, R.string.cycling_segment_delete)
+            setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    MENU_RENAME -> renameSegment(segment, root)
+                    MENU_SHARE -> shareSegment(segment)
+                    MENU_DELETE -> confirmDelete(segment, runCount, root)
+                }
+                true
+            }
+        }.show()
+    }
+
+    /**
+     * A segment named in a hurry at the end of a ride keeps that name for good otherwise, and the
+     * name is what a friend sees when the course is shared.
+     */
+    private fun renameSegment(segment: Segment, root: View) {
+        val input = EditText(requireContext()).apply {
+            setSingleLine()
+            hint = getString(R.string.cycling_segment_name_hint)
+            setText(segment.name)
+        }
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.cycling_segment_name_title)
+            .setView(input)
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                val name = input.text.toString().trim()
+                if (name.isNotEmpty()) {
+                    // Same id, so every recorded attempt stays attached to it.
+                    SegmentStore(requireContext()).save(segment.copy(name = name))
+                    render(root)
+                }
+            }
+            .show()
+    }
+
     /**
      * Sends the segment as a file so someone else can ride it.
      *
@@ -181,6 +227,7 @@ class SegmentsFragment : BaseMwmFragment() {
             }
             startActivity(Intent.createChooser(intent, getString(R.string.cycling_segment_share)))
         } catch (e: IOException) {
+            Logger.w(TAG, "Could not write the segment file: ${e.message}")
             Toast.makeText(requireContext(), R.string.cycling_segment_share_failed, Toast.LENGTH_LONG).show()
         }
     }
@@ -220,6 +267,10 @@ class SegmentsFragment : BaseMwmFragment() {
     }
 
     private companion object {
+        const val TAG = "SegmentsFragment"
         const val MAX_IMPORT_BYTES = 2 * 1024 * 1024
+        const val MENU_RENAME = 1
+        const val MENU_SHARE = 2
+        const val MENU_DELETE = 3
     }
 }

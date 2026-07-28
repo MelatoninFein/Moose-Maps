@@ -76,42 +76,7 @@ class RideDetailFragment : BaseMwmFragment() {
             if (zones.values.sum() > 0) View.VISIBLE else View.GONE
         stats.visibility = View.GONE
 
-        val chart: RideChartView = view.findViewById(R.id.ride_chart)
-        chart.samples = samples
-        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_hr)
-            .setOnCheckedChangeListener { _, checked -> chart.showHeartRate = checked }
-        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_speed)
-            .setOnCheckedChangeListener { _, checked -> chart.showSpeed = checked }
-        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_cadence)
-            .setOnCheckedChangeListener { _, checked -> chart.showCadence = checked }
-        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_power)
-            .setOnCheckedChangeListener { _, checked -> chart.showPower = checked }
-
-        // A chip for a metric this ride never recorded is dead UI - toggling it changes nothing and
-        // implies the data is there to be found. Same rule the live tiles follow: a rider with no
-        // strap sees no strap controls.
-        val hasHeartRate = samples.any { it.heartRateBpm != null }
-        showChipIf(view, R.id.chip_hr, hasHeartRate)
-        showChipIf(view, R.id.chip_cadence, samples.any { it.cadenceRpm != null })
-        showChipIf(view, R.id.chip_power, samples.any { it.powerWatts != null })
-        showChipIf(view, R.id.chip_trace_heart_rate, hasHeartRate)
-
-        // Single selection, so the chosen chip shows which metric the trace is coloured by.
-        view.findViewById<com.google.android.material.chip.ChipGroup>(R.id.ride_trace_metric)
-            .setOnCheckedStateChangeListener { _, checked ->
-                trace.metric = if (checked.firstOrNull() == R.id.chip_trace_heart_rate) {
-                    RideTraceView.Metric.HEART_RATE
-                } else {
-                    RideTraceView.Metric.SPEED
-                }
-            }
-        // With the chart series all hidden the chart itself has nothing left to draw.
-        view.findViewById<View>(R.id.ride_chart).visibility =
-            if (samples.any { it.gpsSpeedMps != null || it.sensorSpeedMps != null } || hasHeartRate) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+        wireChart(view)
 
         view.findViewById<Button>(R.id.ride_save_segment).setOnClickListener { saveAsSegment(file) }
         view.findViewById<Button>(R.id.ride_export_gpx).setOnClickListener { exportGpx(file) }
@@ -139,6 +104,45 @@ class RideDetailFragment : BaseMwmFragment() {
      * Only what is actually present: a ride with no power meter should not show an empty watts
      * tile, and the grid closes up around what is missing.
      */
+    /** The chart, the chips that drive it, and which of them this ride has any data for. */
+    private fun wireChart(view: View) {
+        val chart: RideChartView = view.findViewById(R.id.ride_chart)
+        chart.samples = samples
+        // Drag the chart, mark the road: "where was I when my heart rate hit that" had no answer.
+        chart.onScrub = { index -> trace.highlightIndex = index }
+        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_hr)
+            .setOnCheckedChangeListener { _, checked -> chart.showHeartRate = checked }
+        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_speed)
+            .setOnCheckedChangeListener { _, checked -> chart.showSpeed = checked }
+        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_cadence)
+            .setOnCheckedChangeListener { _, checked -> chart.showCadence = checked }
+        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_power)
+            .setOnCheckedChangeListener { _, checked -> chart.showPower = checked }
+
+        // A chip for a metric this ride never recorded is dead UI - toggling it changes nothing and
+        // implies the data is there to be found. Same rule the live tiles follow: a rider with no
+        // strap sees no strap controls.
+        val hasHeartRate = samples.any { it.heartRateBpm != null }
+        showChipIf(view, R.id.chip_hr, hasHeartRate)
+        showChipIf(view, R.id.chip_cadence, samples.any { it.cadenceRpm != null })
+        showChipIf(view, R.id.chip_power, samples.any { it.powerWatts != null })
+        showChipIf(view, R.id.chip_trace_heart_rate, hasHeartRate)
+
+        // Single selection, so the chosen chip shows which metric the trace is coloured by.
+        view.findViewById<com.google.android.material.chip.ChipGroup>(R.id.ride_trace_metric)
+            .setOnCheckedStateChangeListener { _, checked ->
+                trace.metric = if (checked.firstOrNull() == R.id.chip_trace_heart_rate) {
+                    RideTraceView.Metric.HEART_RATE
+                } else {
+                    RideTraceView.Metric.SPEED
+                }
+            }
+
+        // With every series absent the chart itself has nothing left to draw.
+        val hasSpeed = samples.any { it.gpsSpeedMps != null || it.sensorSpeedMps != null }
+        chart.visibility = if (hasSpeed || hasHeartRate) View.VISIBLE else View.GONE
+    }
+
     private fun showChipIf(root: View, chipId: Int, present: Boolean) {
         root.findViewById<com.google.android.material.chip.Chip>(chipId).visibility =
             if (present) View.VISIBLE else View.GONE
@@ -179,27 +183,6 @@ class RideDetailFragment : BaseMwmFragment() {
         }
     }
 
-    private fun buildStats(summary: RideSummary): String {
-        val speedUnit = CyclingFormatter.speedUnit(requireContext())
-        return listOfNotNull(
-            getString(R.string.cycling_rides_distance, CyclingFormatter.distanceText(summary.distanceMetres)),
-            getString(R.string.cycling_rides_moving, formatDuration(summary.movingMillis)),
-            getString(R.string.cycling_rides_elapsed, formatDuration(summary.elapsedMillis)),
-            summary.averageSpeedMps?.let {
-                getString(R.string.cycling_rides_avg_speed, "${CyclingFormatter.speedValue(it)} $speedUnit")
-            },
-            summary.maxSpeedMps?.let {
-                getString(R.string.cycling_rides_max_speed, "${CyclingFormatter.speedValue(it)} $speedUnit")
-            },
-            summary.averageHeartRateBpm?.let { getString(R.string.cycling_rides_avg_hr, it) },
-            summary.maxHeartRateBpm?.let { getString(R.string.cycling_rides_max_hr, it) },
-            summary.averageCadenceRpm?.let { getString(R.string.cycling_rides_avg_cadence, it) },
-            summary.averagePowerWatts?.let { getString(R.string.cycling_rides_avg_power, it) },
-            getString(R.string.cycling_rides_ascent, CyclingFormatter.distanceText(summary.ascentMetres)),
-        ).joinToString("\n")
-    }
-
-
     /**
      * Writes the ride as GPX and hands it to whatever the user wants to send it with.
      *
@@ -227,22 +210,6 @@ class RideDetailFragment : BaseMwmFragment() {
         } catch (e: IOException) {
             Toast.makeText(requireContext(), R.string.cycling_rides_export_failed, Toast.LENGTH_LONG).show()
         }
-    }
-    /**
-     * Time in each heart-rate zone, shown only when the ride actually has heart-rate data - an
-     * all-zero table on a ride with no strap is noise.
-     */
-    private fun buildZones(): String {
-        val maxHr = SensorHub.from(requireContext()).store.maxHeartRateBpm
-        val zones = HeartRateZones.timeInZones(samples, maxHr)
-        if (zones.values.all { it == 0L }) {
-            return ""
-        }
-        val lines = HeartRateZone.entries.map { zone ->
-            val millis = zones[zone] ?: 0L
-            "${zone.name}  ${zone.lowerBpm(maxHr)}-${zone.upperBpm(maxHr)} bpm   ${formatDuration(millis)}"
-        }
-        return "\n\n" + getString(R.string.cycling_zones_title) + "\n" + lines.joinToString("\n")
     }
 
     /**

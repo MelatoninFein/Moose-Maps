@@ -51,22 +51,14 @@
     android:layout_marginEnd="@dimen/margin_base"
     android:visibility="gone" />
 
+  <!-- One overflow, as the ride rows use: a third icon would not fit, and a delete control beside
+       the row you tap to expand is a mis-tap away from a season of times. -->
   <ImageView
-    android:id="@+id/segment_row_share"
-    android:layout_width="@dimen/cycling_icon_size"
-    android:layout_height="@dimen/cycling_icon_size"
-    android:layout_marginEnd="@dimen/margin_base"
-    android:background="?selectableItemBackgroundBorderless"
-    android:contentDescription="@string/cycling_segment_share"
-    app:srcCompat="@drawable/ic_share"
-    app:tint="?iconTint" />
-
-  <ImageView
-    android:id="@+id/segment_row_delete"
+    android:id="@+id/segment_row_menu"
     android:layout_width="@dimen/cycling_icon_size"
     android:layout_height="@dimen/cycling_icon_size"
     android:background="?selectableItemBackgroundBorderless"
-    android:contentDescription="@string/cycling_segment_delete"
-    app:srcCompat="@drawable/ic_close"
+    android:contentDescription="@string/cycling_segment_menu"
+    app:srcCompat="@drawable/ic_more"
     app:tint="?iconTint" />
 </LinearLayout>
