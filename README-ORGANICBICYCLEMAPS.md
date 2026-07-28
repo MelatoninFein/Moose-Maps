@@ -41,7 +41,8 @@ shows your next turn and your live sensor readings, with music controls in the s
 
 ### Music controls
 
-Play, pause and skip from the map, with the current track and artwork shown.
+A floating button on the map opens a slide-out panel with play, pause, skip, the current track and
+artwork, and shortcuts to open your player. It stays out of the way until you reach for it.
 
 This works with **any** Android music player — Spotify, TIDAL, and the rest — because it goes
 through the platform's media session rather than any one app's SDK. That also means no account

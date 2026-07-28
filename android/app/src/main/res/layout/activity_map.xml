@@ -70,4 +70,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 
+  <!-- Music FAB and its off-canvas panel. Last child so the panel and its scrim sit above the
+       place page and routing sheets when open. -->
+  <include layout="@layout/cycling_media_panel" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

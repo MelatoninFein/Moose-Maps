@@ -8,6 +8,20 @@
   <dimen name="cycling_media_button">44dp</dimen>
   <dimen name="cycling_icon_size">24dp</dimen>
 
+  <!-- Off-canvas music panel -->
+  <dimen name="cycling_panel_width">300dp</dimen>
+  <dimen name="cycling_panel_artwork_size">180dp</dimen>
+  <dimen name="cycling_panel_button">56dp</dimen>
+
   <!-- Scrim behind the picture-in-picture readout: dark enough to stay legible over any map. -->
   <color name="bg_pip_scrim">#B3000000</color>
+
+  <!-- "Open Spotify" / "Open TIDAL" buttons in the music panel. Declared here rather than
+       referencing the AppCompat style from code: nonTransitiveRClass keeps library resources out
+       of the app's R class, so androidx styles are only reachable by name from XML. -->
+  <style name="CyclingMediaAppButton" parent="Widget.AppCompat.Button.Borderless.Colored">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">start|center_vertical</item>
+  </style>
 </resources>

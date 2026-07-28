@@ -50,29 +50,60 @@ class SensorService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Promote to foreground BEFORE any decision to stop. The service is launched with
+        // startForegroundService(), which obliges us to call startForeground() within a few
+        // seconds; returning early via stopSelf() alone kills the whole app with
+        // ForegroundServiceDidNotStartInTimeException. Every exit below therefore runs after this.
+        if (!promoteToForeground()) {
+            disableAndStop("Could not promote the sensor service to the foreground")
+            return START_NOT_STICKY
+        }
+
         if (intent?.action == ACTION_STOP) {
             Logger.i(TAG, "Stop action received")
-            stopSelf()
+            disableAndStop(null)
             return START_NOT_STICKY
         }
 
         if (!SensorPermissions.hasConnectPermissions(this)) {
-            // The user can revoke Bluetooth access while the service is restarting.
-            Logger.w(TAG, "BLUETOOTH_CONNECT not granted, stopping sensor service")
-            stopSelf()
+            // Reachable if Bluetooth access is revoked while the service is restarting.
+            disableAndStop("BLUETOOTH_CONNECT not granted")
             return START_NOT_STICKY
         }
 
+        hub.start()
+        hub.snapshot.observeForever(snapshotObserver)
+        return START_STICKY
+    }
+
+    private fun promoteToForeground(): Boolean = try {
         val type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
         } else {
             0
         }
         ServiceCompat.startForeground(this, NOTIFICATION_ID, buildNotification(hub.snapshot.value), type)
+        true
+    } catch (e: RuntimeException) {
+        // Android 14+ rejects a connectedDevice foreground service when no Bluetooth permission is
+        // held (SecurityException), and Android 12+ rejects starts from the background
+        // (ForegroundServiceStartNotAllowedException, an IllegalStateException).
+        Logger.e(TAG, "startForeground failed", e)
+        false
+    }
 
-        hub.start()
-        hub.snapshot.observeForever(snapshotObserver)
-        return START_STICKY
+    /**
+     * Stops the service and clears the persisted "sensors enabled" flag.
+     *
+     * Clearing the flag is the important half: it is read on every app launch to decide whether to
+     * start this service, so a failure that is left recorded turns into a crash on every launch
+     * that only clearing app data can undo.
+     */
+    private fun disableAndStop(reason: String?) {
+        reason?.let { Logger.w(TAG, "$it - disabling sensors") }
+        hub.store.isEnabled = false
+        hub.stop()
+        stopSelf()
     }
 
     override fun onDestroy() {
@@ -132,9 +163,27 @@ class SensorService : Service() {
             NotificationManagerCompat.from(context).createNotificationChannel(channel)
         }
 
+        /**
+         * Starts the service, but only when it can legally run.
+         *
+         * Launching it without Bluetooth permission is not a recoverable error: on Android 14+ the
+         * platform refuses a connectedDevice foreground service outright, and the obligation to
+         * call startForeground() still applies, so the process gets killed. Refusing here is what
+         * keeps a missing permission a no-op instead of a crash.
+         */
         @JvmStatic
         fun start(context: Context) {
-            ContextCompat.startForegroundService(context, Intent(context, SensorService::class.java))
+            if (!SensorPermissions.hasConnectPermissions(context)) {
+                Logger.w(TAG, "Not starting sensor service: Bluetooth permission not granted")
+                SensorHub.from(context).store.isEnabled = false
+                return
+            }
+            try {
+                ContextCompat.startForegroundService(context, Intent(context, SensorService::class.java))
+            } catch (e: IllegalStateException) {
+                // ForegroundServiceStartNotAllowedException on Android 12+ when we are backgrounded.
+                Logger.e(TAG, "Cannot start sensor service", e)
+            }
         }
 
         @JvmStatic

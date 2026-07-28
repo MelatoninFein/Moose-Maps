@@ -58,12 +58,29 @@ class CyclingSettingsFragment : BaseMwmFragment() {
 
     private lateinit var sensorStatus: TextView
 
+    /** What to do once the Bluetooth permission prompt comes back. */
+    private enum class PendingAction { ENABLE, SCAN }
+
+    private var pendingAction: PendingAction? = null
+
     private val permissionRequest =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
-            if (results.values.all { it }) {
-                startScan()
-            } else {
+            val action = pendingAction
+            pendingAction = null
+
+            if (results.values.any { !it }) {
+                // Leave the feature off rather than half-on: without Bluetooth permission the
+                // sensor service cannot legally run at all.
+                store.isEnabled = false
+                sensorsSwitch.isChecked = false
                 showSensorStatus(R.string.cycling_sensors_permission_denied)
+                return@registerForActivityResult
+            }
+
+            when (action) {
+                PendingAction.ENABLE -> enableSensors()
+                PendingAction.SCAN -> startScan()
+                null -> Unit
             }
         }
 
@@ -118,12 +135,26 @@ class CyclingSettingsFragment : BaseMwmFragment() {
     }
 
     private fun onSensorsToggled(enabled: Boolean) {
-        store.isEnabled = enabled
-        if (enabled) {
-            SensorService.start(requireContext())
-        } else {
+        if (!enabled) {
+            store.isEnabled = false
             SensorService.stop(requireContext())
+            return
         }
+
+        // Ask for Bluetooth access first. Enabling without it used to start a foreground service
+        // the platform then refused, taking the whole app down with it.
+        if (SensorPermissions.hasConnectPermissions(requireContext())) {
+            enableSensors()
+        } else {
+            pendingAction = PendingAction.ENABLE
+            permissionRequest.launch(SensorPermissions.requiredForScan)
+        }
+    }
+
+    private fun enableSensors() {
+        store.isEnabled = true
+        sensorsSwitch.isChecked = true
+        SensorService.start(requireContext())
     }
 
     /**
@@ -149,6 +180,7 @@ class CyclingSettingsFragment : BaseMwmFragment() {
         if (SensorPermissions.hasScanPermissions(requireContext())) {
             startScan()
         } else {
+            pendingAction = PendingAction.SCAN
             permissionRequest.launch(SensorPermissions.requiredForScan)
         }
     }

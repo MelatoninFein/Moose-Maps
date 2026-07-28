@@ -1089,8 +1089,10 @@ public class MwmActivity extends BaseMwmFragmentActivity
   public boolean handleBackPress()
   {
     final RoutingController routingController = RoutingController.get();
-    return (closeBottomSheet(MAIN_MENU_ID) || closeBottomSheet(LAYERS_MENU_ID) || collapseNavMenu() || closePlacePage()
-            || closePositionChooser() || closeSearchFragment() || routingController.resetToPlanningStateIfNavigating()
+    // The music panel is an overlay on top of everything else, so it closes first.
+    return ((mCyclingController != null && mCyclingController.onBackPressed()) || closeBottomSheet(MAIN_MENU_ID)
+            || closeBottomSheet(LAYERS_MENU_ID) || collapseNavMenu() || closePlacePage() || closePositionChooser()
+            || closeSearchFragment() || routingController.resetToPlanningStateIfNavigating()
             || routingController.cancel());
   }
 

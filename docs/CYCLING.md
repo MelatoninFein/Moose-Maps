@@ -105,7 +105,13 @@ against the built APK by `permission-checker.gradle`.
 
 ## 3. Music controls (Spotify, TIDAL, and anything else)
 
-`MediaControlHub`.
+`MediaControlHub`, surfaced by `cycling_media_panel.xml`.
+
+The UI is a floating action button that slides an off-canvas panel in from the trailing edge —
+**not** a permanent bar, and not delivered through picture-in-picture. Playback is reached for
+occasionally, so it costs one tap and no standing map real estate. The panel also lists installed
+players, so it is useful before anything is playing. PiP keeps transport controls in the system
+action row, because a PiP window cannot be tapped.
 
 This deliberately does **not** integrate against Spotify's or TIDAL's own SDKs. Those need per-app
 API keys, an account login inside this app, and network access — all at odds with a privacy-focused

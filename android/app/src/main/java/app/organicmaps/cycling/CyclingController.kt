@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -13,12 +14,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import app.organicmaps.R
 import app.organicmaps.cycling.media.MediaControlHub
+import app.organicmaps.cycling.media.MusicApp
 import app.organicmaps.cycling.pip.PipController
 import app.organicmaps.cycling.sensors.SensorHub
 import app.organicmaps.cycling.sensors.SensorService
 import app.organicmaps.cycling.sensors.SensorSnapshot
 import app.organicmaps.cycling.ui.SensorTileView
 import app.organicmaps.sdk.routing.RoutingController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * Wires the three cycling features into the map activity.
@@ -47,16 +50,24 @@ class CyclingController(
 
     private val overlay: LinearLayout = root.findViewById(R.id.cycling_overlay)
     private val sensorPanel: LinearLayout = root.findViewById(R.id.cycling_sensor_panel)
-    private val mediaBar: LinearLayout = root.findViewById(R.id.cycling_media_bar)
 
     private val heartRateTile: SensorTileView = root.findViewById(R.id.tile_heart_rate)
     private val cadenceTile: SensorTileView = root.findViewById(R.id.tile_cadence)
     private val speedTile: SensorTileView = root.findViewById(R.id.tile_speed)
     private val powerTile: SensorTileView = root.findViewById(R.id.tile_power)
 
-    private val artwork: ImageView = root.findViewById(R.id.media_artwork)
-    private val mediaTitle: TextView = root.findViewById(R.id.media_title)
-    private val mediaSubtitle: TextView = root.findViewById(R.id.media_subtitle)
+    // Music: a FAB that slides an off-canvas panel in from the trailing edge.
+    private val mediaFab: FloatingActionButton = root.findViewById(R.id.cycling_media_fab)
+    private val mediaPanel: LinearLayout = root.findViewById(R.id.cycling_media_panel)
+    private val mediaScrim: View = root.findViewById(R.id.cycling_media_scrim)
+    private val artwork: ImageView = root.findViewById(R.id.cycling_media_artwork)
+    private val mediaTitle: TextView = root.findViewById(R.id.cycling_media_title)
+    private val mediaSubtitle: TextView = root.findViewById(R.id.cycling_media_subtitle)
+    private val mediaEmpty: TextView = root.findViewById(R.id.cycling_media_empty)
+    private val mediaApps: LinearLayout = root.findViewById(R.id.cycling_media_apps)
+    private val mediaPlayPause: ImageButton = root.findViewById(R.id.cycling_media_play_pause)
+
+    private var mediaPanelOpen = false
 
     private val pipOverlay: LinearLayout = root.findViewById(R.id.cycling_pip_overlay)
     private val pipNextTurn: TextView = root.findViewById(R.id.pip_next_turn)
@@ -89,12 +100,15 @@ class CyclingController(
             insets
         }
 
-        root.findViewById<ImageButton>(R.id.media_previous).setOnClickListener { media.skipToPrevious() }
-        root.findViewById<ImageButton>(R.id.media_next).setOnClickListener { media.skipToNext() }
-        root.findViewById<ImageButton>(R.id.media_play_pause).setOnClickListener { media.togglePlayPause() }
+        root.findViewById<ImageButton>(R.id.cycling_media_previous).setOnClickListener { media.skipToPrevious() }
+        root.findViewById<ImageButton>(R.id.cycling_media_next).setOnClickListener { media.skipToNext() }
+        mediaPlayPause.setOnClickListener { media.togglePlayPause() }
+        root.findViewById<ImageView>(R.id.cycling_media_close).setOnClickListener { closeMediaPanel() }
 
-        // Tapping the track name opens the player that is currently holding the session.
-        mediaBar.setOnClickListener { openCurrentPlayer() }
+        mediaFab.setOnClickListener { openMediaPanel() }
+        mediaScrim.setOnClickListener { closeMediaPanel() }
+        // Tapping the artwork jumps to the player that owns the session.
+        artwork.setOnClickListener { openCurrentPlayer() }
 
         sensors.snapshot.observe(activity) { snapshot -> bindSensors(snapshot) }
         media.nowPlaying.observe(activity) { nowPlaying -> bindMedia(nowPlaying) }
@@ -137,6 +151,7 @@ class CyclingController(
         // The full overlay is unreadable at PiP size; the compact strip replaces it.
         overlay.visibility = if (isInPictureInPictureMode) View.GONE else View.VISIBLE
         pipOverlay.visibility = if (isInPictureInPictureMode) View.VISIBLE else View.GONE
+        updateMediaFabVisibility()
 
         if (isInPictureInPictureMode) {
             updateNextTurn()
@@ -168,17 +183,17 @@ class CyclingController(
     }
 
     private fun bindMedia(nowPlaying: MediaControlHub.NowPlaying) {
-        if (!nowPlaying.isActive) {
-            mediaBar.visibility = View.GONE
-            updateOverlayVisibility()
-            return
-        }
+        val hasSession = nowPlaying.isActive
 
-        mediaBar.visibility = View.VISIBLE
-        mediaTitle.text = nowPlaying.title ?: activity.getString(R.string.cycling_music_unknown_track)
+        mediaTitle.text = if (hasSession) {
+            nowPlaying.title ?: activity.getString(R.string.cycling_music_unknown_track)
+        } else {
+            ""
+        }
         mediaSubtitle.text = listOfNotNull(nowPlaying.artist, nowPlaying.appLabel).joinToString(" · ")
-        // Marquee only scrolls on the selected view, and only one view can be selected at a time.
-        mediaTitle.isSelected = true
+        mediaTitle.visibility = if (hasSession) View.VISIBLE else View.GONE
+        mediaSubtitle.visibility = if (hasSession) View.VISIBLE else View.GONE
+        mediaEmpty.visibility = if (hasSession) View.GONE else View.VISIBLE
 
         val art = nowPlaying.artwork
         if (art != null) {
@@ -188,19 +203,98 @@ class CyclingController(
             artwork.setImageResource(R.drawable.ic_cycling_music)
         }
 
-        val playPause: ImageButton = mediaBar.findViewById(R.id.media_play_pause)
-        playPause.setImageResource(
+        mediaPlayPause.setImageResource(
             if (nowPlaying.isPlaying) R.drawable.ic_cycling_pause else R.drawable.ic_cycling_play,
         )
 
-        updateOverlayVisibility()
-        // Keep the PiP action row's play/pause icon in step with the bar.
+        bindPlayerShortcuts()
+        updateMediaFabVisibility()
+        // Keep the PiP action row's play/pause icon in step with the panel.
         pip.refreshActions()
     }
 
+    /** Buttons to launch the installed players, so the panel is useful before anything is playing. */
+    private fun bindPlayerShortcuts() {
+        val installed = MusicApp.installed(activity)
+        if (mediaApps.childCount == installed.size) {
+            return // Installed apps don't change while the map is open.
+        }
+        mediaApps.removeAllViews()
+        installed.forEach { app ->
+            val button = Button(activity, null, 0, R.style.CyclingMediaAppButton)
+            button.text = activity.getString(R.string.cycling_music_open_app, app.displayName)
+            button.setOnClickListener {
+                app.launchIntent(activity)?.let { activity.startActivity(it) }
+                closeMediaPanel()
+            }
+            mediaApps.addView(button)
+        }
+    }
+
+    /**
+     * The FAB appears when there is something to control or something to launch, and disappears in
+     * picture-in-picture, where the system action row takes over.
+     */
+    private fun updateMediaFabVisibility() {
+        val useful = media.nowPlaying.value?.isActive == true || MusicApp.installed(activity).isNotEmpty()
+        val show = useful && !inPictureInPicture
+        mediaFab.visibility = if (show) View.VISIBLE else View.GONE
+        if (!show && mediaPanelOpen) {
+            closeMediaPanel()
+        }
+    }
+
+    private fun openMediaPanel() {
+        if (mediaPanelOpen) {
+            return
+        }
+        mediaPanelOpen = true
+        // Refresh on open: the user may have granted notification access since the map started.
+        media.refreshSessions()
+
+        mediaScrim.visibility = View.VISIBLE
+        mediaScrim.alpha = 0f
+        mediaScrim.animate().alpha(1f).setDuration(PANEL_ANIM_MS).start()
+
+        mediaPanel.visibility = View.VISIBLE
+        // Slide in from the trailing edge; RTL flips the sign so it still enters from off-screen.
+        val offscreen = if (mediaPanel.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+            -mediaPanel.width.toFloat()
+        } else {
+            mediaPanel.width.toFloat()
+        }
+        mediaPanel.translationX = offscreen
+        mediaPanel.animate().translationX(0f).setDuration(PANEL_ANIM_MS).start()
+    }
+
+    private fun closeMediaPanel() {
+        if (!mediaPanelOpen) {
+            return
+        }
+        mediaPanelOpen = false
+        val offscreen = if (mediaPanel.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+            -mediaPanel.width.toFloat()
+        } else {
+            mediaPanel.width.toFloat()
+        }
+        mediaPanel.animate().translationX(offscreen).setDuration(PANEL_ANIM_MS)
+            .withEndAction { mediaPanel.visibility = View.GONE }.start()
+        mediaScrim.animate().alpha(0f).setDuration(PANEL_ANIM_MS)
+            .withEndAction { mediaScrim.visibility = View.GONE }.start()
+    }
+
+    /** Lets the activity's back handling dismiss the panel before it closes anything else. */
+    fun onBackPressed(): Boolean {
+        if (mediaPanelOpen) {
+            closeMediaPanel()
+            return true
+        }
+        return false
+    }
+
     private fun updateOverlayVisibility() {
-        val anythingVisible = sensorPanel.visibility == View.VISIBLE || mediaBar.visibility == View.VISIBLE
-        overlay.visibility = if (anythingVisible && !inPictureInPicture) View.VISIBLE else View.GONE
+        val show = sensorPanel.visibility == View.VISIBLE && !inPictureInPicture
+        overlay.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun updateNextTurn() {
@@ -220,5 +314,6 @@ class CyclingController(
 
     companion object {
         private const val PIP_REFRESH_MS = 1_000L
+        private const val PANEL_ANIM_MS = 200L
     }
 }

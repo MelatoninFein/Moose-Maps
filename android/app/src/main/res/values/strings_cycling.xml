@@ -64,6 +64,9 @@
   <string name="cycling_music_pause">Pause</string>
   <string name="cycling_music_play_pause">Play or pause</string>
   <string name="cycling_music_unknown_track">Unknown track</string>
+  <string name="cycling_music_nothing_playing">Nothing is playing. Start a track in your music app and the controls will appear here.</string>
+  <!-- %1$s is a music app name, e.g. Spotify or TIDAL. -->
+  <string name="cycling_music_open_app">Open %1$s</string>
   <string name="cycling_music_grant_access">Grant notification access</string>
   <string name="cycling_music_access_granted">Track names and artwork are shown on the map.</string>
   <string name="cycling_music_access_missing">Playback controls already work. Grant notification access to also see track names and artwork.</string>
