@@ -12,7 +12,9 @@ import app.organicmaps.cycling.sensors.SensorHub
 import app.organicmaps.cycling.sensors.SensorService
 import app.organicmaps.cycling.sensors.SensorSnapshot
 import app.organicmaps.cycling.ui.SensorTileView
+import app.organicmaps.cycling.ui.CompassView
 import app.organicmaps.sdk.location.LocationListener
+import app.organicmaps.sdk.location.SensorListener
 
 /**
  * Wires the cycling features into the map activity: the data panels along the bottom of the map,
@@ -24,7 +26,7 @@ import app.organicmaps.sdk.location.LocationListener
 class CyclingController(
     private val activity: AppCompatActivity,
     root: View,
-) : LocationListener {
+) : LocationListener, SensorListener {
 
     private val sensors = SensorHub.from(activity)
     private val media = MediaControlHub.from(activity)
@@ -38,9 +40,14 @@ class CyclingController(
     private val cadenceTile: SensorTileView = root.findViewById(R.id.tile_cadence)
     private val speedTile: SensorTileView = root.findViewById(R.id.tile_speed)
     private val powerTile: SensorTileView = root.findViewById(R.id.tile_power)
+    private val compass: CompassView = root.findViewById(R.id.cycling_compass)
 
     /** Last speed reported by GPS, in m/s. Null until the first fix with a speed. */
     private var gpsSpeedMps: Double? = null
+
+    /** Last position, kept so waypoint bearings can be recomputed as the rider moves. */
+    private var lastLatitude: Double? = null
+    private var lastLongitude: Double? = null
 
     init {
         toggle.setOnClickListener { setPanelsExpanded(!sensors.store.isOverlayVisible) }
@@ -56,10 +63,12 @@ class CyclingController(
             SensorService.start(activity)
         }
         MwmApplication.from(activity).getLocationHelper().addListener(this)
+        MwmApplication.from(activity).getSensorHelper().addListener(this)
     }
 
     fun onStop() {
         MwmApplication.from(activity).getLocationHelper().removeListener(this)
+        MwmApplication.from(activity).getSensorHelper().removeListener(this)
     }
 
     // region LocationListener
@@ -68,10 +77,19 @@ class CyclingController(
         // hasSpeed() is false on fixes from a stationary or coarse provider; treat those as no
         // reading rather than as zero, so the panel doesn't flicker between 0 and a real value.
         gpsSpeedMps = if (location.hasSpeed()) location.speed.toDouble() else gpsSpeedMps
+        lastLatitude = location.latitude
+        lastLongitude = location.longitude
+        // Bookmarks don't move, but the rider does - recompute bearings on each fix, not more often.
+        compass.waypoints = CompassWaypoints.nearest(location.latitude, location.longitude)
         bindSensors(sensors.snapshot.value ?: SensorSnapshot.EMPTY)
     }
 
     // endregion
+
+    override fun onCompassUpdated(north: Double) {
+        // The core reports radians from true north; the dial works in degrees.
+        compass.headingDegrees = Math.toDegrees(north)
+    }
 
     /** Collapses to just the chevron, or expands to the full strip. Remembered across launches. */
     private fun setPanelsExpanded(expanded: Boolean) {
@@ -92,5 +110,11 @@ class CyclingController(
         // Only shown when a wheel sensor is reporting; otherwise GPS speed already covers it.
         speedTile.value = snapshot.speedMps?.let { CyclingFormatter.speedValue(it) }
         powerTile.value = snapshot.powerWatts?.toString()
+
+        // The compass shows GPS speed by default and only falls back to a wheel sensor when GPS
+        // has produced nothing - GPS is available everywhere, a sensor is not.
+        val compassSpeed = gpsSpeedMps ?: snapshot.speedMps
+        compass.speedText = compassSpeed?.let { CyclingFormatter.speedValue(it) } ?: "--"
+        compass.speedUnit = speedUnit
     }
 }
