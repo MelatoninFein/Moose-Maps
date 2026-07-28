@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Replaces Organic Maps' About screen, which was entirely their project's own channels - donate,
+  Telegram, GitHub, Matrix, Mastodon, Twitter, "rate the app". Shipping those in a fork sends users
+  to a project that does not support this build.
+
+  What stays is what must: OpenStreetMap attribution (required by ODbL for the map data) and the
+  Apache-2.0 credit to Organic Maps (required by section 4(d), since upstream ships a NOTICE file).
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/about_fork_root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_base">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/app_name"
+      android:textAppearance="@style/MwmTextAppearance.Body1" />
+
+    <TextView
+      android:id="@+id/about_version"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      tools:text="2026.07.28-4-Google-debug" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_base"
+      android:text="@string/about_fork_description"
+      android:textAppearance="@style/MwmTextAppearance.Body3" />
+
+    <TextView
+      android:id="@+id/about_osm"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_base"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      tools:text="Map data © OpenStreetMap contributors, ODbL. Data version: 2026-07-01" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_base"
+      android:text="@string/about_fork_licence"
+      android:textAppearance="@style/MwmTextAppearance.Body4" />
+
+    <Button
+      android:id="@+id/about_source"
+      style="@style/CyclingMediaAppButton"
+      android:layout_marginTop="@dimen/margin_base"
+      android:text="@string/about_fork_source" />
+  </LinearLayout>
+</ScrollView>

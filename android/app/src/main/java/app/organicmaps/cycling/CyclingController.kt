@@ -1,5 +1,6 @@
 package app.organicmaps.cycling
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -14,7 +15,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import app.organicmaps.R
 import app.organicmaps.cycling.media.MediaControlHub
-import app.organicmaps.cycling.media.MusicApp
+import app.organicmaps.cycling.media.MediaNotificationListener
+import app.organicmaps.cycling.media.MusicApps
 import app.organicmaps.cycling.pip.PipController
 import app.organicmaps.cycling.sensors.SensorHub
 import app.organicmaps.cycling.sensors.SensorService
@@ -64,6 +66,8 @@ class CyclingController(
     private val mediaTitle: TextView = root.findViewById(R.id.cycling_media_title)
     private val mediaSubtitle: TextView = root.findViewById(R.id.cycling_media_subtitle)
     private val mediaEmpty: TextView = root.findViewById(R.id.cycling_media_empty)
+    private val mediaAccessHint: TextView = root.findViewById(R.id.cycling_media_access_hint)
+    private val mediaGrantAccess: Button = root.findViewById(R.id.cycling_media_grant_access)
     private val mediaApps: LinearLayout = root.findViewById(R.id.cycling_media_apps)
     private val mediaPlayPause: ImageButton = root.findViewById(R.id.cycling_media_play_pause)
 
@@ -105,6 +109,11 @@ class CyclingController(
         mediaPlayPause.setOnClickListener { media.togglePlayPause() }
         root.findViewById<ImageView>(R.id.cycling_media_close).setOnClickListener { closeMediaPanel() }
 
+        mediaGrantAccess.setOnClickListener {
+            activity.startActivity(Intent(MediaNotificationListener.settingsIntentAction))
+            closeMediaPanel()
+        }
+
         mediaFab.setOnClickListener { openMediaPanel() }
         mediaScrim.setOnClickListener { closeMediaPanel() }
         // Tapping the artwork jumps to the player that owns the session.
@@ -118,6 +127,8 @@ class CyclingController(
         // Reconnecting on every foreground is cheap and covers the case where the user granted
         // notification access or turned Bluetooth on while the app was in the background.
         media.refreshSessions()
+        // Re-read the setting: it may have been toggled in Settings since the map was last shown.
+        updateMediaFabVisibility()
         if (sensors.store.isEnabled) {
             SensorService.start(activity)
         }
@@ -207,6 +218,11 @@ class CyclingController(
             if (nowPlaying.isPlaying) R.drawable.ic_cycling_pause else R.drawable.ic_cycling_play,
         )
 
+        // Surface the missing grant where the user notices it, not only in Settings.
+        val needsAccess = !media.hasMetadataAccess
+        mediaAccessHint.visibility = if (needsAccess) View.VISIBLE else View.GONE
+        mediaGrantAccess.visibility = if (needsAccess) View.VISIBLE else View.GONE
+
         bindPlayerShortcuts()
         updateMediaFabVisibility()
         // Keep the PiP action row's play/pause icon in step with the panel.
@@ -215,7 +231,7 @@ class CyclingController(
 
     /** Buttons to launch the installed players, so the panel is useful before anything is playing. */
     private fun bindPlayerShortcuts() {
-        val installed = MusicApp.installed(activity)
+        val installed = MusicApps.installed(activity)
         if (mediaApps.childCount == installed.size) {
             return // Installed apps don't change while the map is open.
         }
@@ -224,7 +240,7 @@ class CyclingController(
             val button = Button(activity, null, 0, R.style.CyclingMediaAppButton)
             button.text = activity.getString(R.string.cycling_music_open_app, app.displayName)
             button.setOnClickListener {
-                app.launchIntent(activity)?.let { activity.startActivity(it) }
+                MusicApps.launchIntent(activity, app.packageName)?.let { activity.startActivity(it) }
                 closeMediaPanel()
             }
             mediaApps.addView(button)
@@ -232,12 +248,16 @@ class CyclingController(
     }
 
     /**
-     * The FAB appears when there is something to control or something to launch, and disappears in
+     * The button is shown whenever the user hasn't turned it off, and hidden only in
      * picture-in-picture, where the system action row takes over.
+     *
+     * It deliberately does NOT depend on a player being installed or on a session being visible:
+     * transport controls work through media key events even with no permission granted and no
+     * recognised app, and a control the user cannot find is a feature that does not exist. The
+     * panel itself explains anything that is missing.
      */
     private fun updateMediaFabVisibility() {
-        val useful = media.nowPlaying.value?.isActive == true || MusicApp.installed(activity).isNotEmpty()
-        val show = useful && !inPictureInPicture
+        val show = sensors.store.isMediaControlsVisible && !inPictureInPicture
         mediaFab.visibility = if (show) View.VISIBLE else View.GONE
         if (!show && mediaPanelOpen) {
             closeMediaPanel()

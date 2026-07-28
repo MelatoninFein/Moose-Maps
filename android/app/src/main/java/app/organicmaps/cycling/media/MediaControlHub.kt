@@ -156,14 +156,18 @@ class MediaControlHub private constructor(context: Context) {
     }
 
     /**
-     * Picks the session to control. A player that is actually producing sound wins over one that is
-     * merely resident; among equals, the apps in [MusicApp.preferenceOrder] come first so that a
-     * paused Spotify is preferred over, say, a podcast app that happens to hold a stale session.
+     * Picks the session to control: whichever player is actually producing sound, else the most
+     * recently active one.
+     *
+     * No app is preferred over any other. `getActiveSessions` already returns controllers in
+     * descending priority - most recently active first - so taking the first match defers to the
+     * platform's own notion of "what the user is listening to". An earlier version ranked Spotify
+     * and TIDAL above everything else, which meant a stale Spotify session could win over the
+     * Qobuz or YouTube Music track actually playing.
      */
     private fun selectController(controllers: List<MediaController>) {
-        val chosen = controllers.filter { it.playbackState?.state == PlaybackState.STATE_PLAYING }
-            .minByOrNull { preferenceRank(it) }
-            ?: controllers.minByOrNull { preferenceRank(it) }
+        val chosen = controllers.firstOrNull { it.playbackState?.state == PlaybackState.STATE_PLAYING }
+            ?: controllers.firstOrNull()
 
         if (chosen?.sessionToken == activeController?.sessionToken) {
             publishState()
@@ -176,11 +180,6 @@ class MediaControlHub private constructor(context: Context) {
         publishState()
     }
 
-    private fun preferenceRank(controller: MediaController): Int {
-        val index = MusicApp.preferenceOrder.indexOfFirst { it.packageName == controller.packageName }
-        return if (index >= 0) index else MusicApp.preferenceOrder.size
-    }
-
     private fun publishState() {
         val controller = activeController
         if (controller == null) {
@@ -191,7 +190,7 @@ class MediaControlHub private constructor(context: Context) {
         val metadata = controller.metadata
         _nowPlaying.value = NowPlaying(
             packageName = controller.packageName,
-            appLabel = MusicApp.forPackage(controller.packageName)?.displayName ?: appLabelOf(controller.packageName),
+            appLabel = MusicApps.labelFor(appContext, controller.packageName),
             title = metadata?.getString(MediaMetadata.METADATA_KEY_TITLE),
             artist = metadata?.getString(MediaMetadata.METADATA_KEY_ARTIST)
                 ?: metadata?.getString(MediaMetadata.METADATA_KEY_ALBUM_ARTIST),
@@ -201,16 +200,7 @@ class MediaControlHub private constructor(context: Context) {
         )
     }
 
-    private fun appLabelOf(packageName: String): String = try {
-        val packageManager = appContext.packageManager
-        packageManager.getApplicationLabel(packageManager.getApplicationInfo(packageName, 0)).toString()
-    } catch (e: PackageManager.NameNotFoundException) {
-        // Package visibility can hide an app we can still receive a session from.
-        Logger.d(TAG, "No label for $packageName: ${e.message}")
-        packageName
-    }
-
-    /** What the map's media bar shows. [isActive] is false when nothing is controllable. */
+    /** What the music panel shows. [isActive] is false when nothing is controllable. */
     data class NowPlaying(
         val packageName: String? = null,
         val appLabel: String? = null,

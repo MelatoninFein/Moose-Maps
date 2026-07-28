@@ -2,34 +2,58 @@ package app.organicmaps.cycling.media
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+
+/** An installed music app, discovered at runtime rather than hard-coded. */
+data class MusicApp(
+    val packageName: String,
+    val displayName: String,
+)
 
 /**
- * The music apps this build knows about by name.
+ * Finds the music apps installed on the device.
  *
- * Playback control itself is app-agnostic - it goes through the platform media session, so any
- * player works. This list only decides which app is *preferred* when several are publishing a
- * session at once, and which ones get a "open the app" shortcut in the map controls.
+ * Nothing here decides which players are *supported*. Playback control goes through the platform
+ * media session, so every compliant player works whether or not it appears in this list - YouTube,
+ * YouTube Music, TIDAL, Qobuz, Spotify, Poweramp and the rest are all driven by the same code.
  *
- * Package names must also be declared in the manifest `<queries>` block; without that, package
- * visibility on Android 11+ hides them and the launch intent resolves to null.
+ * This list exists only to offer "open the app" shortcuts in the music panel, and it is built by
+ * asking the package manager for anything declaring CATEGORY_APP_MUSIC rather than by matching
+ * known package names. An earlier version hard-coded Spotify and TIDAL, which meant a rider's
+ * player was silently missing from the panel purely because this app had not heard of it.
  */
-enum class MusicApp(val packageName: String, val displayName: String) {
-    SPOTIFY("com.spotify.music", "Spotify"),
-    TIDAL("com.aspiro.tidal", "TIDAL"),
-    ;
+object MusicApps {
 
-    fun isInstalled(context: Context): Boolean = launchIntent(context) != null
+    private val musicLauncherIntent: Intent
+        get() = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_MUSIC)
 
-    fun launchIntent(context: Context): Intent? =
+    fun installed(context: Context): List<MusicApp> {
+        val packageManager = context.packageManager
+        val resolved = try {
+            packageManager.queryIntentActivities(musicLauncherIntent, 0)
+        } catch (e: RuntimeException) {
+            // A package manager transaction can fail under memory pressure. An empty shortcut list
+            // is a fine degradation - playback control does not depend on it.
+            emptyList()
+        }
+
+        return resolved
+            .mapNotNull { info ->
+                val packageName = info.activityInfo?.packageName ?: return@mapNotNull null
+                MusicApp(packageName, info.loadLabel(packageManager).toString())
+            }
+            .distinctBy { it.packageName }
+            .sortedBy { it.displayName.lowercase() }
+    }
+
+    fun launchIntent(context: Context, packageName: String): Intent? =
         context.packageManager.getLaunchIntentForPackage(packageName)
 
-    companion object {
-
-        /** Preference order used when more than one player has an active session. */
-        val preferenceOrder: List<MusicApp> = listOf(SPOTIFY, TIDAL)
-
-        fun forPackage(packageName: String): MusicApp? = entries.firstOrNull { it.packageName == packageName }
-
-        fun installed(context: Context): List<MusicApp> = entries.filter { it.isInstalled(context) }
+    /** Human-readable name for a package, falling back to the package id when it can't be read. */
+    fun labelFor(context: Context, packageName: String): String = try {
+        val packageManager = context.packageManager
+        packageManager.getApplicationLabel(packageManager.getApplicationInfo(packageName, 0)).toString()
+    } catch (e: PackageManager.NameNotFoundException) {
+        packageName
     }
 }

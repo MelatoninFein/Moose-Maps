@@ -146,6 +146,28 @@
       android:visibility="gone"
       tools:visibility="visible" />
 
+    <!--
+      Without notification access the buttons above still work - they fall back to media key
+      events - but no track name or artwork can be read. Explaining that here, where the user
+      notices the gap, rather than only in Settings.
+    -->
+    <TextView
+      android:id="@+id/cycling_media_access_hint"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_base"
+      android:text="@string/cycling_music_access_missing"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      android:visibility="gone"
+      tools:visibility="visible" />
+
+    <Button
+      android:id="@+id/cycling_media_grant_access"
+      style="@style/CyclingMediaAppButton"
+      android:text="@string/cycling_music_grant_access"
+      android:visibility="gone"
+      tools:visibility="visible" />
+
     <LinearLayout
       android:id="@+id/cycling_media_apps"
       android:layout_width="match_parent"

@@ -13,11 +13,11 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.TwoStatePreference;
 import app.organicmaps.MwmApplication;
 import app.organicmaps.R;
+import app.organicmaps.cycling.settings.AboutForkFragment;
 import app.organicmaps.cycling.settings.CyclingSettingsFragment;
 import app.organicmaps.downloader.OnmapDownloader;
 import app.organicmaps.editor.LanguagesFragment;
 import app.organicmaps.editor.ProfileActivity;
-import app.organicmaps.help.HelpActivity;
 import app.organicmaps.sdk.Framework;
 import app.organicmaps.sdk.downloader.MapManager;
 import app.organicmaps.sdk.editor.OsmOAuth;
@@ -142,9 +142,9 @@ public class SettingsPrefsFragment extends BaseXmlSettingsFragment implements La
         getSettingsActivity().stackFragment(CyclingSettingsFragment.class, getString(R.string.cycling_settings_title),
                                             null);
       }
-      else if (key.equals(getString(R.string.pref_help)))
+      else if (key.equals(getString(R.string.pref_about_fork)))
       {
-        startActivity(new Intent(requireActivity(), HelpActivity.class));
+        getSettingsActivity().stackFragment(AboutForkFragment.class, getString(R.string.about_fork_title), null);
       }
       else if (key.equals(getString(R.string.pref_map_locale)))
       {

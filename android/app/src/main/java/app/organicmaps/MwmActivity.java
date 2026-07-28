@@ -61,7 +61,6 @@ import app.organicmaps.downloader.OnmapDownloader;
 import app.organicmaps.editor.EditorActivity;
 import app.organicmaps.editor.FeatureCategoryActivity;
 import app.organicmaps.editor.OsmLoginActivity;
-import app.organicmaps.help.HelpActivity;
 import app.organicmaps.intent.Factory;
 import app.organicmaps.intent.IntentProcessor;
 import app.organicmaps.location.TrackRecordingService;
@@ -357,12 +356,6 @@ public class MwmActivity extends BaseMwmFragmentActivity
   private void showBookmarks()
   {
     BookmarkCategoriesActivity.start(this);
-  }
-
-  private void showHelp()
-  {
-    Intent intent = new Intent(this, HelpActivity.class);
-    startActivity(intent);
   }
 
   public void showSearch(String query)
@@ -769,7 +762,8 @@ public class MwmActivity extends BaseMwmFragmentActivity
       closeFloatingPanels();
       showBottomSheet(MAIN_MENU_ID);
     }
-    case help -> showHelp();
+    // The help button opened Organic Maps' About screen, which links to their donation page and
+    // social channels - none of which support this fork. Attribution now lives in Settings > About.
     case trackRecordingStatus -> toggleTrackRecordingPP();
     }
   }
