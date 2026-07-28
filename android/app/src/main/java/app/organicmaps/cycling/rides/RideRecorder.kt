@@ -63,7 +63,7 @@ class RideRecorder private constructor(context: Context) : LocationListener {
             return null
         }
         writeSummary(file, summary)
-        recordSegmentBests(readSamples(file))
+        recordSegmentBests(readSamples(file), file.nameWithoutExtension)
         return summary
     }
 
@@ -113,7 +113,7 @@ class RideRecorder private constructor(context: Context) : LocationListener {
     var lastPersonalBests: List<Pair<String, Long>> = emptyList()
         private set
 
-    private fun recordSegmentBests(samples: List<RideSample>) {
+    private fun recordSegmentBests(samples: List<RideSample>, rideId: String) {
         lastPersonalBests = emptyList()
         if (samples.size < 2) {
             return
@@ -122,7 +122,11 @@ class RideRecorder private constructor(context: Context) : LocationListener {
         val historyStore = SegmentHistoryStore(appContext)
         val personalBests = mutableListOf<Pair<String, Long>>()
         SegmentStore(appContext).list().forEach { segment ->
-            val attempt = SegmentMatcher.bestAttempt(segment, samples) ?: return@forEach
+            val attempts = SegmentMatcher.allAttempts(segment, samples)
+            if (attempts.isEmpty()) {
+                return@forEach
+            }
+            val attempt = attempts.minByOrNull { it.elapsedMillis } ?: return@forEach
             val slice = samples.sortedBy { it.timestampMs }
                 .filter { it.timestampMs in attempt.startedAtMs..(attempt.startedAtMs + attempt.elapsedMillis) }
             val best = SegmentBest(
@@ -131,17 +135,22 @@ class RideRecorder private constructor(context: Context) : LocationListener {
                 splitsMillis = SegmentMatcher.splitsFor(segment, slice),
                 achievedAtMs = attempt.startedAtMs,
             )
+            // Only the quickest lap keeps splits - the in-depth trace the live delta races against.
+            // Every lap is also kept as a plain line: date, time, average heart rate and power.
             val isPersonalBest = bestStore.saveIfFaster(best)
-            historyStore.record(
-                segment.id,
-                SegmentRun(
-                    startedAtMs = attempt.startedAtMs,
-                    elapsedMillis = attempt.elapsedMillis,
-                    averageHeartRateBpm = attempt.averageHeartRateBpm,
-                    averagePowerWatts = attempt.averagePowerWatts,
-                    wasPersonalBest = isPersonalBest,
-                ),
-            )
+            attempts.forEach { lap ->
+                historyStore.record(
+                    segment.id,
+                    SegmentRun(
+                        rideId = rideId,
+                        startedAtMs = lap.startedAtMs,
+                        elapsedMillis = lap.elapsedMillis,
+                        averageHeartRateBpm = lap.averageHeartRateBpm,
+                        averagePowerWatts = lap.averagePowerWatts,
+                        wasPersonalBest = isPersonalBest && lap.startedAtMs == attempt.startedAtMs,
+                    ),
+                )
+            }
             if (isPersonalBest) {
                 Logger.i(TAG, "New best on ${segment.name}: ${attempt.elapsedMillis} ms")
                 personalBests += segment.name to attempt.elapsedMillis

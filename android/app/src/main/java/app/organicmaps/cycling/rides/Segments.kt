@@ -11,6 +11,19 @@ data class Segment(
     val name: String,
     val points: List<SegmentPoint>,
 ) {
+    /**
+     * True when the segment finishes where it started - a lap rather than a point-to-point.
+     *
+     * Loops are timed continuously: crossing the line ends one lap and begins the next.
+     */
+    val isLoop: Boolean
+        get() = points.size >= 2 && RideStatistics.haversineMetres(
+            points.first().latitude,
+            points.first().longitude,
+            points.last().latitude,
+            points.last().longitude,
+        ) <= SegmentMatcher.GATE_RADIUS_M
+
     val lengthMetres: Double
         get() = points.zipWithNext().sumOf { (a, b) ->
             RideStatistics.haversineMetres(a.latitude, a.longitude, b.latitude, b.longitude)
@@ -58,6 +71,57 @@ object SegmentMatcher {
      * Only the quickest qualifying pass is returned: riding a loop twice in one outing should
      * produce your best lap, not an arbitrary one.
      */
+    /**
+     * Every qualifying pass round [segment] within [samples], in the order they were ridden.
+     *
+     * Ride a loop four times and you get four laps. An earlier version returned only the quickest,
+     * which silently threw away the rest - fine for a personal best, useless for lap timing or for
+     * a table of your times.
+     *
+     * Passes are non-overlapping: once a lap ends, the next can only start after it.
+     */
+    fun allAttempts(segment: Segment, samples: List<RideSample>): List<SegmentAttempt> {
+        if (segment.points.size < 2 || samples.size < 2) {
+            return emptyList()
+        }
+        val ordered = samples.sortedBy { it.timestampMs }
+        val startIndices = gateVisits(ordered, segment.points.first())
+        val endIndices = gateVisits(ordered, segment.points.last())
+        if (startIndices.isEmpty() || endIndices.isEmpty()) {
+            return emptyList()
+        }
+
+        val attempts = mutableListOf<SegmentAttempt>()
+        var earliestAllowed = 0
+        for (startIndex in startIndices) {
+            if (startIndex < earliestAllowed) {
+                continue
+            }
+            val endIndex = endIndices.firstOrNull { it > startIndex } ?: continue
+            val slice = ordered.subList(startIndex, endIndex + 1)
+            if (!coversSegment(segment, slice)) {
+                continue
+            }
+            val elapsed = slice.last().timestampMs - slice.first().timestampMs
+            if (elapsed <= 0) {
+                continue
+            }
+            val heartRates = slice.mapNotNull { it.heartRateBpm }
+            val powers = slice.mapNotNull { it.powerWatts }
+            attempts += SegmentAttempt(
+                segmentId = segment.id,
+                rideFileName = "",
+                startedAtMs = slice.first().timestampMs,
+                elapsedMillis = elapsed,
+                averageHeartRateBpm = if (heartRates.isEmpty()) null else heartRates.average().toInt(),
+                averagePowerWatts = if (powers.isEmpty()) null else powers.average().toInt(),
+            )
+            // The next lap cannot begin before this one ended.
+            earliestAllowed = endIndex
+        }
+        return attempts
+    }
+
     fun bestAttempt(segment: Segment, samples: List<RideSample>): SegmentAttempt? {
         if (segment.points.size < 2 || samples.size < 2) {
             return null

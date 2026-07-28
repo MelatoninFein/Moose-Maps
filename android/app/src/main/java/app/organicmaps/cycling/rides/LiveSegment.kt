@@ -86,8 +86,16 @@ class LiveSegmentTracker(
         val progress = LiveSegmentProgress(current.name, elapsed, deltaAt(current, index, elapsed), atEnd)
 
         if (atEnd) {
-            active = null
-            reachedIndex = -1
+            if (current.isLoop) {
+                // On a loop the finish line is the start line, so the next lap begins immediately
+                // rather than waiting for the rider to leave and re-enter the gate. Riding four
+                // laps should time four laps.
+                startedAtMs = timestampMs
+                reachedIndex = 0
+            } else {
+                active = null
+                reachedIndex = -1
+            }
         }
         return progress
     }

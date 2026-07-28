@@ -84,6 +84,8 @@
 
   <string name="cycling_segment_name_title">Name this segment</string>
   <string name="cycling_segment_name_hint">Höllviken runt</string>
+  <string name="cycling_segment_top_all_time">Top 10 all-time</string>
+  <string name="cycling_segment_top_session">Top 10 this ride</string>
   <string name="cycling_segment_runs_title">Your attempts</string>
   <string name="cycling_segment_runs_none">No attempts yet. Ride it and your time appears here.</string>
   <string name="cycling_segment_pb_mark">PB</string>

@@ -8,6 +8,8 @@ import java.io.IOException
 
 /** One recorded attempt at a segment, kept so a rider can see their times over months. */
 data class SegmentRun(
+    /** The ride this lap came from, so laps from one outing can be grouped. */
+    val rideId: String,
     val startedAtMs: Long,
     val elapsedMillis: Long,
     val averageHeartRateBpm: Int?,
@@ -35,6 +37,7 @@ class SegmentHistoryStore(context: Context) {
             run.averageHeartRateBpm?.let { put("hr", it) }
             run.averagePowerWatts?.let { put("pwr", it) }
             put("pb", run.wasPersonalBest)
+            put("ride", run.rideId)
         }
         try {
             File(directory, "$segmentId.jsonl").appendText(json.toString() + "\n")
@@ -61,6 +64,7 @@ class SegmentHistoryStore(context: Context) {
                             averageHeartRateBpm = if (json.has("hr")) json.getInt("hr") else null,
                             averagePowerWatts = if (json.has("pwr")) json.getInt("pwr") else null,
                             wasPersonalBest = json.optBoolean("pb"),
+                            rideId = json.optString("ride"),
                         )
                     }.getOrNull()
                 }
@@ -71,11 +75,30 @@ class SegmentHistoryStore(context: Context) {
         }
     }
 
+    /** The quickest [limit] attempts ever, fastest first. */
+    fun topRuns(segmentId: String, limit: Int = TOP_COUNT): List<SegmentRun> =
+        runs(segmentId).sortedBy { it.elapsedMillis }.take(limit)
+
+    /**
+     * The quickest [limit] laps from a single ride, fastest first.
+     *
+     * Grouped by ride id rather than by a time window: a window has to guess where one outing ends
+     * and the next begins, and guesses wrongly for two rides in one evening.
+     */
+    fun topRunsInSession(segmentId: String, rideId: String, limit: Int = TOP_COUNT): List<SegmentRun> =
+        runs(segmentId).filter { it.rideId == rideId }.sortedBy { it.elapsedMillis }.take(limit)
+
+    /** The ride that most recently produced a lap here, for showing "this session". */
+    fun latestRideId(segmentId: String): String? = runs(segmentId).firstOrNull()?.rideId
+
     fun delete(segmentId: String) {
         File(directory, "$segmentId.jsonl").delete()
     }
 
     private companion object {
         const val TAG = "SegmentHistoryStore"
+
+        /** Ten is enough to see progress without turning a segment row into a wall of times. */
+        const val TOP_COUNT = 10
     }
 }
