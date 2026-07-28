@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.widget.TextViewCompat
 import app.organicmaps.R
 
 /**
@@ -49,13 +48,6 @@ class SensorTileView @JvmOverloads constructor(
 
         context.obtainStyledAttributes(attrs, R.styleable.SensorTileView).use { typed ->
             labelView.text = typed.getString(R.styleable.SensorTileView_tileLabel).orEmpty()
-            if (typed.getBoolean(R.styleable.SensorTileView_tileCompact, false)) {
-                // Compact tiles only appear in the picture-in-picture window, which always draws on
-                // a dark scrim - hence the Light (inverse) text appearances regardless of theme.
-                // TextView.setTextAppearance(int) is API 23+; the compat helper covers minSdk 21.
-                TextViewCompat.setTextAppearance(valueView, R.style.MwmTextAppearance_Body2_Light)
-                TextViewCompat.setTextAppearance(labelView, R.style.MwmTextAppearance_Body4_Light)
-            }
         }
 
         // Start hidden: nothing has been measured yet.
