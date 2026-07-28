@@ -1,0 +1,92 @@
+# Builds the Android APK and attaches it to a GitHub Release.
+#
+# The APK is debug-signed. That needs no keystore and no repository secrets, which keeps this
+# workflow runnable by anyone who forks the project — at the cost of Android showing a stronger
+# "unknown developer" warning on install, and the build never being upgradable to a Play listing.
+# To move to release signing later, add a keystore as a secret and swap the assemble task.
+#
+# Triggered by pushing a tag like v2026.07.28, or manually from the Actions tab.
+
+name: Android APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write # Required to create the release and upload the APK to it.
+
+jobs:
+  build:
+    name: Build debug-signed APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          # The C++ core is built from submodules, and version.sh reads the tag history.
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install NDK and CMake
+        run: |
+          # The versions must match android/gradle.properties (propNdkVersion) and the CMake
+          # minimum in the root CMakeLists.txt.
+          NDK_VERSION=$(grep '^propNdkVersion=' android/gradle.properties | cut -d= -f2)
+          echo "Installing NDK $NDK_VERSION"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+            "ndk;$NDK_VERSION" "cmake;3.22.1"
+
+      - name: Configure the repository
+        run: bash ./configure.sh
+
+      - name: Build APK
+        working-directory: android
+        run: ./gradlew assembleGoogleDebug -Parm64 --console=plain
+
+      - name: Locate the APK
+        id: apk
+        run: |
+          APK=$(find android/app/build/outputs/apk -name '*.apk' | head -n1)
+          if [ -z "$APK" ]; then
+            echo "No APK produced" >&2
+            exit 1
+          fi
+          echo "path=$APK" >> "$GITHUB_OUTPUT"
+          echo "Built $APK ($(du -h "$APK" | cut -f1))"
+
+      - name: Upload as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OrganicBicycleMaps-apk
+          path: ${{ steps.apk.outputs.path }}
+          if-no-files-found: error
+
+      - name: Attach to the release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.apk.outputs.path }}
+          generate_release_notes: true
+          body: |
+            Debug-signed APK for arm64 devices — that covers essentially every phone sold since
+            about 2017. Android will warn that the app is from an unknown developer; that is
+            expected for a build signed with a debug key rather than distributed through a store.
+
+            To install: download the `.apk` below, open it, and allow installation from this
+            source when prompted.
+
+            This is an unofficial fork of [Organic Maps](https://organicmaps.app/), not affiliated
+            with or endorsed by the Organic Maps project.

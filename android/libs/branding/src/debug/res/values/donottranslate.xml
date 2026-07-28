@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Deliberately not prefixed with "Debug": the debug variant is what this fork distributes, because
+  it is debug-signed and needs no release keystore. Users should not see a developer-looking name
+  on their launcher.
+-->
+<resources>
+  <string name="app_name" translatable="false">OrganicBicycleMaps</string>
+</resources>

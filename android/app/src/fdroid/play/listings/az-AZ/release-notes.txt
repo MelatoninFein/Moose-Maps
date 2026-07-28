@@ -1,0 +1,8 @@
+YENİ XÜSUSİYYƏTLƏR:
+• Axtarış və marşrutlaşdırma istifadəçi interfeysi yeniləndi
+• Nəqliyyat marşrutlaşdırılması (avtobus, tramvay, metro, yüngül relsli qatar)
+• Alternativ ən sürətli və ən qısa marşrutlar
+• Pilləkənlər, darvazalar və qaldırıcı darvazalar barədə marşrut xəbərdarlıqları
+• İşarələr üçün istənilən rəngi seçin
+• UK OS Grid, Irish Grid, ITM koordinatlarına dəstək
+…daha çox omaps.org/news ünvanında

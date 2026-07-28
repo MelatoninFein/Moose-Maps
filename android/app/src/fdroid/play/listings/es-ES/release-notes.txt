@@ -1,0 +1,8 @@
+NUEVAS FUNCIONES:
+• Se ha actualizado la interfaz de usuario de búsqueda y cálculo de rutas
+• Rutas de transporte público (autobús, tranvía, metro, tren ligero)
+• Rutas alternativas más rápidas y más cortas
+• Avisos en la ruta sobre escalones, puertas y barreras levadizas
+• Selecciona cualquier color para los marcadores
+• Compatibilidad con las coordenadas UK OS Grid, Irish Grid y ITM
+…más información en omaps.org/es/news

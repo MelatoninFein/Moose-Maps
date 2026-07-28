@@ -1,0 +1,41 @@
+- BARU! Laluan pengangkutan awam melalui kereta bawah tanah, rel ringan, bas, dan trem
+- BARU! Laluan alternatif: selain laluan terpantas, aplikasi kini memaparkan laluan terpendek
+- BARU! Amaran laluan berjalan kaki dan berbasikal mengenai tangga, pintu gerbang, dan pintu gerbang angkat di sepanjang laluan
+- BARU! Ketuk untuk memilih antara jejak dan laluan yang bertindih
+- BARU! Pilih mana-mana warna untuk penanda buku
+- BARU! Sokongan untuk koordinat British National Grid (OS Grid), Irish Grid, dan Irish Transverse Mercator (ITM)
+- BARU! Sokongan kebolehcapaian untuk Dynamic Type dan fon besar
+- EKSPERIMEN: Aktifkan Imbasan Satelit dalam tetapan Organic Maps dengan URL pelayan jubin raster tersuai
+- Gaya jadual yang lebih kemas dalam UI
+- Taip `?map-download-server:https://your-server.com/` dalam tetingkap carian untuk menimpa pelayan muat turun peta Organic Maps. Taip `?no-map-download-server` untuk membatalkan penimpaan.
+- Pelbagai pembetulan pepijat dan penambahbaikan prestasi
+
+## Data Peta
+
+- Data OpenStreetMap dikemas kini sehingga 24 Jun
+- Data Wikipedia dikemas kini sehingga 20 Jun, termasuk artikel dalam bahasa Itali
+
+## Pemaparan peta & gaya
+
+- Corak yang lebih menarik untuk kawasan pantai, pasir, kerikil, batu telanjang, kebun buah-buahan, dan kebun anggur, serta coretan kawasan terpelihara dan tanah lembap
+- Label teks melengkung yang lebih lancar untuk jalan dan sungai
+- Sungai, anak sungai, dan tanah lembap mempunyai kontras yang lebih tinggi dan lebih jelas kelihatan dalam mod gelap
+- Ikon baharu dan dipertingkatkan untuk carian kategori dan keputusan carian pada peta
+- Penambahbaikan pembentukan dan paparan teks pelbagai bahasa
+
+## Jejak, penanda buku & laluan
+
+- Peningkatan paparan HTML untuk keterangan penanda buku dan jejak
+- Jejak GeoJSON kini mengekalkan ketinggian dan cap masa semasa import dan eksport
+- Membetulkan ranap selepas memindahkan jejak ke senarai lain
+- Laman web kini dipaparkan untuk tapak warisan
+- Nama pengendali kini dipaparkan untuk hasil carian tanpa nama. Sebagai contoh, ATM tanpa nama kini memaparkan banknya
+- Editor: membetulkan teks keterangan untuk suntingan/set perubahan OpenStreetMap bagi bangunan apartmen
+- Peningkatan pengesanan HTML dalam keterangan penanda buku dan jejak
+- Laluan pendua kini ditapis
+
+## Terjemahan
+
+- Arahan suara langkah demi langkah dalam loghat Kantonis
+- Kemas kini terjemahan Jerman dan Perancis
+- Membetulkan terjemahan panduan suara "onto street" yang salah untuk bahasa Cina, Serbia dan Catalan

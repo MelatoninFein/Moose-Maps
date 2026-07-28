@@ -1,0 +1,6 @@
+# Files that should not be formatted.
+./3party
+# A patched copy of the https://registry.khronos.org/OpenGL/api/GLES3/gl3.h
+./android/sdk/src/main/cpp/app/organicmaps/sdk/opengl/gl3stub.h
+# No need to format this 3party tool.
+tools/osmctools/*.c

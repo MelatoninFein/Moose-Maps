@@ -1,0 +1,8 @@
+FUNCȚII NOI:
+• Interfața de căutare și de calculare a traseelor a fost actualizată
+• Calcularea traseelor pentru transportul public (autobuz, tramvai, metrou, tren ușor)
+• Trasee alternative, cele mai rapide și cele mai scurte
+• Avertismente privind traseul referitoare la trepte, porți și bariere
+• Alege orice culoare pentru marcaje
+• Suport pentru coordonatele UK OS Grid, Irish Grid, ITM
+…mai multe informații la omaps.org/news

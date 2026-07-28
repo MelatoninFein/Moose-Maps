@@ -1,0 +1,8 @@
+NOWE FUNKCJE:
+• Zaktualizowany interfejs użytkownika funkcji wyszukiwania i wyznaczania tras
+• Wyznaczanie tras transportu publicznego (autobus, tramwaj, metro, kolej miejska)
+• Alternatywne trasy: najszybsze i najkrótsze
+• Ostrzeżenia dotyczące tras: stopni, bram i szlabanów
+• Wybierz dowolny kolor dla zakładek
+• Obsługa współrzędnych UK OS Grid, Irish Grid, ITM
+…więcej na stronie omaps.org/pl/news

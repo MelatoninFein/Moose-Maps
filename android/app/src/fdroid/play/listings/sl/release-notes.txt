@@ -1,0 +1,8 @@
+NOVE FUNKCIJE:
+• Posodobljen uporabniški vmesnik za iskanje in načrtovanje poti
+• Načrtovanje poti z javnim prevozom (avtobus, tramvaj, podzemna železnica, lahka železnica)
+• Alternativne najhitrejše in najkrajše poti
+• Opozorila na poti o stopnicah, vratih in dvigalnih vratih
+• Izberite katero koli barvo za zaznamke
+• Podpora za koordinate UK OS Grid, Irish Grid in ITM
+…več na omaps.org/news

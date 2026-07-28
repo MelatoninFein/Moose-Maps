@@ -1,0 +1,41 @@
+- NOVINKA! Plánovanie trasy verejnou dopravou metrom, ľahkou železnicou, autobusom a električkou
+- NOVINKA! Alternatívne trasy: okrem najrýchlejšej trasy aplikácia teraz zobrazuje aj najkratšiu trasu
+- NOVINKA! Upozornenia na peších a cyklistických trasách týkajúce sa schodov, brán a zdvíhacích brán na trase
+- NOVINKA! Ťuknutím si môžete vybrať medzi prekrývajúcimi sa trasami a cestami
+- NOVINKA! Vyberte si ľubovoľnú farbu pre záložky
+- NOVINKA! Podpora súradníc British National Grid (OS Grid), Irish Grid a Irish Transverse Mercator (ITM)
+- NOVINKA! Podpora prístupnosti pre Dynamic Type a veľké písmo
+- EXPERIMENTÁLNE: Zapnite satelitné snímky v nastaveniach Organic Maps pomocou vlastnej URL adresy servera s rastrovými dlaždicami
+- Prehľadnejšie štýly tabuliek v používateľskom rozhraní
+- Do vyhľadávacieho okna zadajte `?map-download-server:https://your-server.com/`, aby ste prepisali servery na sťahovanie máp Organic Maps. Zadajte `?no-map-download-server`, aby ste prepis zrušili.
+- Rôzne opravy chýb a vylepšenia výkonu
+
+## Mapové údaje
+
+- Údaje OpenStreetMap aktualizované k 24. júnu
+- Údaje Wikipedia aktualizované k 20. júnu, vrátane článkov v taliančine
+
+## Vykresľovanie máp a štýly
+
+- Vylepšené vzory pre oblasti pláží, piesku, sutinových svahov, holých skál, ovocných sadov a viníc, ako aj šrafovanie chránených oblastí a mokradí
+- Plynulejšie zakrivené textové popisy ciest a riek
+- Rieky, potoky a mokrade majú vyšší kontrast a sú v tmavom režime lepšie viditeľné
+- Nové a vylepšené ikony pre vyhľadávanie podľa kategórií a výsledky vyhľadávania na mape
+- Vylepšené formátovanie a vykresľovanie viacjazyčného textu
+
+## Trasy, záložky a trasy
+
+- Vylepšené vykresľovanie popisov záložiek a trás v HTML
+- Trasy v aplikácii GeoJSON teraz pri importe a exporte zachovávajú nadmorskú výšku a časové značky
+- Opravené zlyhanie aplikácie po presunutí trasy do iného zoznamu
+- Teraz sa zobrazujú webové stránky pamiatkových objektov
+- Pri výsledkoch vyhľadávania bez názvu sa teraz zobrazujú názvy operátorov. Napríklad pri neoznačenom ATM sa teraz zobrazuje jeho banka
+- Redaktor: opravený popisný text pre bytový dom OpenStreetMap úpravy/sady zmien
+- Vylepšená detekcia HTML v popisoch záložiek a trás
+- Duplicitné trasy sa teraz filtrujú
+
+## Preklady
+
+- Kantonské hlasové navádzanie krok za krokom
+- Aktualizované nemecké a francúzske preklady
+- Opravené nesprávne preklady hlasového navádzania "onto street" pre čínštinu, srbčinu a katalánčinu

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="SensorTileView">
+    <!-- Short metric name shown under the number, e.g. HR / CAD / PWR. -->
+    <attr name="tileLabel" format="string" />
+    <!-- Compact tiles are used in the picture-in-picture window, where space is scarce. -->
+    <attr name="tileCompact" format="boolean" />
+  </declare-styleable>
+</resources>

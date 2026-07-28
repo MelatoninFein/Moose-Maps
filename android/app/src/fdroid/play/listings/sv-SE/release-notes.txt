@@ -1,0 +1,9 @@
+NYA FUNKTIONER:
+• Uppdaterat användargränssnitt för sökning och ruttplanering
+• Ruttplanering för kollektivtrafik (buss, spårvagn, tunnelbana, lättrail)
+• Alternativa snabbaste och kortaste rutter
+• Varningar längs rutten om trappor, grindar och lyftgrindar
+• Välj valfri färg för bokmärken
+• Stöd för koordinaterna UK OS Grid, Irish Grid och ITM
+• Aktivera satellitbilder i Organic Maps-inställningarna med en anpassad URL till en rastertileserver
+…mer på omaps.org/sv/news

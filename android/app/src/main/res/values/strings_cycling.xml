@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Strings for the cycling features.
+
+  Kept out of values/strings.xml on purpose: that file is generated from data/strings/strings.txt by
+  the translation tooling, so hand-edits there are overwritten on the next regeneration and conflict
+  on every rebase. Upstreaming any of this would mean moving these entries into strings.txt and
+  regenerating instead.
+-->
+<resources>
+  <!-- Preference keys - identifiers, never shown to the user. -->
+  <string name="pref_cycling_screen" translatable="false">CyclingScreen</string>
+
+  <!-- Settings -->
+  <string name="cycling_settings_title">Cycling</string>
+  <string name="cycling_settings_summary">Bluetooth sensors, map readout and music controls</string>
+
+  <!-- Sensors -->
+  <string name="cycling_sensors_title">Cycling sensors</string>
+  <string name="cycling_sensors_enable">Connect Bluetooth sensors</string>
+  <string name="cycling_sensors_disconnect">Disconnect</string>
+  <string name="cycling_sensors_paired">Paired sensors</string>
+  <string name="cycling_sensors_available">Available sensors</string>
+  <string name="cycling_sensors_none_paired">No sensors paired yet.</string>
+  <string name="cycling_sensors_none_found">No sensors found. Wake the sensor by spinning the crank or putting the strap on, then scan again.</string>
+  <string name="cycling_sensors_scan">Scan</string>
+  <string name="cycling_sensors_scanning">Scanning…</string>
+  <string name="cycling_sensors_forget">Forget sensor</string>
+  <string name="cycling_sensors_waiting">Waiting for sensor data</string>
+  <string name="cycling_sensors_permission_denied">Bluetooth permission is needed to find sensors.</string>
+  <string name="cycling_sensors_bluetooth_off">Turn Bluetooth on to search for sensors.</string>
+  <string name="cycling_sensor_connected">Connected</string>
+  <string name="cycling_sensor_connecting">Connecting…</string>
+  <string name="cycling_sensor_disconnected">Disconnected</string>
+  <!-- %1$d is the remaining battery charge of a sensor, in percent. -->
+  <string name="cycling_sensor_battery">Battery %1$d%%</string>
+
+  <!-- Map readout -->
+  <string name="cycling_overlay_enable">Show sensor readout on the map</string>
+  <string name="cycling_wheel_circumference">Wheel circumference</string>
+  <string name="cycling_wheel_circumference_summary">Used to work out speed from a wheel sensor. A 700×25c tyre is about 2105 mm.</string>
+  <!-- %1$d and %2$d are the smallest and largest accepted wheel circumference, in millimetres. -->
+  <string name="cycling_wheel_circumference_error">Enter a value between %1$d and %2$d mm.</string>
+
+  <!-- Metric names -->
+  <string name="cycling_metric_heart_rate">Heart rate</string>
+  <string name="cycling_metric_cadence">Cadence</string>
+  <string name="cycling_metric_speed">Speed</string>
+  <string name="cycling_metric_power">Power</string>
+
+  <!-- Units -->
+  <string name="cycling_unit_bpm">bpm</string>
+  <string name="cycling_unit_rpm">rpm</string>
+  <string name="cycling_unit_kmh">km/h</string>
+  <string name="cycling_unit_mph">mph</string>
+  <string name="cycling_unit_watts">W</string>
+  <string name="cycling_unit_mm">mm</string>
+
+  <!-- Music -->
+  <string name="cycling_music_title">Music</string>
+  <string name="cycling_music_previous">Previous track</string>
+  <string name="cycling_music_next">Next track</string>
+  <string name="cycling_music_play">Play</string>
+  <string name="cycling_music_pause">Pause</string>
+  <string name="cycling_music_play_pause">Play or pause</string>
+  <string name="cycling_music_unknown_track">Unknown track</string>
+  <string name="cycling_music_grant_access">Grant notification access</string>
+  <string name="cycling_music_access_granted">Track names and artwork are shown on the map.</string>
+  <string name="cycling_music_access_missing">Playback controls already work. Grant notification access to also see track names and artwork.</string>
+
+  <!-- Picture-in-picture -->
+  <string name="cycling_pip_title">Floating map</string>
+  <string name="cycling_pip_enter">Shrink to floating window</string>
+  <string name="cycling_pip_no_route">No active route</string>
+  <string name="cycling_pip_unsupported">This device does not support picture-in-picture.</string>
+</resources>

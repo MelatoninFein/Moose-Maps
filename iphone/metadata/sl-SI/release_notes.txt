@@ -1,0 +1,41 @@
+- NOVOST! Načrtovanje poti z javnim prevozom: podzemna železnica, lahka železnica, avtobus in tramvaj
+- NOVOST! Alternativne poti: poleg najhitrejše poti aplikacija zdaj prikazuje tudi najkrajšo pot
+- NOVOST! Opozorila na peš in kolesarskih poteh o stopnicah, vratih in dvigalnih zapornicah na poti
+- NOVOST! S tapom izberite med prekrivajočimi se potmi in trasami
+- NOVOST! Izberite katero koli barvo za zaznamke
+- NOVOST! Podpora za koordinate British National Grid (OS Grid), Irish Grid in Irish Transverse Mercator (ITM)
+- NOVOST! Podpora za dostopnost za Dynamic Type in velike pisave
+- EKSPERIMENTALNO: Vklopite satelitske posnetke v nastavitvah Organic Maps z URL-jem strežnika za rastrske ploščice po meri
+- Prečiščen slog tabel v uporabniškem vmesniku
+- V iskalno okno vpišite `?map-download-server:https://your-server.com/`, da prepisate strežnike za prenos zemljevidov Organic Maps. Vpišite `?no-map-download-server`, da preklicate prepis.
+- Različne popravke napak in izboljšave zmogljivosti
+
+## Podatki o zemljevidih
+
+- Podatki OpenStreetMap so bili posodobljeni 24. junija
+- Podatki Wikipedia so bili posodobljeni 20. junija, vključno s članki v italijanščini
+
+## Prikazovanje zemljevidov in slogi
+
+- Lepše vzorce za območja plaž, peska, grušča, gole skale, sadovnjakov in vinogradov ter šrafiranje zaščitenih območij in mokrišč
+- Bolj gladko zaobljene besedilne oznake za ceste in reke
+- Reke, potoki in mokrišča imajo večji kontrast in so v temnem načinu bolj vidni
+- Nove in izboljšane ikone za iskanje po kategorijah in rezultate iskanja na zemljevidu
+- Izboljšano oblikovanje in prikazovanje večjezičnega besedila
+
+## Poti, zaznamki in poti
+
+- Izboljšano prikazovanje opisov zaznamkov in poti v formatu HTML
+- Sledi GeoJSON zdaj ohranjajo nadmorsko višino in časovne oznake pri uvozu in izvozu
+- Popravljena je bila napaka, ki je povzročala sesutje aplikacije po premestitvi poti na drug seznam
+- Zdaj so prikazane spletne strani za spomeniška območja
+- Pri neimenovanih rezultatih iskanja se zdaj prikazujejo imena operaterjev. Na primer, neimenovani ATM zdaj prikazuje svojo banko
+- Urednik: popravil opisni tekst za stanovanjske stavbe OpenStreetMap popravki/spremembe
+- Izboljšano zaznavanje HTML v opisih zaznamkov in poti
+- Podvojene poti so zdaj izločene
+
+## Prevajanja
+
+- Glasovno vodenje po korakih v kantonskem jeziku
+- Posodobljeni nemški in francoski prevodi
+- Popravljeni so bili napačni prevodi glasovnih navodil "onto street" za kitajščino, srbščino in katalonščino

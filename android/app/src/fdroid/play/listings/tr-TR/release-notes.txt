@@ -1,0 +1,8 @@
+YENİ ÖZELLİKLER:
+• Arama ve rota belirleme kullanıcı arayüzü güncellendi
+• Toplu taşıma güzergâhları (otobüs, tramvay, metro, hafif raylı sistem)
+• En hızlı ve en kısa alternatif rotalar
+• Merdivenler, kapılar ve asansör kapıları ile ilgili rota uyarıları
+• Yer imleri için istediğiniz rengi seçin
+• UK OS Grid, Irish Grid ve ITM koordinatları için destek
+…daha fazlası için omaps.org/tr/news

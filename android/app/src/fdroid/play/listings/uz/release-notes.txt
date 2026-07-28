@@ -1,0 +1,8 @@
+YANGI XUSUSIYATLAR:
+• Qidiruv va marshrutlash foydalanuvchi interfeysi yangilandi
+• Jamoat transporti marshruti (avtobus, tramvay, metro, yengil relsli transport)
+• Alternativ eng tez va eng qisqa yo'nalishlar
+• Poygaklar, darvozalar va lift darvozalar bo'yicha yo'nalish ogohlantirishlari
+• Belgilamalar uchun istalgan rangni tanlang
+• UK OS Grid, Irish Grid, ITM koordinatalarini qo'llab-quvvatlash
+…batafsil omaps.org/news manzilida

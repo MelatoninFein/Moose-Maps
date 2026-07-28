@@ -1,0 +1,8 @@
+JAUNĀS FUNKCIJAS:
+• Atjaunināta meklēšanas un maršruta plānošanas lietotāja saskarne
+• Sabiedriskā transporta maršrutu plānošana (autobuss, tramvajs, metro, vieglā dzelzceļa transports)
+• Alternatīvi ātrākie un īsākie maršruti
+• Maršruta brīdinājumi par pakāpieniem, vārtiem un pacelamajiem vārtiem
+• Izvēlieties jebkuru krāsu grāmatzīmēm
+• Atbalsts koordinātēm UK OS Grid, Irish Grid, ITM
+…vairāk omaps.org/news

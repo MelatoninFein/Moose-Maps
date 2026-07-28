@@ -1,0 +1,9 @@
+FITUR BARU:
+• Antarmuka pangguna panelusuran lan penentuan rute sing dianyari
+• Rute angkutan umum (bis, trem, kereta bawah tanah, rel ringan)
+• Rute alternatif sing paling cepet lan paling cendhak
+• Peringatan rute babagan undhak-undhakan, gapura, lan gapura angkat
+• Pilih warna apa wae kanggo penanda
+• Dhukungan kanggo koordinat UK OS Grid, Irish Grid, ITM
+• Aktipake Gambar Satelit ing setelan Organic Maps nganggo URL server raster tile kustom
+…lan liya-liyané ing omaps.org/news

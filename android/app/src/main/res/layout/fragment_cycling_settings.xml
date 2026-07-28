@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/cycling_settings_root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/margin_base"
+    android:paddingBottom="@dimen/margin_base">
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/cycling_sensors_enabled"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:minHeight="@dimen/height_item_oneline"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:text="@string/cycling_sensors_enable"
+      android:textAppearance="@style/MwmTextAppearance.Body1" />
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/cycling_overlay_enabled"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:minHeight="@dimen/height_item_oneline"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:text="@string/cycling_overlay_enable"
+      android:textAppearance="@style/MwmTextAppearance.Body1" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingTop="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:text="@string/cycling_wheel_circumference"
+      android:textAppearance="@style/MwmTextAppearance.Body2" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:paddingBottom="@dimen/margin_half"
+      android:text="@string/cycling_wheel_circumference_summary"
+      android:textAppearance="@style/MwmTextAppearance.Body4" />
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/cycling_wheel_input"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/margin_base"
+      android:layout_marginEnd="@dimen/margin_base"
+      app:suffixText="@string/cycling_unit_mm">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/cycling_wheel_circumference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="4"
+        tools:text="2105" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Music -->
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingTop="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:text="@string/cycling_music_title"
+      android:textAppearance="@style/MwmTextAppearance.Body2" />
+
+    <TextView
+      android:id="@+id/cycling_media_access_summary"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      tools:text="Track names are hidden until notification access is granted." />
+
+    <Button
+      android:id="@+id/cycling_media_access_button"
+      style="@style/Widget.AppCompat.Button.Borderless.Colored"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/margin_half"
+      android:text="@string/cycling_music_grant_access" />
+
+    <!-- Sensors -->
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingTop="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:text="@string/cycling_sensors_paired"
+      android:textAppearance="@style/MwmTextAppearance.Body2" />
+
+    <LinearLayout
+      android:id="@+id/cycling_paired_list"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical" />
+
+    <TextView
+      android:id="@+id/cycling_paired_empty"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingTop="@dimen/margin_half"
+      android:paddingEnd="@dimen/margin_base"
+      android:paddingBottom="@dimen/margin_half"
+      android:text="@string/cycling_sensors_none_paired"
+      android:textAppearance="@style/MwmTextAppearance.Body4" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingTop="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:text="@string/cycling_sensors_available"
+      android:textAppearance="@style/MwmTextAppearance.Body2" />
+
+    <LinearLayout
+      android:id="@+id/cycling_discovered_list"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical" />
+
+    <Button
+      android:id="@+id/cycling_scan_button"
+      style="@style/Widget.AppCompat.Button.Borderless.Colored"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/margin_half"
+      android:text="@string/cycling_sensors_scan" />
+
+    <!-- Scan-time feedback: permission refusals, Bluetooth being off, nothing found. -->
+    <TextView
+      android:id="@+id/cycling_sensor_status"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:paddingBottom="@dimen/margin_half"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      android:visibility="gone"
+      tools:text="Turn Bluetooth on to search for sensors."
+      tools:visibility="visible" />
+  </LinearLayout>
+</ScrollView>

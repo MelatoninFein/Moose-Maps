@@ -1,0 +1,10 @@
+NÝJAR AÐGERÐIR:
+• Uppfærð notendaviðmót fyrir leit og leiðarleiðsögn
+• Leiðsögn almenningssamgangna (rútum, sporvögnum, neðanjarðarlestum, léttlestinni)
+• Varamlegar hraðustu og stystu leiðir
+• Leiðarviðvaranir um þrep, hlið og lyftuhurðir
+• Veldu hvaða lit sem er fyrir bókamerki
+• Stuðningur við UK OS Grid, Irish Grid, ITM hnit
+• Kveikja á gervitunglamyndum í Organic Maps-stillingum með sérsniðnum rasterflísaverðar-URL
+• OSM-gögn frá 24. júní
+…meira á omaps.org/news

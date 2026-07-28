@@ -1,0 +1,8 @@
+FUNTZIO BERRIAK:
+• Bilaketa eta ibilbideetarako erabiltzaile-interfazea eguneratu da
+• Garraio publikoaren ibilbideak (autobusa, tranbia, metroa, tren arina)
+• Alternatibo azkarren eta laburren ibilbideak
+• Igoera-mailen, ateen eta altxagailu-ateen inguruko ibilbide-ohartarazpenak
+• Markatzaileentzako edozein kolore hautatu
+• UK OS Grid, Irish Grid eta ITM koordenatuen laguntza
+…gehiago omaps.org/eu/news helbidean

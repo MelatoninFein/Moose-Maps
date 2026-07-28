@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dimensions and colours for the cycling features. Kept in their own file so the fork's
+     additions stay separate from upstream resources and rebases don't conflict. -->
+<resources>
+  <dimen name="cycling_panel_min_width">120dp</dimen>
+  <dimen name="cycling_tile_min_width">56dp</dimen>
+  <dimen name="cycling_artwork_size">40dp</dimen>
+  <dimen name="cycling_media_button">44dp</dimen>
+  <dimen name="cycling_icon_size">24dp</dimen>
+
+  <!-- Scrim behind the picture-in-picture readout: dark enough to stay legible over any map. -->
+  <color name="bg_pip_scrim">#B3000000</color>
+</resources>

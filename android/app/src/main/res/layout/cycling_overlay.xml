@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Live cycling readout drawn over the map: sensor tiles on top, music transport below.
+
+  Anchored to the top-centre of the map because the existing map controls own the right-hand
+  column and the bottom (place page, routing sheet, search toolbar). Both rows hide themselves
+  when they have nothing to show, so the map is untouched for a rider using neither feature.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/cycling_overlay"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_centerHorizontal="true"
+  android:layout_alignParentTop="true"
+  android:gravity="center_horizontal"
+  android:orientation="vertical"
+  android:visibility="gone"
+  tools:visibility="visible">
+
+  <LinearLayout
+    android:id="@+id/cycling_sensor_panel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cycling_panel_bg"
+    android:gravity="center_vertical"
+    android:minWidth="@dimen/cycling_panel_min_width"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/margin_base"
+    android:paddingTop="@dimen/margin_half"
+    android:paddingEnd="@dimen/margin_base"
+    android:paddingBottom="@dimen/margin_half"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <app.organicmaps.cycling.ui.SensorTileView
+      android:id="@+id/tile_heart_rate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/margin_base"
+      android:minWidth="@dimen/cycling_tile_min_width"
+      app:tileLabel="@string/cycling_unit_bpm" />
+
+    <app.organicmaps.cycling.ui.SensorTileView
+      android:id="@+id/tile_cadence"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/margin_base"
+      android:minWidth="@dimen/cycling_tile_min_width"
+      app:tileLabel="@string/cycling_unit_rpm" />
+
+    <app.organicmaps.cycling.ui.SensorTileView
+      android:id="@+id/tile_speed"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/margin_base"
+      android:minWidth="@dimen/cycling_tile_min_width"
+      app:tileLabel="@string/cycling_unit_kmh" />
+
+    <app.organicmaps.cycling.ui.SensorTileView
+      android:id="@+id/tile_power"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:minWidth="@dimen/cycling_tile_min_width"
+      app:tileLabel="@string/cycling_unit_watts" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/cycling_media_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_half"
+    android:background="@drawable/cycling_panel_bg"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/margin_half"
+    android:paddingTop="@dimen/margin_quarter"
+    android:paddingEnd="@dimen/margin_half"
+    android:paddingBottom="@dimen/margin_quarter"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <ImageView
+      android:id="@+id/media_artwork"
+      android:layout_width="@dimen/cycling_artwork_size"
+      android:layout_height="@dimen/cycling_artwork_size"
+      android:layout_marginEnd="@dimen/margin_half"
+      android:contentDescription="@string/cycling_music_title"
+      android:scaleType="centerCrop"
+      app:srcCompat="@drawable/ic_cycling_music"
+      app:tint="?iconTint" />
+
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/media_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:lines="1"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:textAppearance="@style/MwmTextAppearance.Body3"
+        tools:text="Unknown Pleasures" />
+
+      <TextView
+        android:id="@+id/media_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textAppearance="@style/MwmTextAppearance.Body4"
+        tools:text="Joy Division · Spotify" />
+    </LinearLayout>
+
+    <ImageButton
+      android:id="@+id/media_previous"
+      android:layout_width="@dimen/cycling_media_button"
+      android:layout_height="@dimen/cycling_media_button"
+      android:background="?selectableItemBackgroundBorderless"
+      android:contentDescription="@string/cycling_music_previous"
+      app:srcCompat="@drawable/ic_cycling_previous"
+      app:tint="?iconTint" />
+
+    <ImageButton
+      android:id="@+id/media_play_pause"
+      android:layout_width="@dimen/cycling_media_button"
+      android:layout_height="@dimen/cycling_media_button"
+      android:background="?selectableItemBackgroundBorderless"
+      android:contentDescription="@string/cycling_music_play_pause"
+      app:srcCompat="@drawable/ic_cycling_play"
+      app:tint="?iconTint" />
+
+    <ImageButton
+      android:id="@+id/media_next"
+      android:layout_width="@dimen/cycling_media_button"
+      android:layout_height="@dimen/cycling_media_button"
+      android:background="?selectableItemBackgroundBorderless"
+      android:contentDescription="@string/cycling_music_next"
+      app:srcCompat="@drawable/ic_cycling_next"
+      app:tint="?iconTint" />
+  </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,9 @@
+NYE FUNKTIONER:
+• Opdateret brugergrænseflade til søgning og ruteplanlægning
+• Ruteplanlægning for offentlig transport (bus, sporvogn, metro, letbane)
+• Alternative hurtigste og korteste ruter
+• Ruteadvarsler om trin, porte og løfteporte
+• Vælg en vilkårlig farve til bogmærker
+• Understøttelse af koordinaterne UK OS Grid, Irish Grid og ITM
+• Aktivér satellitbilleder i Organic Maps-indstillingerne med en brugerdefineret URL til en raster-tile-server
+…mere på omaps.org/news
