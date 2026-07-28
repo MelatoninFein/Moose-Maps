@@ -137,20 +137,14 @@ class CyclingController(
 
     /** Drives the live segment banner: name, elapsed so far, and the gap to your best. */
     private fun updateSegment(location: Location) {
-        val progress = if (RideMode.isRiding) {
-            segmentTracker?.onPosition(location.latitude, location.longitude, location.time)
-        } else {
-            null
-        }
+        val progress = segmentTracker?.onPosition(location.latitude, location.longitude, location.time)
         if (progress == null) {
             segmentBanner.visibility = View.GONE
             lastSegmentName = null
             // Not on a segment: warn if one is coming up, so the rider can wind up for it.
-            if (RideMode.isRiding) {
-                segmentTracker
-                    ?.approachingSegment(location.latitude, location.longitude, APPROACH_WARNING_M)
-                    ?.let { (segment, metres) -> segmentVoice?.announceApproach(segment.name, metres) }
-            }
+            segmentTracker
+                ?.approachingSegment(location.latitude, location.longitude, APPROACH_WARNING_M)
+                ?.let { (segment, metres) -> segmentVoice?.announceApproach(segment.name, metres) }
             return
         }
 
@@ -193,15 +187,16 @@ class CyclingController(
         return String.format(java.util.Locale.getDefault(), "%d:%02d", totalSeconds / 60, totalSeconds % 60)
     }
 
-    /** Shows or hides every cycling widget on the map in one place. */
+    /**
+     * The compass is always available; the tile column and segment banner show themselves when
+     * they have something to report.
+     *
+     * An earlier version hid all of this unless a ride was in progress, on the reasoning that
+     * upstream keeps no permanent readouts. That went further than intended - the features became
+     * invisible rather than tidy - so visibility is driven by whether there is data, not by mode.
+     */
     private fun applyRideMode(riding: Boolean) {
-        val visibility = if (riding) View.VISIBLE else View.GONE
-        compass.visibility = visibility
-        // The tile column additionally hides itself when no sensor is reporting.
-        liveTiles.visibility = if (riding) liveTiles.visibility else View.GONE
-        if (!riding) {
-            segmentBanner.visibility = View.GONE
-        }
+        compass.visibility = View.VISIBLE
     }
 
     private fun bindSensors(snapshot: SensorSnapshot) {
@@ -219,7 +214,7 @@ class CyclingController(
         val hasReading = snapshot.heartRateBpm != null ||
             snapshot.cadenceRpm != null ||
             snapshot.powerWatts != null
-        liveTiles.visibility = if (RideMode.isRiding && hasReading) View.VISIBLE else View.GONE
+        liveTiles.visibility = if (hasReading) View.VISIBLE else View.GONE
     }
 
     private companion object {

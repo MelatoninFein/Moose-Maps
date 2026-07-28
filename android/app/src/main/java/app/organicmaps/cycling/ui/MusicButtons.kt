@@ -29,14 +29,9 @@ object MusicButtons {
             return
         }
 
-        // Upstream keeps five controls on the map; three permanent buttons for a non-map function
-        // is exactly the clutter Organic Maps avoids. They appear with the rest of the ride
-        // instrumentation instead.
-        val container: View? = frame.findViewById(R.id.music_buttons_container)
-        RideMode.riding.observe(lifecycleOwner) { riding ->
-            container?.visibility = if (riding) View.VISIBLE else View.GONE
-        }
-        container?.visibility = if (RideMode.isRiding) View.VISIBLE else View.GONE
+        // Always shown, as asked for: transport works through media key events even with no
+        // permission and no recognised player, so there is no state in which they are dead.
+        frame.findViewById<View>(R.id.music_buttons_container)?.visibility = View.VISIBLE
 
         val media = MediaControlHub.from(frame.context)
 
