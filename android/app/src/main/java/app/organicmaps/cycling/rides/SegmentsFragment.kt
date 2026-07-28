@@ -44,6 +44,7 @@ class SegmentsFragment : BaseMwmFragment() {
         empty.visibility = View.GONE
 
         val bestStore = SegmentBestStore(requireContext())
+        val historyStore = SegmentHistoryStore(requireContext())
         segments.forEach { segment ->
             val row = layoutInflater.inflate(R.layout.item_segment, list, false)
             row.findViewById<TextView>(R.id.segment_row_name).text = segment.name
@@ -55,7 +56,26 @@ class SegmentsFragment : BaseMwmFragment() {
                     ?: getString(R.string.cycling_segment_no_time),
             ).joinToString(" · ")
 
+            val runs = historyStore.runs(segment.id)
+            // Tapping expands the attempt list in place - a segment you race has a history, and
+            // pushing another screen for a handful of times would be heavier than it deserves.
+            val runsView: TextView = row.findViewById(R.id.segment_row_runs)
+            row.setOnClickListener {
+                runsView.visibility = if (runsView.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                runsView.text = if (runs.isEmpty()) {
+                    getString(R.string.cycling_segment_runs_none)
+                } else {
+                    runs.joinToString("\n") { run ->
+                        val date = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM)
+                            .format(java.util.Date(run.startedAtMs))
+                        val pb = if (run.wasPersonalBest) "  ${getString(R.string.cycling_segment_pb_mark)}" else ""
+                        "$date   ${formatDuration(run.elapsedMillis)}$pb"
+                    }
+                }
+            }
+
             row.findViewById<ImageView>(R.id.segment_row_delete).setOnClickListener {
+                historyStore.delete(segment.id)
                 SegmentStore(requireContext()).delete(segment.id)
                 // Re-render rather than removing the row, so the empty state appears when the last
                 // segment goes.

@@ -106,11 +106,21 @@ class RideRecorder private constructor(context: Context) : LocationListener {
      * Without this the live delta would read "first run" forever: something has to turn a completed
      * attempt into the splits that the next attempt is measured against.
      */
+    /**
+     * Segments beaten by the ride that just finished, so the app can say so instead of a personal
+     * best landing silently in a file the rider has to go looking for.
+     */
+    var lastPersonalBests: List<Pair<String, Long>> = emptyList()
+        private set
+
     private fun recordSegmentBests(samples: List<RideSample>) {
+        lastPersonalBests = emptyList()
         if (samples.size < 2) {
             return
         }
         val bestStore = SegmentBestStore(appContext)
+        val historyStore = SegmentHistoryStore(appContext)
+        val personalBests = mutableListOf<Pair<String, Long>>()
         SegmentStore(appContext).list().forEach { segment ->
             val attempt = SegmentMatcher.bestAttempt(segment, samples) ?: return@forEach
             val slice = samples.sortedBy { it.timestampMs }
@@ -121,10 +131,23 @@ class RideRecorder private constructor(context: Context) : LocationListener {
                 splitsMillis = SegmentMatcher.splitsFor(segment, slice),
                 achievedAtMs = attempt.startedAtMs,
             )
-            if (bestStore.saveIfFaster(best)) {
+            val isPersonalBest = bestStore.saveIfFaster(best)
+            historyStore.record(
+                segment.id,
+                SegmentRun(
+                    startedAtMs = attempt.startedAtMs,
+                    elapsedMillis = attempt.elapsedMillis,
+                    averageHeartRateBpm = attempt.averageHeartRateBpm,
+                    averagePowerWatts = attempt.averagePowerWatts,
+                    wasPersonalBest = isPersonalBest,
+                ),
+            )
+            if (isPersonalBest) {
                 Logger.i(TAG, "New best on ${segment.name}: ${attempt.elapsedMillis} ms")
+                personalBests += segment.name to attempt.elapsedMillis
             }
         }
+        lastPersonalBests = personalBests
     }
 
     /** Every finished ride, newest first. */

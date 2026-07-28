@@ -1991,7 +1991,16 @@ public class MwmActivity extends BaseMwmFragmentActivity
       updateCompassOffset(offsetY, offsetX);
     }
     TrackRecordingService.stopService(getApplicationContext());
-    RideRecorder.from(this).stop();
+    final RideRecorder rideRecorder = RideRecorder.from(this);
+    rideRecorder.stop();
+    // A personal best is the point of racing yourself, so say so rather than letting it land
+    // silently in a file the rider has to go looking for.
+    for (final kotlin.Pair<String, Long> best : rideRecorder.getLastPersonalBests())
+    {
+      final long seconds = best.getSecond() / 1000;
+      final String time = String.format(java.util.Locale.getDefault(), "%d:%02d", seconds / 60, seconds % 60);
+      Toast.makeText(this, getString(R.string.cycling_ride_new_best, best.getFirst(), time), Toast.LENGTH_LONG).show();
+    }
     mMapButtonsViewModel.setTrackRecorderState(false);
     if (mPlacePageViewModel.getMapObject().getValue() != null
         && mPlacePageViewModel.getMapObject().getValue().isTrackRecording())

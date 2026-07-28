@@ -82,6 +82,16 @@
   <string name="cycling_segment_no_time">No time yet</string>
   <string name="cycling_segment_delete">Delete segment</string>
 
+  <string name="cycling_segment_name_title">Name this segment</string>
+  <string name="cycling_segment_name_hint">Höllviken runt</string>
+  <string name="cycling_segment_runs_title">Your attempts</string>
+  <string name="cycling_segment_runs_none">No attempts yet. Ride it and your time appears here.</string>
+  <string name="cycling_segment_pb_mark">PB</string>
+  <!-- %1$d is how many times the rider has ridden this segment. -->
+  <string name="cycling_segment_attempts">%1$d attempts</string>
+  <!-- %1$s is a segment name, %2$s the new best time. -->
+  <string name="cycling_ride_new_best">New best on %1$s: %2$s</string>
+
   <string name="cycling_ride_start">Start ride</string>
   <string name="cycling_ride_stop">Finish ride</string>
 

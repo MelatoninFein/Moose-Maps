@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.FileProvider
@@ -16,6 +17,7 @@ import app.organicmaps.base.BaseMwmFragment
 import app.organicmaps.cycling.CyclingFormatter
 import app.organicmaps.cycling.sensors.SensorHub
 import app.organicmaps.util.WindowInsetUtils.ScrollableContentInsetsListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -140,11 +142,32 @@ class RideDetailFragment : BaseMwmFragment() {
         return "\n\n" + getString(R.string.cycling_zones_title) + "\n" + lines.joinToString("\n")
     }
 
+    /**
+     * Asks what to call the segment before saving it.
+     *
+     * A segment you race for months deserves a name you chose - an auto-generated one built from a
+     * file timestamp is unreadable in a list and impossible to recognise on the map.
+     */
     private fun saveAsSegment(rideFile: File) {
         if (samples.size < 2) {
             return
         }
-        val name = getString(R.string.cycling_segment_default_name, rideFile.nameWithoutExtension)
+        val input = EditText(requireContext()).apply {
+            setSingleLine()
+            hint = getString(R.string.cycling_segment_name_hint)
+        }
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.cycling_segment_name_title)
+            .setView(input)
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.save) { _, _ ->
+                val typed = input.text?.toString()?.trim().orEmpty()
+                saveSegmentNamed(rideFile, typed.ifBlank { rideFile.nameWithoutExtension })
+            }
+            .show()
+    }
+
+    private fun saveSegmentNamed(rideFile: File, name: String) {
         val segment = SegmentMatcher.fromRide(rideFile.nameWithoutExtension, name, samples)
         SegmentStore(requireContext()).save(segment)
 
