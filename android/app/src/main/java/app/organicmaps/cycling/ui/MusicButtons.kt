@@ -3,6 +3,7 @@ package app.organicmaps.cycling.ui
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import app.organicmaps.R
+import app.organicmaps.cycling.RideMode
 import app.organicmaps.cycling.media.MediaControlHub
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -27,6 +28,15 @@ object MusicButtons {
         if (previous == null || playPause == null || next == null) {
             return
         }
+
+        // Upstream keeps five controls on the map; three permanent buttons for a non-map function
+        // is exactly the clutter Organic Maps avoids. They appear with the rest of the ride
+        // instrumentation instead.
+        val container: View? = frame.findViewById(R.id.music_buttons_container)
+        RideMode.riding.observe(lifecycleOwner) { riding ->
+            container?.visibility = if (riding) View.VISIBLE else View.GONE
+        }
+        container?.visibility = if (RideMode.isRiding) View.VISIBLE else View.GONE
 
         val media = MediaControlHub.from(frame.context)
 

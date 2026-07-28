@@ -77,7 +77,13 @@ class CyclingController(
             insets
         }
 
+        // Upstream's map screen has five controls and no permanent readouts. Everything this fork
+        // adds is instrumentation, so it appears only while riding and the map is upstream's again
+        // the rest of the time.
+        RideMode.riding.observe(activity) { riding -> applyRideMode(riding) }
+
         sensors.snapshot.observe(activity) { snapshot -> bindSensors(snapshot) }
+        applyRideMode(RideMode.isRiding)
     }
 
     fun onStart() {
@@ -121,7 +127,11 @@ class CyclingController(
 
     /** Drives the live segment banner: name, elapsed so far, and the gap to your best. */
     private fun updateSegment(location: Location) {
-        val progress = segmentTracker?.onPosition(location.latitude, location.longitude, location.time)
+        val progress = if (RideMode.isRiding) {
+            segmentTracker?.onPosition(location.latitude, location.longitude, location.time)
+        } else {
+            null
+        }
         if (progress == null) {
             segmentBanner.visibility = View.GONE
             return
@@ -154,6 +164,17 @@ class CyclingController(
         return String.format(java.util.Locale.getDefault(), "%d:%02d", totalSeconds / 60, totalSeconds % 60)
     }
 
+    /** Shows or hides every cycling widget on the map in one place. */
+    private fun applyRideMode(riding: Boolean) {
+        val visibility = if (riding) View.VISIBLE else View.GONE
+        compass.visibility = visibility
+        // The tile column additionally hides itself when no sensor is reporting.
+        liveTiles.visibility = if (riding) liveTiles.visibility else View.GONE
+        if (!riding) {
+            segmentBanner.visibility = View.GONE
+        }
+    }
+
     private fun bindSensors(snapshot: SensorSnapshot) {
         // GPS speed by default, falling back to a wheel sensor only when GPS has produced nothing -
         // GPS is available everywhere, a sensor is not.
@@ -166,13 +187,10 @@ class CyclingController(
         liveHeartRate.value = snapshot.heartRateBpm?.toString()
         liveCadence.value = snapshot.cadenceRpm?.toString()
         livePower.value = snapshot.powerWatts?.toString()
-        liveTiles.visibility = if (snapshot.heartRateBpm != null || snapshot.cadenceRpm != null ||
+        val hasReading = snapshot.heartRateBpm != null ||
+            snapshot.cadenceRpm != null ||
             snapshot.powerWatts != null
-        ) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+        liveTiles.visibility = if (RideMode.isRiding && hasReading) View.VISIBLE else View.GONE
     }
 
     private companion object {

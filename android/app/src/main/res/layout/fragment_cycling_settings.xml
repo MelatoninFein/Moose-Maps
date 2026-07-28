@@ -13,6 +13,18 @@
     android:paddingTop="@dimen/margin_base"
     android:paddingBottom="@dimen/margin_base">
 
+    <!-- Rides and Segments live inside Cycling, so Settings carries one cycling entry rather than
+         four scattered through the general list. -->
+    <Button
+      android:id="@+id/cycling_open_rides"
+      style="@style/CyclingMediaAppButton"
+      android:text="@string/cycling_rides_title" />
+
+    <Button
+      android:id="@+id/cycling_open_segments"
+      style="@style/CyclingMediaAppButton"
+      android:text="@string/cycling_segments_title" />
+
     <androidx.appcompat.widget.SwitchCompat
       android:id="@+id/cycling_sensors_enabled"
       android:layout_width="match_parent"

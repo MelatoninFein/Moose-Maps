@@ -82,32 +82,35 @@
   <string name="cycling_segment_no_time">No time yet</string>
   <string name="cycling_segment_delete">Delete segment</string>
 
+  <string name="cycling_ride_start">Start ride</string>
+  <string name="cycling_ride_stop">Finish ride</string>
+
   <!-- Rides -->
   <string name="pref_rides_screen" translatable="false">RidesScreen</string>
   <string name="cycling_rides_title">Rides</string>
   <string name="cycling_rides_summary">Recorded rides, traces and segments</string>
   <string name="cycling_rides_detail_title">Ride</string>
-  <string name="cycling_rides_empty">No rides yet. Start track recording from the main menu and your ride will be logged here with sensor data.</string>
+  <string name="cycling_rides_empty">No rides yet. Choose Start ride from the main menu and everything you do is logged here with sensor data.</string>
   <string name="cycling_rides_unreadable">This ride could not be read.</string>
-  <string name="cycling_rides_distance">Distance: %1\</string>
-  <string name="cycling_rides_moving">Moving time: %1\</string>
-  <string name="cycling_rides_elapsed">Elapsed time: %1\</string>
-  <string name="cycling_rides_avg_speed">Average speed: %1\</string>
-  <string name="cycling_rides_max_speed">Max speed: %1\</string>
-  <string name="cycling_rides_avg_hr">Average heart rate: %1\ bpm</string>
-  <string name="cycling_rides_max_hr">Max heart rate: %1\ bpm</string>
-  <string name="cycling_rides_avg_cadence">Average cadence: %1\ rpm</string>
-  <string name="cycling_rides_avg_power">Average power: %1\ W</string>
-  <string name="cycling_rides_ascent">Ascent: %1\</string>
+  <string name="cycling_rides_distance">Distance: %1$s</string>
+  <string name="cycling_rides_moving">Moving time: %1$s</string>
+  <string name="cycling_rides_elapsed">Elapsed time: %1$s</string>
+  <string name="cycling_rides_avg_speed">Average speed: %1$s</string>
+  <string name="cycling_rides_max_speed">Max speed: %1$s</string>
+  <string name="cycling_rides_avg_hr">Average heart rate: %1$d bpm</string>
+  <string name="cycling_rides_max_hr">Max heart rate: %1$d bpm</string>
+  <string name="cycling_rides_avg_cadence">Average cadence: %1$d rpm</string>
+  <string name="cycling_rides_avg_power">Average power: %1$d W</string>
+  <string name="cycling_rides_ascent">Ascent: %1$s</string>
   <string name="cycling_segment_no_best">First run</string>
   <string name="cycling_segment_finished">%1$s finished: %2$s</string>
   <string name="cycling_segment_pb">%1$s — new best: %2$s</string>
   <string name="cycling_rides_export">Export as GPX</string>
   <string name="cycling_rides_export_failed">Could not write the GPX file.</string>
   <string name="cycling_segment_save">Save this route as a segment</string>
-  <string name="cycling_segment_default_name">Segment %1\</string>
-  <string name="cycling_segment_saved">Saved \"%1\\". Ride it again and your time will be compared.</string>
-  <string name="cycling_segment_saved_with_time">Saved \"%1\\". This ride: %2\.</string>
+  <string name="cycling_segment_default_name">Segment %1$s</string>
+  <string name="cycling_segment_saved">Saved %1$s. Ride it again and your time will be compared.</string>
+  <string name="cycling_segment_saved_with_time">Saved %1$s. This ride: %2$s.</string>
 
   <!-- Quick navigate -->
   <string name="cycling_spots_title">Navigate to</string>
