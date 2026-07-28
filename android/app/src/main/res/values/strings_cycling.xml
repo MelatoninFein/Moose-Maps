@@ -85,6 +85,8 @@
   <string name="cycling_rides_avg_cadence">Average cadence: %1\ rpm</string>
   <string name="cycling_rides_avg_power">Average power: %1\ W</string>
   <string name="cycling_rides_ascent">Ascent: %1\</string>
+  <string name="cycling_rides_export">Export as GPX</string>
+  <string name="cycling_rides_export_failed">Could not write the GPX file.</string>
   <string name="cycling_segment_save">Save this route as a segment</string>
   <string name="cycling_segment_default_name">Segment %1\</string>
   <string name="cycling_segment_saved">Saved \"%1\\". Ride it again and your time will be compared.</string>

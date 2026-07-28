@@ -1,17 +1,22 @@
 package app.organicmaps.cycling.rides
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.FileProvider
+import app.organicmaps.BuildConfig
 import androidx.core.view.ViewCompat
 import app.organicmaps.R
 import app.organicmaps.base.BaseMwmFragment
 import app.organicmaps.cycling.CyclingFormatter
 import app.organicmaps.util.WindowInsetUtils.ScrollableContentInsetsListener
 import java.io.File
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -61,6 +66,7 @@ class RideDetailFragment : BaseMwmFragment() {
             trace.metric = RideTraceView.Metric.HEART_RATE
         }
         view.findViewById<Button>(R.id.ride_save_segment).setOnClickListener { saveAsSegment(file) }
+        view.findViewById<Button>(R.id.ride_export_gpx).setOnClickListener { exportGpx(file) }
     }
 
     /** Re-derives samples through the recorder so the file format stays in one place. */
@@ -87,6 +93,35 @@ class RideDetailFragment : BaseMwmFragment() {
         ).joinToString("\n")
     }
 
+
+    /**
+     * Writes the ride as GPX and hands it to whatever the user wants to send it with.
+     *
+     * The file goes to the cache directory, which is already declared in the FileProvider paths,
+     * and is shared by content URI rather than file path - a file:// URI has been illegal to share
+     * since Android 7.
+     */
+    private fun exportGpx(rideFile: File) {
+        if (samples.isEmpty()) {
+            return
+        }
+        try {
+            val exportDir = File(requireContext().cacheDir, "exports").also { it.mkdirs() }
+            val name = rideFile.nameWithoutExtension
+            val gpxFile = File(exportDir, "$name.gpx")
+            gpxFile.writeText(GpxExporter.export(name, samples))
+
+            val uri = FileProvider.getUriForFile(requireContext(), BuildConfig.FILE_PROVIDER_AUTHORITY, gpxFile)
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/gpx+xml"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(intent, getString(R.string.cycling_rides_export)))
+        } catch (e: IOException) {
+            Toast.makeText(requireContext(), R.string.cycling_rides_export_failed, Toast.LENGTH_LONG).show()
+        }
+    }
     private fun saveAsSegment(rideFile: File) {
         if (samples.size < 2) {
             return
@@ -101,7 +136,7 @@ class RideDetailFragment : BaseMwmFragment() {
         } else {
             getString(R.string.cycling_segment_saved_with_time, name, formatDuration(best.elapsedMillis))
         }
-        android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     private fun formatDuration(millis: Long): String {

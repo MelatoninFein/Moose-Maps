@@ -43,6 +43,11 @@
       android:lineSpacingExtra="4dp"
       android:textAppearance="@style/MwmTextAppearance.Body3" />
     <Button
+      android:id="@+id/ride_export_gpx"
+      style="@style/CyclingMediaAppButton"
+      android:layout_marginTop="@dimen/margin_base"
+      android:text="@string/cycling_rides_export" />
+    <Button
       android:id="@+id/ride_save_segment"
       style="@style/CyclingMediaAppButton"
       android:layout_marginTop="@dimen/margin_base"
