@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Moose head silhouette for the launcher icon.
+
+  Hand-authored rather than traced from the supplied artwork, because that image only exists inside
+  the chat and never reached the filesystem. It is a close-enough stand-in, not a match: if the
+  original PNG is ever saved to disk it should replace this outright, which is a drop-in swap of
+  this one file plus the mipmap densities.
+
+  Drawn on the 108dp adaptive-icon canvas; the middle 72dp (roughly 18..90) is the guaranteed-safe
+  zone, so the silhouette stays inside it.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+  <!-- Left antler: palm with four points -->
+  <path
+      android:fillColor="#3B2418"
+      android:pathData="M44,44 C36,40 28,40 22,36 C17,33 14,28 16,25 C18,23 22,25 25,29 C23,24 22,19 25,18 C28,17 30,22 32,27 C32,21 34,17 37,18 C40,19 39,24 39,29 C41,25 44,22 46,24 C48,26 46,30 44,34 Z" />
+
+  <!-- Right antler: mirrored -->
+  <path
+      android:fillColor="#3B2418"
+      android:pathData="M64,44 C72,40 80,40 86,36 C91,33 94,28 92,25 C90,23 86,25 83,29 C85,24 86,19 83,18 C80,17 78,22 76,27 C76,21 74,17 71,18 C68,19 69,24 69,29 C67,25 64,22 62,24 C60,26 62,30 64,34 Z" />
+
+  <!-- Left ear -->
+  <path
+      android:fillColor="#3B2418"
+      android:pathData="M45,44 C41,40 38,36 39,33 C40,31 44,33 47,38 Z" />
+
+  <!-- Right ear -->
+  <path
+      android:fillColor="#3B2418"
+      android:pathData="M63,44 C67,40 70,36 69,33 C68,31 64,33 61,38 Z" />
+
+  <!-- Head and muzzle: broad skull tapering to a heavy nose, with a dewlap under the jaw -->
+  <path
+      android:fillColor="#3B2418"
+      android:pathData="M54,40 C62,40 68,45 69,53 C70,60 68,66 65,71 C63,75 61,79 60,83 C59,88 56,91 52,91 C48,91 45,88 44,84 C43,79 44,74 43,70 C41,65 39,59 40,52 C41,45 46,40 54,40 Z" />
+</vector>

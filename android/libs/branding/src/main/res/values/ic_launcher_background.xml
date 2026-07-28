@@ -2,5 +2,5 @@
 <resources>
     <!-- Distinct from Organic Maps' green (@color/logo) so the two apps are told apart at a
          glance on a launcher that has both installed. -->
-    <color name="ic_launcher_background">#0F4C81</color>
+    <color name="ic_launcher_background">#F5E6D3</color>
 </resources>
