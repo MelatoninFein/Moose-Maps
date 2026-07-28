@@ -13,7 +13,9 @@ dependencyResolutionManagement {
         maven { url = 'https://www.jitpack.io' } // MPAndroidChart
     }
 }
-rootProject.name = 'Organic Maps'
+// Also becomes the APK filename via base.archivesName in app/build.gradle, so this is the name
+// users see in their Downloads folder - it has to be the fork's, not upstream's.
+rootProject.name = 'OrganicBicycleMaps'
 
 include ':app'
 
