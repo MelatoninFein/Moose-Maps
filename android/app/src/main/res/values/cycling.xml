@@ -20,6 +20,9 @@
 
   <!-- Compass dial: legible over any map, in either theme. -->
   <color name="bg_compass">#CCFFFFFF</color>
+  <!-- Green when ahead of your best, red when behind. -->
+  <color name="segment_ahead">#2E7D32</color>
+  <color name="segment_behind">#C62828</color>
   <color name="fg_compass">#DE000000</color>
   <dimen name="cycling_compass_size">96dp</dimen>
   <dimen name="cycling_spots_max_height">420dp</dimen>

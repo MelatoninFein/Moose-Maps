@@ -49,6 +49,8 @@
       android:visibility="invisible" />
 
     <!-- Compass, top-right. Speed in the middle (GPS by default), waypoint dots on the rim. -->
+    <include layout="@layout/cycling_segment_banner" />
+
     <app.organicmaps.cycling.ui.CompassView
       android:id="@+id/cycling_compass"
       android:layout_width="@dimen/cycling_compass_size"

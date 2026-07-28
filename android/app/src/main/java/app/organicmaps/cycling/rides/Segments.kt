@@ -150,6 +150,23 @@ object SegmentMatcher {
         return visits
     }
 
+    /**
+     * Elapsed milliseconds at each segment point during [slice], for storing as a best.
+     *
+     * Each point takes the time of the sample that came closest to it, which is the nearest thing
+     * to "when you were there" that a one-second GPS trace can offer.
+     */
+    fun splitsFor(segment: Segment, slice: List<RideSample>): List<Long> {
+        if (slice.isEmpty()) {
+            return emptyList()
+        }
+        val startMs = slice.first().timestampMs
+        return segment.points.map { point ->
+            val closest = slice.minByOrNull { distanceTo(it, point) } ?: slice.first()
+            closest.timestampMs - startMs
+        }
+    }
+
     /** Builds a segment from part of a ride - the usual way one gets created. */
     fun fromRide(id: String, name: String, samples: List<RideSample>): Segment =
         Segment(id, name, samples.map { SegmentPoint(it.latitude, it.longitude) })

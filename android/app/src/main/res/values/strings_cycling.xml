@@ -85,6 +85,9 @@
   <string name="cycling_rides_avg_cadence">Average cadence: %1\ rpm</string>
   <string name="cycling_rides_avg_power">Average power: %1\ W</string>
   <string name="cycling_rides_ascent">Ascent: %1\</string>
+  <string name="cycling_segment_no_best">First run</string>
+  <string name="cycling_segment_finished">%1$s finished: %2$s</string>
+  <string name="cycling_segment_pb">%1$s — new best: %2$s</string>
   <string name="cycling_rides_export">Export as GPX</string>
   <string name="cycling_rides_export_failed">Could not write the GPX file.</string>
   <string name="cycling_segment_save">Save this route as a segment</string>

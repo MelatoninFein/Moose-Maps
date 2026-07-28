@@ -60,6 +60,7 @@ class RideRecorder private constructor(context: Context) : LocationListener {
             return null
         }
         writeSummary(file, summary)
+        recordSegmentBests(readSamples(file))
         return summary
     }
 
@@ -93,6 +94,33 @@ class RideRecorder private constructor(context: Context) : LocationListener {
         } catch (e: java.io.IOException) {
             // Losing a sample is survivable; crashing mid-ride is not.
             Logger.w(TAG, "Could not append ride sample: ${e.message}")
+        }
+    }
+
+    /**
+     * Checks the finished ride against every saved segment and stores any personal best.
+     *
+     * Without this the live delta would read "first run" forever: something has to turn a completed
+     * attempt into the splits that the next attempt is measured against.
+     */
+    private fun recordSegmentBests(samples: List<RideSample>) {
+        if (samples.size < 2) {
+            return
+        }
+        val bestStore = SegmentBestStore(appContext)
+        SegmentStore(appContext).list().forEach { segment ->
+            val attempt = SegmentMatcher.bestAttempt(segment, samples) ?: return@forEach
+            val slice = samples.sortedBy { it.timestampMs }
+                .filter { it.timestampMs in attempt.startedAtMs..(attempt.startedAtMs + attempt.elapsedMillis) }
+            val best = SegmentBest(
+                segmentId = segment.id,
+                totalMillis = attempt.elapsedMillis,
+                splitsMillis = SegmentMatcher.splitsFor(segment, slice),
+                achievedAtMs = attempt.startedAtMs,
+            )
+            if (bestStore.saveIfFaster(best)) {
+                Logger.i(TAG, "New best on ${segment.name}: ${attempt.elapsedMillis} ms")
+            }
         }
     }
 

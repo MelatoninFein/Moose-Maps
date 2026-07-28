@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Live segment readout. Top-centre, under the compass row, and only visible while actually on a
+  segment - a permanent widget for something that applies a few minutes per ride is wasted map.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/cycling_segment_banner"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_alignParentTop="true"
+  android:layout_centerHorizontal="true"
+  android:background="@drawable/cycling_panel_bg"
+  android:gravity="center"
+  android:orientation="vertical"
+  android:paddingStart="@dimen/margin_base"
+  android:paddingTop="@dimen/margin_half"
+  android:paddingEnd="@dimen/margin_base"
+  android:paddingBottom="@dimen/margin_half"
+  android:visibility="gone"
+  tools:visibility="visible">
+  <TextView
+    android:id="@+id/segment_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:lines="1"
+    android:textAppearance="@style/MwmTextAppearance.Body4"
+    tools:text="Höllviken runt" />
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+    <TextView
+      android:id="@+id/segment_elapsed"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="@style/MwmTextAppearance.Body2"
+      tools:text="4:32" />
+    <TextView
+      android:id="@+id/segment_delta"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/margin_half"
+      android:textAppearance="@style/MwmTextAppearance.Body2"
+      tools:text="+4s" />
+  </LinearLayout>
+</LinearLayout>
