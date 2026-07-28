@@ -38,11 +38,36 @@ class RidesFragment : BaseMwmFragment() {
         }
         empty.visibility = View.GONE
 
+        view.findViewById<TextView>(R.id.records_title).visibility = View.VISIBLE
+        view.findViewById<TextView>(R.id.records_body).apply {
+            visibility = View.VISIBLE
+            text = buildRecords(recorder, rides)
+        }
+
         rides.forEach { file ->
             // Summaries are cheap to recompute and always correct, even if a ride was cut short by
             // the process dying mid-recording and never got its summary file written.
             val summary = recorder.summaryOf(file) ?: return@forEach
             list.addView(createRow(list, file.name, summary))
+        }
+    }
+
+    /**
+     * Fastest ever over each tracked distance, across every ride.
+     *
+     * Computed on open rather than stored: it has to be re-derived whenever a ride is added or
+     * removed anyway, and a rider has tens of rides, not thousands.
+     */
+    private fun buildRecords(recorder: RideRecorder, rides: List<java.io.File>): String {
+        val bests = PersonalRecords.TRACKED_DISTANCES.associateWith { distance ->
+            rides.mapNotNull { PersonalRecords.fastestOverDistance(recorder.samplesOf(it), distance) }.minOrNull()
+        }.filterValues { it != null }
+
+        if (bests.isEmpty()) {
+            return getString(R.string.cycling_records_none)
+        }
+        return bests.entries.joinToString("\n") { (distance, millis) ->
+            "${CyclingFormatter.distanceText(distance)}   ${formatDuration(millis!!)}"
         }
     }
 

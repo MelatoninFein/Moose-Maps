@@ -68,6 +68,12 @@
   <string name="cycling_music_access_granted">Track names and artwork are shown on the map.</string>
   <string name="cycling_music_access_missing">Playback controls already work. Grant notification access to also see track names and artwork.</string>
 
+  <string name="cycling_max_hr_title">Maximum heart rate</string>
+  <string name="cycling_max_hr_summary">Used to work out training zones. Roughly 220 minus your age, though a measured figure is far better.</string>
+  <string name="cycling_zones_title">Time in zones</string>
+  <string name="cycling_records_title">Personal records</string>
+  <string name="cycling_records_none">Ride further than 5 km and your records will appear here.</string>
+
   <!-- Rides -->
   <string name="pref_rides_screen" translatable="false">RidesScreen</string>
   <string name="cycling_rides_title">Rides</string>

@@ -36,6 +36,17 @@ class SensorStore(context: Context) {
         get() = prefs.getBoolean(KEY_OVERLAY, true)
         set(value) = prefs.edit().putBoolean(KEY_OVERLAY, value).apply()
 
+    /**
+     * Maximum heart rate, used to place readings into training zones. Defaults to a rough adult
+     * figure; the zones mean little until the rider replaces it with their own.
+     */
+    var maxHeartRateBpm: Int
+        get() = prefs.getInt(KEY_MAX_HR, DEFAULT_MAX_HEART_RATE_BPM)
+        set(value) {
+            val clamped = value.coerceIn(MIN_MAX_HEART_RATE_BPM, MAX_MAX_HEART_RATE_BPM)
+            prefs.edit().putInt(KEY_MAX_HR, clamped).apply()
+        }
+
     fun loadPairedSensors(): List<PairedSensor> {
         val raw = prefs.getString(KEY_SENSORS, null) ?: return emptyList()
         return try {
@@ -82,6 +93,7 @@ class SensorStore(context: Context) {
         private const val KEY_WHEEL_CIRCUMFERENCE = "wheel_circumference_mm"
         private const val KEY_ENABLED = "enabled"
         private const val KEY_OVERLAY = "overlay_visible"
+        private const val KEY_MAX_HR = "max_heart_rate_bpm"
 
         private const val FIELD_ADDRESS = "address"
         private const val FIELD_NAME = "name"
@@ -92,5 +104,9 @@ class SensorStore(context: Context) {
 
         const val MIN_CIRCUMFERENCE_MM = 800
         const val MAX_CIRCUMFERENCE_MM = 2500
+
+        const val DEFAULT_MAX_HEART_RATE_BPM = 190
+        const val MIN_MAX_HEART_RATE_BPM = 120
+        const val MAX_MAX_HEART_RATE_BPM = 230
     }
 }

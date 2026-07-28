@@ -18,6 +18,27 @@
       android:text="@string/cycling_rides_empty"
       android:textAppearance="@style/MwmTextAppearance.Body4"
       android:visibility="gone" />
+    <TextView
+      android:id="@+id/records_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:text="@string/cycling_records_title"
+      android:textAppearance="@style/MwmTextAppearance.Body2"
+      android:visibility="gone" />
+
+    <TextView
+      android:id="@+id/records_body"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:lineSpacingExtra="4dp"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:paddingBottom="@dimen/margin_base"
+      android:textAppearance="@style/MwmTextAppearance.Body3"
+      android:visibility="gone" />
+
     <LinearLayout
       android:id="@+id/rides_list"
       android:layout_width="match_parent"

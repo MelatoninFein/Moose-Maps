@@ -59,6 +59,41 @@
         tools:text="2105" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingTop="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:text="@string/cycling_max_hr_title"
+      android:textAppearance="@style/MwmTextAppearance.Body2" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:paddingBottom="@dimen/margin_half"
+      android:text="@string/cycling_max_hr_summary"
+      android:textAppearance="@style/MwmTextAppearance.Body4" />
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/cycling_max_hr_input"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/margin_base"
+      android:layout_marginEnd="@dimen/margin_base"
+      app:suffixText="@string/cycling_unit_bpm">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/cycling_max_hr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="3" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <!-- Sensors -->
     <TextView
       android:layout_width="match_parent"

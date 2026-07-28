@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import app.organicmaps.R
 import app.organicmaps.base.BaseMwmFragment
 import app.organicmaps.cycling.CyclingFormatter
+import app.organicmaps.cycling.sensors.SensorHub
 import app.organicmaps.util.WindowInsetUtils.ScrollableContentInsetsListener
 import java.io.File
 import java.io.IOException
@@ -57,7 +58,7 @@ class RideDetailFragment : BaseMwmFragment() {
 
         empty.visibility = View.GONE
         trace.samples = samples
-        stats.text = buildStats(summary)
+        stats.text = buildStats(summary) + buildZones()
 
         view.findViewById<Button>(R.id.ride_metric_speed).setOnClickListener {
             trace.metric = RideTraceView.Metric.SPEED
@@ -122,6 +123,23 @@ class RideDetailFragment : BaseMwmFragment() {
             Toast.makeText(requireContext(), R.string.cycling_rides_export_failed, Toast.LENGTH_LONG).show()
         }
     }
+    /**
+     * Time in each heart-rate zone, shown only when the ride actually has heart-rate data - an
+     * all-zero table on a ride with no strap is noise.
+     */
+    private fun buildZones(): String {
+        val maxHr = SensorHub.from(requireContext()).store.maxHeartRateBpm
+        val zones = HeartRateZones.timeInZones(samples, maxHr)
+        if (zones.values.all { it == 0L }) {
+            return ""
+        }
+        val lines = HeartRateZone.entries.map { zone ->
+            val millis = zones[zone] ?: 0L
+            "${zone.name}  ${zone.lowerBpm(maxHr)}-${zone.upperBpm(maxHr)} bpm   ${formatDuration(millis)}"
+        }
+        return "\n\n" + getString(R.string.cycling_zones_title) + "\n" + lines.joinToString("\n")
+    }
+
     private fun saveAsSegment(rideFile: File) {
         if (samples.size < 2) {
             return

@@ -45,6 +45,7 @@ class CyclingSettingsFragment : BaseMwmFragment() {
     private lateinit var sensorsSwitch: SwitchCompat
     private lateinit var wheelInputLayout: TextInputLayout
     private lateinit var wheelField: TextInputEditText
+    private lateinit var maxHeartRateField: TextInputEditText
     private lateinit var pairedList: LinearLayout
     private lateinit var pairedEmpty: TextView
     private lateinit var discoveredList: LinearLayout
@@ -95,6 +96,7 @@ class CyclingSettingsFragment : BaseMwmFragment() {
         sensorsSwitch = view.findViewById(R.id.cycling_sensors_enabled)
         wheelInputLayout = view.findViewById(R.id.cycling_wheel_input)
         wheelField = view.findViewById(R.id.cycling_wheel_circumference)
+        maxHeartRateField = view.findViewById(R.id.cycling_max_hr)
         pairedList = view.findViewById(R.id.cycling_paired_list)
         pairedEmpty = view.findViewById(R.id.cycling_paired_empty)
         discoveredList = view.findViewById(R.id.cycling_discovered_list)
@@ -103,6 +105,7 @@ class CyclingSettingsFragment : BaseMwmFragment() {
 
         sensorsSwitch.isChecked = store.isEnabled
         wheelField.setText(store.wheelCircumferenceMm.toString())
+        maxHeartRateField.setText(store.maxHeartRateBpm.toString())
 
         sensorsSwitch.setOnCheckedChangeListener { _, isChecked -> onSensorsToggled(isChecked) }
         scanButton.setOnClickListener { onScanClicked() }
@@ -113,6 +116,7 @@ class CyclingSettingsFragment : BaseMwmFragment() {
     override fun onPause() {
         hub.stopScan()
         applyWheelCircumference()
+        applyMaxHeartRate()
         super.onPause()
     }
 
@@ -152,10 +156,23 @@ class CyclingSettingsFragment : BaseMwmFragment() {
                 SensorStore.MAX_CIRCUMFERENCE_MM,
             )
             wheelField.setText(store.wheelCircumferenceMm.toString())
+        maxHeartRateField.setText(store.maxHeartRateBpm.toString())
             return
         }
         wheelInputLayout.error = null
         store.wheelCircumferenceMm = entered
+    }
+
+    /** An out-of-range entry reverts rather than saving: a wrong max makes every zone wrong. */
+    private fun applyMaxHeartRate() {
+        val entered = maxHeartRateField.text?.toString()?.toIntOrNull()
+        if (entered == null ||
+            entered !in SensorStore.MIN_MAX_HEART_RATE_BPM..SensorStore.MAX_MAX_HEART_RATE_BPM
+        ) {
+            maxHeartRateField.setText(store.maxHeartRateBpm.toString())
+            return
+        }
+        store.maxHeartRateBpm = entered
     }
 
     private fun onScanClicked() {
