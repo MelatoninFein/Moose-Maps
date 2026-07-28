@@ -31,6 +31,10 @@ class RideDetailFragment : BaseMwmFragment() {
     private lateinit var trace: RideTraceView
     private var samples: List<RideSample> = emptyList()
 
+    /** Fractions of the ride the segment should span, as set by the trim slider. */
+    private var trimStart = 0f
+    private var trimEnd = 100f
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_ride_detail, container, false)
 
@@ -70,6 +74,18 @@ class RideDetailFragment : BaseMwmFragment() {
         }
         view.findViewById<Button>(R.id.ride_save_segment).setOnClickListener { saveAsSegment(file) }
         view.findViewById<Button>(R.id.ride_export_gpx).setOnClickListener { exportGpx(file) }
+
+        val trim: com.google.android.material.slider.RangeSlider = view.findViewById(R.id.ride_trim)
+        val trimLabel: TextView = view.findViewById(R.id.ride_trim_label)
+        trim.values = listOf(0f, 100f)
+        updateTrimLabel(trimLabel)
+        trim.addOnChangeListener { slider, _, _ ->
+            trimStart = slider.values.first()
+            trimEnd = slider.values.last()
+            // Redraw the trace so the chosen stretch is visible rather than guessed at.
+            trace.samples = trimmedSamples()
+            updateTrimLabel(trimLabel)
+        }
     }
 
     /** Re-derives samples through the recorder so the file format stays in one place. */
@@ -167,11 +183,32 @@ class RideDetailFragment : BaseMwmFragment() {
             .show()
     }
 
+    /**
+     * The stretch of the ride the segment covers.
+     *
+     * Sliced by sample index rather than by distance: samples are one second apart, so index is a
+     * good proxy for progress and avoids recomputing cumulative distance on every slider tick.
+     */
+    private fun trimmedSamples(): List<RideSample> {
+        if (samples.isEmpty()) {
+            return samples
+        }
+        val from = (samples.size * trimStart / 100f).toInt().coerceIn(0, samples.lastIndex)
+        val to = (samples.size * trimEnd / 100f).toInt().coerceIn(from + 1, samples.size)
+        return samples.subList(from, to)
+    }
+
+    private fun updateTrimLabel(label: TextView) {
+        val slice = trimmedSamples()
+        val distance = RideStatistics.summarise(slice)?.distanceMetres ?: 0.0
+        label.text = getString(R.string.cycling_segment_trim, CyclingFormatter.distanceText(distance))
+    }
+
     private fun saveSegmentNamed(rideFile: File, name: String) {
-        val segment = SegmentMatcher.fromRide(rideFile.nameWithoutExtension, name, samples)
+        val segment = SegmentMatcher.fromRide(rideFile.nameWithoutExtension, name, trimmedSamples())
         SegmentStore(requireContext()).save(segment)
 
-        val best = SegmentMatcher.bestAttempt(segment, samples)
+        val best = SegmentMatcher.bestAttempt(segment, trimmedSamples())
         val message = if (best == null) {
             getString(R.string.cycling_segment_saved, name)
         } else {

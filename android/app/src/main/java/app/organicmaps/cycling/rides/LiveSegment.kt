@@ -100,6 +100,22 @@ class LiveSegmentTracker(
         return progress
     }
 
+    /**
+     * The nearest segment start within [radiusMetres], and how far away it is, when not already on
+     * a segment. Lets a rider wind up rather than meeting the line by surprise.
+     */
+    fun approachingSegment(latitude: Double, longitude: Double, radiusMetres: Double): Pair<Segment, Int>? {
+        if (active != null) {
+            return null
+        }
+        return segments
+            .filter { it.points.isNotEmpty() }
+            .map { it to distanceTo(latitude, longitude, it.points.first()) }
+            .filter { it.second in SegmentMatcher.GATE_RADIUS_M..radiusMetres }
+            .minByOrNull { it.second }
+            ?.let { (segment, distance) -> segment to distance.toInt() }
+    }
+
     /** Abandons the current attempt, for when a ride ends part-way round. */
     fun reset() {
         active = null

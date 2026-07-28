@@ -82,6 +82,8 @@
   <string name="cycling_segment_no_time">No time yet</string>
   <string name="cycling_segment_delete">Delete segment</string>
 
+  <!-- %1$s is the length of the selected stretch of the ride. -->
+  <string name="cycling_segment_trim">Segment covers %1$s of this ride</string>
   <string name="cycling_segment_name_title">Name this segment</string>
   <string name="cycling_segment_name_hint">Höllviken runt</string>
   <string name="cycling_segment_top_all_time">Top 10 all-time</string>

@@ -17,6 +17,7 @@ import app.organicmaps.cycling.sensors.SensorService
 import app.organicmaps.cycling.sensors.SensorSnapshot
 import app.organicmaps.cycling.rides.LiveSegmentProgress
 import app.organicmaps.cycling.rides.LiveSegmentTracker
+import app.organicmaps.cycling.rides.SegmentVoice
 import app.organicmaps.cycling.rides.SegmentBestStore
 import app.organicmaps.cycling.rides.SegmentStore
 import app.organicmaps.cycling.ui.CompassView
@@ -59,6 +60,10 @@ class CyclingController(
      */
     private var segmentTracker: LiveSegmentTracker? = null
 
+    /** Created lazily: starting a TTS engine for someone who never rides is wasted work. */
+    private var segmentVoice: SegmentVoice? = null
+    private var lastSegmentName: String? = null
+
     /** Last speed reported by GPS, in m/s. Null until the first fix with a speed. */
     private var gpsSpeedMps: Double? = null
 
@@ -99,9 +104,14 @@ class CyclingController(
         val segments = SegmentStore(activity).list()
         val bests = SegmentBestStore(activity).loadAll(segments.map { it.id })
         segmentTracker = LiveSegmentTracker(segments, bests)
+        if (segments.isNotEmpty() && segmentVoice == null) {
+            segmentVoice = SegmentVoice(activity)
+        }
     }
 
     fun onStop() {
+        segmentVoice?.shutdown()
+        segmentVoice = null
         MwmApplication.from(activity).getLocationHelper().removeListener(this)
         MwmApplication.from(activity).getSensorHelper().removeListener(this)
     }
@@ -134,8 +144,21 @@ class CyclingController(
         }
         if (progress == null) {
             segmentBanner.visibility = View.GONE
+            lastSegmentName = null
+            // Not on a segment: warn if one is coming up, so the rider can wind up for it.
+            if (RideMode.isRiding) {
+                segmentTracker
+                    ?.approachingSegment(location.latitude, location.longitude, APPROACH_WARNING_M)
+                    ?.let { (segment, metres) -> segmentVoice?.announceApproach(segment.name, metres) }
+            }
             return
         }
+
+        if (progress.segmentName != lastSegmentName) {
+            lastSegmentName = progress.segmentName
+            segmentVoice?.onSegmentStarted(progress.segmentName)
+        }
+        segmentVoice?.announceDelta(progress.deltaMillis, location.time)
 
         segmentBanner.visibility = View.VISIBLE
         segmentName.text = progress.segmentName
@@ -154,6 +177,12 @@ class CyclingController(
         }
 
         if (progress.finished) {
+            segmentVoice?.onSegmentFinished(
+                progress.segmentName,
+                progress.elapsedMillis,
+                (progress.deltaMillis ?: 0L) < 0L,
+            )
+            lastSegmentName = null
             // Leave the final time up briefly rather than snapping away at the line.
             segmentBanner.postDelayed({ segmentBanner.visibility = View.GONE }, FINISH_LINGER_MS)
         }
@@ -195,5 +224,8 @@ class CyclingController(
 
     private companion object {
         const val FINISH_LINGER_MS = 8_000L
+
+        /** Far enough out to accelerate into the line, close enough not to be premature. */
+        const val APPROACH_WARNING_M = 300.0
     }
 }

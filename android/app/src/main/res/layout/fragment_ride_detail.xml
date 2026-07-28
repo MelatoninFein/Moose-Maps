@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/ride_detail_root"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
@@ -47,6 +48,22 @@
       style="@style/CyclingMediaAppButton"
       android:layout_marginTop="@dimen/margin_base"
       android:text="@string/cycling_rides_export" />
+    <!-- Segment trimming: pick a stretch inside the ride rather than saving the whole outing. -->
+    <TextView
+      android:id="@+id/ride_trim_label"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_base"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      tools:text="Segment: 2.1 km to 6.4 km" />
+
+    <com.google.android.material.slider.RangeSlider
+      android:id="@+id/ride_trim"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:valueFrom="0"
+      android:valueTo="100" />
+
     <Button
       android:id="@+id/ride_save_segment"
       style="@style/CyclingMediaAppButton"
