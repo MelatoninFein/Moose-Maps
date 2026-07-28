@@ -23,5 +23,16 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical" />
+
+    <!-- Shown even with no segments: a rider's first one often arrives from a friend, which is
+         exactly when the list is empty. -->
+    <Button
+      android:id="@+id/segments_import"
+      style="@style/CyclingMediaAppButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/margin_base"
+      android:layout_marginTop="@dimen/margin_base"
+      android:text="@string/cycling_segment_import" />
   </LinearLayout>
 </ScrollView>

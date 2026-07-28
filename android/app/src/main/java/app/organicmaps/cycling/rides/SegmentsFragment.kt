@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.content.Intent
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import app.organicmaps.BuildConfig
@@ -29,13 +30,55 @@ import java.util.concurrent.TimeUnit
  */
 class SegmentsFragment : BaseMwmFragment() {
 
+    /**
+     * Registered as a field so it exists before the fragment starts, which the result API requires.
+     *
+     * Any file type is offered rather than JSON only: a segment arrives through mail, chat or a
+     * download and picks up whatever type that app assigned, so filtering hides the very file the
+     * rider is trying to open. The content is validated instead.
+     */
+    private val importPicker = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        uri?.let { importFrom(it) }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_segments, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ViewCompat.setOnApplyWindowInsetsListener(view, ScrollableContentInsetsListener(view))
+        view.findViewById<View>(R.id.segments_import).setOnClickListener {
+            importPicker.launch(arrayOf("*/*"))
+        }
         render(view)
+    }
+
+    /** Reads a shared segment file and adds it to the list. */
+    private fun importFrom(uri: android.net.Uri) {
+        val text = try {
+            requireContext().contentResolver.openInputStream(uri)?.use { stream ->
+                // A segment is a few kilobytes; the cap stops a wrong pick from loading a video
+                // into memory.
+                String(stream.readBytes().take(MAX_IMPORT_BYTES).toByteArray())
+            }
+        } catch (e: Exception) {
+            null
+        }
+
+        val store = SegmentStore(requireContext())
+        val parsed = text?.let { store.fromJson(it, getString(R.string.cycling_segment_imported_name)) }
+        if (parsed == null) {
+            Toast.makeText(requireContext(), R.string.cycling_segment_import_failed, Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val stored = store.importSegment(parsed)
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.cycling_segment_imported, stored.name),
+            Toast.LENGTH_LONG,
+        ).show()
+        render(requireView())
     }
 
     private fun render(root: View) {
@@ -174,5 +217,9 @@ class SegmentsFragment : BaseMwmFragment() {
         val minutes = TimeUnit.MILLISECONDS.toMinutes(millis)
         val seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % 60
         return "${minutes}m ${seconds}s"
+    }
+
+    private companion object {
+        const val MAX_IMPORT_BYTES = 2 * 1024 * 1024
     }
 }

@@ -91,6 +91,11 @@
   <string name="cycling_segment_share">Share segment</string>
   <string name="cycling_segment_share_failed">Could not write the segment file.</string>
   <string name="cycling_segment_delete">Delete segment</string>
+  <string name="cycling_segment_import">Import a segment</string>
+  <string name="cycling_segment_import_failed">That file is not a segment.</string>
+  <!-- %1$s is the segment name. -->
+  <string name="cycling_segment_imported">Imported %1$s. Ride it and your time is recorded.</string>
+  <string name="cycling_segment_imported_name">Imported segment</string>
 
   <!-- %1$s is the length of the selected stretch of the ride. -->
   <string name="cycling_segment_trim">Segment covers %1$s of this ride</string>

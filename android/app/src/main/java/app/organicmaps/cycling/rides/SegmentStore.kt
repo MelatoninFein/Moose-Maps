@@ -39,6 +39,50 @@ class SegmentStore(context: Context) {
         )
     }
 
+    /**
+     * Reads a segment someone sent you. Returns null if the file is not one of ours.
+     *
+     * Sharing was one-way until now: a segment could be sent but never received, so two riders
+     * could not actually end up racing the same stretch. The parse is deliberately forgiving about
+     * everything except the points - a course with fewer than two of them describes nothing.
+     */
+    fun fromJson(text: String, fallbackName: String): Segment? = try {
+        val json = JSONObject(text)
+        val points = json.optJSONArray("points")
+        val parsed = (0 until (points?.length() ?: 0)).mapNotNull { index ->
+            points?.optJSONObject(index)?.let { SegmentPoint(it.getDouble("lat"), it.getDouble("lon")) }
+        }
+        if (parsed.size < 2) {
+            null
+        } else {
+            Segment(
+                id = json.optString("id").ifBlank { freshId() },
+                name = json.optString("name").ifBlank { fallbackName },
+                points = parsed,
+            )
+        }
+    } catch (e: Exception) {
+        // Anything unparseable is simply "not a segment". The caller tells the rider, which is a
+        // better signal than a log line, and keeping this free of Android types makes it testable.
+        null
+    }
+
+    /**
+     * Saves an imported segment without ever overwriting one you already have.
+     *
+     * A shared file carries the sender's id, which can collide with a segment of your own. Silently
+     * overwriting would take a season of recorded attempts with it, so a colliding import is stored
+     * under a fresh id: a duplicate row is visible and deletable, lost history is not.
+     */
+    fun importSegment(segment: Segment): Segment {
+        val taken = list().map { it.id }.toSet()
+        val stored = if (segment.id in taken) segment.copy(id = freshId()) else segment
+        save(stored)
+        return stored
+    }
+
+    private fun freshId() = "imported-${System.currentTimeMillis()}"
+
     fun save(segment: Segment) {
         directory.mkdirs()
         val json = buildJson(segment)
