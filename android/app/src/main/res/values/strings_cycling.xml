@@ -44,6 +44,9 @@
   <string name="cycling_wheel_circumference_error">Enter a value between %1$d and %2$d mm.</string>
 
   <!-- Metric names -->
+  <string name="cycling_metric_distance">distance</string>
+  <string name="cycling_metric_moving">moving</string>
+  <string name="cycling_metric_ascent">ascent</string>
   <string name="cycling_metric_heart_rate">Heart rate</string>
   <string name="cycling_metric_cadence">Cadence</string>
   <string name="cycling_metric_speed">Speed</string>
@@ -80,6 +83,8 @@
   <string name="cycling_segments_empty">No segments yet. Open a ride and save it as a segment, then your time is compared every time you ride it.</string>
   <string name="cycling_segment_best">Best %1$s</string>
   <string name="cycling_segment_no_time">No time yet</string>
+  <string name="cycling_segment_share">Share segment</string>
+  <string name="cycling_segment_share_failed">Could not write the segment file.</string>
   <string name="cycling_segment_delete">Delete segment</string>
 
   <!-- %1$s is the length of the selected stretch of the ride. -->

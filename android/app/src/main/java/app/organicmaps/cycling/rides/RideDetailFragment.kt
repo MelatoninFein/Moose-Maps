@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -64,7 +65,20 @@ class RideDetailFragment : BaseMwmFragment() {
 
         empty.visibility = View.GONE
         trace.samples = samples
-        stats.text = buildStats(summary) + buildZones()
+        // Headline figures as tiles; the long tail stays as text below the chart.
+        buildStatGrid(view.findViewById(R.id.ride_stats_grid), summary)
+        stats.text = buildZones().trimStart()
+
+        val chart: RideChartView = view.findViewById(R.id.ride_chart)
+        chart.samples = samples
+        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_hr)
+            .setOnCheckedChangeListener { _, checked -> chart.showHeartRate = checked }
+        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_speed)
+            .setOnCheckedChangeListener { _, checked -> chart.showSpeed = checked }
+        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_cadence)
+            .setOnCheckedChangeListener { _, checked -> chart.showCadence = checked }
+        view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_power)
+            .setOnCheckedChangeListener { _, checked -> chart.showPower = checked }
 
         view.findViewById<Button>(R.id.ride_metric_speed).setOnClickListener {
             trace.metric = RideTraceView.Metric.SPEED
@@ -91,6 +105,47 @@ class RideDetailFragment : BaseMwmFragment() {
     /** Re-derives samples through the recorder so the file format stays in one place. */
     private fun readSamples(recorder: RideRecorder, file: File): List<RideSample> =
         recorder.samplesOf(file)
+
+    /**
+     * The figures a rider looks for first, as tiles in rows of three.
+     *
+     * Only what is actually present: a ride with no power meter should not show an empty watts
+     * tile, and the grid closes up around what is missing.
+     */
+    private fun buildStatGrid(grid: LinearLayout, summary: RideSummary) {
+        grid.removeAllViews()
+        val speedUnit = CyclingFormatter.speedUnit(requireContext())
+        val tiles = buildList {
+            add(CyclingFormatter.distanceText(summary.distanceMetres) to getString(R.string.cycling_metric_distance))
+            add(formatDuration(summary.movingMillis) to getString(R.string.cycling_metric_moving))
+            summary.averageSpeedMps?.let { add(CyclingFormatter.speedValue(it) to speedUnit) }
+            summary.averageHeartRateBpm?.let { add("$it" to getString(R.string.cycling_unit_bpm)) }
+            summary.averageCadenceRpm?.let { add("$it" to getString(R.string.cycling_unit_rpm)) }
+            summary.averagePowerWatts?.let { add("$it" to getString(R.string.cycling_unit_watts)) }
+            add(CyclingFormatter.distanceText(summary.ascentMetres) to getString(R.string.cycling_metric_ascent))
+        }
+
+        tiles.chunked(TILES_PER_ROW).forEach { rowTiles ->
+            val row = LinearLayout(requireContext()).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                )
+                orientation = LinearLayout.HORIZONTAL
+            }
+            rowTiles.forEach { (value, label) ->
+                val tile = layoutInflater.inflate(R.layout.item_ride_stat, row, false)
+                tile.findViewById<TextView>(R.id.stat_value).text = value
+                tile.findViewById<TextView>(R.id.stat_label).text = label
+                row.addView(tile)
+            }
+            // Pad a short final row so its tiles keep the same width as the rows above.
+            repeat(TILES_PER_ROW - rowTiles.size) {
+                row.addView(View(requireContext()), LinearLayout.LayoutParams(0, 1, 1f))
+            }
+            grid.addView(row)
+        }
+    }
 
     private fun buildStats(summary: RideSummary): String {
         val speedUnit = CyclingFormatter.speedUnit(requireContext())
@@ -226,5 +281,8 @@ class RideDetailFragment : BaseMwmFragment() {
 
     companion object {
         const val EXTRA_FILE_NAME = "ride_file_name"
+
+        /** Three tiles read comfortably on a phone; four starts truncating the numbers. */
+        private const val TILES_PER_ROW = 3
     }
 }

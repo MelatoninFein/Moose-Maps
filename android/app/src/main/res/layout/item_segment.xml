@@ -45,6 +45,16 @@
       tools:visibility="visible" />
   </LinearLayout>
   <ImageView
+    android:id="@+id/segment_row_share"
+    android:layout_width="@dimen/cycling_icon_size"
+    android:layout_height="@dimen/cycling_icon_size"
+    android:layout_marginEnd="@dimen/margin_base"
+    android:background="?selectableItemBackgroundBorderless"
+    android:contentDescription="@string/cycling_segment_share"
+    app:srcCompat="@drawable/ic_share"
+    app:tint="?iconTint" />
+
+  <ImageView
     android:id="@+id/segment_row_delete"
     android:layout_width="@dimen/cycling_icon_size"
     android:layout_height="@dimen/cycling_icon_size"

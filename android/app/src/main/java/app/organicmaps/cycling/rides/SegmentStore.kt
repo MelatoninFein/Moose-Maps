@@ -18,20 +18,30 @@ class SegmentStore(context: Context) {
 
     private val directory = File(context.applicationContext.filesDir, "segments")
 
+    /**
+     * The stored representation, also used when sharing a segment with another rider.
+     *
+     * Two people comparing times needs no server if they can exchange the course itself: the
+     * receiver rides the same start and end, so the times mean the same thing.
+     */
+    fun toJson(segment: Segment): String = buildJson(segment).toString()
+
+    private fun buildJson(segment: Segment) = JSONObject().apply {
+        put("id", segment.id)
+        put("name", segment.name)
+        put(
+            "points",
+            JSONArray().apply {
+                segment.points.forEach { point ->
+                    put(JSONObject().apply { put("lat", point.latitude); put("lon", point.longitude) })
+                }
+            },
+        )
+    }
+
     fun save(segment: Segment) {
         directory.mkdirs()
-        val json = JSONObject().apply {
-            put("id", segment.id)
-            put("name", segment.name)
-            put(
-                "points",
-                JSONArray().apply {
-                    segment.points.forEach { point ->
-                        put(JSONObject().apply { put("lat", point.latitude); put("lon", point.longitude) })
-                    }
-                },
-            )
-        }
+        val json = buildJson(segment)
         try {
             File(directory, "${segment.id}.json").writeText(json.toString())
         } catch (e: IOException) {

@@ -7,7 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.content.Intent
+import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
+import app.organicmaps.BuildConfig
+import java.io.File
+import java.io.IOException
 import app.organicmaps.R
 import app.organicmaps.base.BaseMwmFragment
 import app.organicmaps.cycling.CyclingFormatter
@@ -72,6 +78,8 @@ class SegmentsFragment : BaseMwmFragment() {
                 }
             }
 
+            row.findViewById<ImageView>(R.id.segment_row_share).setOnClickListener { shareSegment(segment) }
+
             row.findViewById<ImageView>(R.id.segment_row_delete).setOnClickListener {
                 historyStore.delete(segment.id)
                 SegmentStore(requireContext()).delete(segment.id)
@@ -107,6 +115,32 @@ class SegmentsFragment : BaseMwmFragment() {
         val heartRate = run.averageHeartRateBpm?.let { "  $it ${getString(R.string.cycling_unit_bpm)}" }.orEmpty()
         "${index + 1}.  ${formatDuration(run.elapsedMillis)}   $date$heartRate$pb"
     }.joinToString("\n")
+
+    /**
+     * Sends the segment as a file so someone else can ride it.
+     *
+     * Two riders comparing times needs no server if they can exchange the course itself: the
+     * receiver imports it, rides it, and their times are measured against the same start and end.
+     * Plain JSON in the app's own format, which is also what the app reads back.
+     */
+    private fun shareSegment(segment: Segment) {
+        try {
+            val exportDir = File(requireContext().cacheDir, "exports").also { it.mkdirs() }
+            val file = File(exportDir, "${segment.name.replace(Regex("[^A-Za-z0-9-_]"), "-")}.segment.json")
+            file.writeText(SegmentStore(requireContext()).toJson(segment))
+
+            val uri = FileProvider.getUriForFile(requireContext(), BuildConfig.FILE_PROVIDER_AUTHORITY, file)
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/json"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                putExtra(Intent.EXTRA_SUBJECT, segment.name)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(intent, getString(R.string.cycling_segment_share)))
+        } catch (e: IOException) {
+            Toast.makeText(requireContext(), R.string.cycling_segment_share_failed, Toast.LENGTH_LONG).show()
+        }
+    }
 
     private fun formatDuration(millis: Long): String {
         val minutes = TimeUnit.MILLISECONDS.toMinutes(millis)
