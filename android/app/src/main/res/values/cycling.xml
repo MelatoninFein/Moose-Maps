@@ -8,7 +8,7 @@
   <dimen name="cycling_media_button">44dp</dimen>
   <dimen name="cycling_icon_size">24dp</dimen>
   <dimen name="cycling_toggle_size">32dp</dimen>
-  <dimen name="cycling_panel_bottom_margin">72dp</dimen>
+  <dimen name="cycling_panel_bottom_margin">96dp</dimen>
 
   <!-- Off-canvas music panel -->
   <dimen name="cycling_panel_width">300dp</dimen>

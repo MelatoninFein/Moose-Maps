@@ -2,9 +2,12 @@ package app.organicmaps.cycling
 
 import android.location.Location
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import app.organicmaps.MwmApplication
 import app.organicmaps.R
 import app.organicmaps.cycling.media.MediaControlHub
@@ -50,6 +53,20 @@ class CyclingController(
     private var lastLongitude: Double? = null
 
     init {
+        // Lift the readout clear of the navigation bar as well as the map's own bottom button row.
+        // The XML margin alone only clears the buttons, so on a device with a 3-button navigation
+        // bar the panel sat on top of the footer. The activity's listener on the coordinator
+        // returns insets unconsumed, so this child listener still fires.
+        ViewCompat.setOnApplyWindowInsetsListener(overlay) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            (view.layoutParams as? ViewGroup.MarginLayoutParams)?.let { params ->
+                params.bottomMargin =
+                    systemBars.bottom + view.resources.getDimensionPixelSize(R.dimen.cycling_panel_bottom_margin)
+                view.layoutParams = params
+            }
+            insets
+        }
+
         toggle.setOnClickListener { setPanelsExpanded(!sensors.store.isOverlayVisible) }
         sensors.snapshot.observe(activity) { snapshot -> bindSensors(snapshot) }
         setPanelsExpanded(sensors.store.isOverlayVisible)
