@@ -1,28 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  A ride row leads with the shape of the route. "Tuesday" means nothing a month later; the outline
+  of the coast loop is recognised instantly, which is what makes a long list scannable.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="?selectableItemBackground"
+  android:gravity="center_vertical"
   android:minHeight="@dimen/height_item_oneline"
-  android:orientation="vertical"
+  android:orientation="horizontal"
   android:paddingStart="@dimen/margin_base"
   android:paddingTop="@dimen/margin_half"
   android:paddingEnd="@dimen/margin_base"
   android:paddingBottom="@dimen/margin_half">
-  <TextView
-    android:id="@+id/ride_date"
-    android:layout_width="match_parent"
+
+  <app.organicmaps.cycling.rides.RideTraceView
+    android:id="@+id/ride_thumbnail"
+    android:layout_width="@dimen/cycling_thumbnail_size"
+    android:layout_height="@dimen/cycling_thumbnail_size"
+    android:layout_marginEnd="@dimen/margin_base"
+    android:background="@drawable/cycling_panel_bg" />
+
+  <LinearLayout
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:lines="1"
-    android:textAppearance="@style/MwmTextAppearance.Body1"
-    tools:text="28 Jul 2026 14:22" />
-  <TextView
-    android:id="@+id/ride_stats"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="end"
-    android:lines="1"
-    android:textAppearance="@style/MwmTextAppearance.Body4"
-    tools:text="24.3 km, 58m, 25 km/h, 148 bpm" />
+    android:layout_weight="1"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/ride_date"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:textAppearance="@style/MwmTextAppearance.Body1"
+      tools:text="28 Jul 2026 14:22" />
+
+    <TextView
+      android:id="@+id/ride_stats"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:lines="2"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      tools:text="24.3 km · 58m · 25 km/h · 148 bpm" />
+  </LinearLayout>
 </LinearLayout>

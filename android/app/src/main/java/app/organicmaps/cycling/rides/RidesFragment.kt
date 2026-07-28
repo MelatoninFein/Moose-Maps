@@ -45,10 +45,11 @@ class RidesFragment : BaseMwmFragment() {
         }
 
         rides.forEach { file ->
-            // Summaries are cheap to recompute and always correct, even if a ride was cut short by
-            // the process dying mid-recording and never got its summary file written.
-            val summary = recorder.summaryOf(file) ?: return@forEach
-            list.addView(createRow(list, file.name, summary))
+            // Samples are read once and used for both the summary and the thumbnail: parsing the
+            // file twice per row would double the cost of opening a long list.
+            val samples = recorder.samplesOf(file)
+            val summary = RideStatistics.summarise(samples) ?: return@forEach
+            list.addView(createRow(list, file.name, summary, samples))
         }
     }
 
@@ -71,8 +72,16 @@ class RidesFragment : BaseMwmFragment() {
         }
     }
 
-    private fun createRow(parent: ViewGroup, fileName: String, summary: RideSummary): View {
+    private fun createRow(
+        parent: ViewGroup,
+        fileName: String,
+        summary: RideSummary,
+        samples: List<RideSample>,
+    ): View {
         val row = layoutInflater.inflate(R.layout.item_ride, parent, false)
+
+        // Speed-graded, same renderer as the full-size trace - a fast ride reads warm even at 64dp.
+        row.findViewById<RideTraceView>(R.id.ride_thumbnail).samples = samples
 
         val date = Date(summary.startedAtMs)
         row.findViewById<TextView>(R.id.ride_date).text =

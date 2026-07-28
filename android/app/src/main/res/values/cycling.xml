@@ -30,6 +30,7 @@
   <dimen name="cycling_spots_max_height">420dp</dimen>
   <dimen name="cycling_trace_height">280dp</dimen>
   <dimen name="cycling_chart_height">160dp</dimen>
+  <dimen name="cycling_thumbnail_size">64dp</dimen>
 
   <!-- "Open Spotify" / "Open TIDAL" buttons in the music panel. Declared here rather than
        referencing the AppCompat style from code: nonTransitiveRClass keeps library resources out
