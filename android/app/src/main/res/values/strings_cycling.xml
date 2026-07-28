@@ -36,6 +36,7 @@
   <string name="cycling_sensor_battery">Battery %1$d%%</string>
 
   <!-- Map readout -->
+  <string name="cycling_panels_toggle">Show or hide the data panels</string>
   <string name="cycling_overlay_enable">Show sensor readout on the map</string>
   <string name="cycling_wheel_circumference">Wheel circumference</string>
   <string name="cycling_wheel_circumference_summary">Used to work out speed from a wheel sensor. A 700×25c tyre is about 2105 mm.</string>

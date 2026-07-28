@@ -1,38 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Live cycling readout drawn over the map: sensor tiles on top, music transport below.
+  Live data panels along the bottom of the map, with a chevron to collapse them.
 
-  Anchored to the top-centre of the map because the existing map controls own the right-hand
-  column and the bottom (place page, routing sheet, search toolbar). Both rows hide themselves
-  when they have nothing to show, so the map is untouched for a rider using neither feature.
+  Bottom rather than top: it is the edge a rider glances at without moving their head far off the
+  road, and it leaves the top clear for the compass. The strip sits above the map's own bottom
+  button bar so it never covers search or the menu.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/cycling_overlay"
-  android:layout_width="wrap_content"
+  android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:layout_centerHorizontal="true"
-  android:layout_alignParentTop="true"
+  android:layout_alignParentBottom="true"
+  android:layout_marginBottom="@dimen/cycling_panel_bottom_margin"
   android:gravity="center_horizontal"
-  android:orientation="vertical"
-  android:visibility="gone"
-  tools:visibility="visible">
+  android:orientation="vertical">
+
+  <!-- Collapse/expand handle. Always present, so the panels can be brought back once hidden. -->
+  <ImageView
+    android:id="@+id/cycling_panel_toggle"
+    android:layout_width="@dimen/cycling_toggle_size"
+    android:layout_height="@dimen/cycling_toggle_size"
+    android:background="@drawable/cycling_panel_bg"
+    android:contentDescription="@string/cycling_panels_toggle"
+    android:scaleType="center"
+    app:srcCompat="@drawable/ic_expand_more"
+    app:tint="?iconTint" />
 
   <LinearLayout
     android:id="@+id/cycling_sensor_panel"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_quarter"
     android:background="@drawable/cycling_panel_bg"
     android:gravity="center_vertical"
-    android:minWidth="@dimen/cycling_panel_min_width"
     android:orientation="horizontal"
     android:paddingStart="@dimen/margin_base"
     android:paddingTop="@dimen/margin_half"
     android:paddingEnd="@dimen/margin_base"
     android:paddingBottom="@dimen/margin_half"
-    android:visibility="gone"
     tools:visibility="visible">
+
+    <!-- GPS speed is always available, so it is the one panel that never shows a placeholder. -->
+    <app.organicmaps.cycling.ui.SensorTileView
+      android:id="@+id/tile_gps_speed"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/margin_base"
+      android:minWidth="@dimen/cycling_tile_min_width"
+      app:tileLabel="@string/cycling_unit_kmh" />
 
     <app.organicmaps.cycling.ui.SensorTileView
       android:id="@+id/tile_heart_rate"
@@ -65,8 +82,4 @@
       android:minWidth="@dimen/cycling_tile_min_width"
       app:tileLabel="@string/cycling_unit_watts" />
   </LinearLayout>
-
-  <!-- Music controls used to live here as a second row. They moved to a floating action button
-       and an off-canvas panel (cycling_media_panel.xml): playback is reached for occasionally and
-       shouldn't hold permanent space over the map. -->
 </LinearLayout>

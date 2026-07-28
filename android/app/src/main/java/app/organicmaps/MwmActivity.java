@@ -1009,6 +1009,9 @@ public class MwmActivity extends BaseMwmFragmentActivity
     MwmApplication.from(getApplicationContext()).getIsolinesManager().detach();
     Utils.keepScreenOn(false, getWindow());
 
+    if (mCyclingController != null)
+      mCyclingController.onStop();
+
     final String backUrl = Framework.nativeGetParsedBackUrl();
     if (!TextUtils.isEmpty(backUrl))
       Utils.openUri(this, Uri.parse(backUrl), null);
@@ -1904,7 +1907,10 @@ public class MwmActivity extends BaseMwmFragmentActivity
     case KeyEvent.KEYCODE_DPAD_UP: Map.zoomIn(); return true;
     case KeyEvent.KEYCODE_ESCAPE:
       final Intent currIntent = getIntent();
-      final String backUrl = Framework.nativeGetParsedBackUrl();
+      if (mCyclingController != null)
+      mCyclingController.onStop();
+
+    final String backUrl = Framework.nativeGetParsedBackUrl();
       if (TextUtils.isEmpty(backUrl) || (currIntent != null && Factory.isStartedForApiResult(currIntent)))
       {
         finish();
