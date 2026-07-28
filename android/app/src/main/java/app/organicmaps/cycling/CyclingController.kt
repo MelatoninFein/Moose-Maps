@@ -20,6 +20,7 @@ import app.organicmaps.cycling.rides.LiveSegmentTracker
 import app.organicmaps.cycling.rides.SegmentBestStore
 import app.organicmaps.cycling.rides.SegmentStore
 import app.organicmaps.cycling.ui.CompassView
+import app.organicmaps.cycling.ui.SensorTileView
 import app.organicmaps.sdk.location.LocationListener
 import app.organicmaps.sdk.location.SensorListener
 
@@ -41,6 +42,11 @@ class CyclingController(
     private val media = MediaControlHub.from(activity)
 
     private val compass: CompassView = root.findViewById(R.id.cycling_compass)
+
+    private val liveTiles: LinearLayout = root.findViewById(R.id.cycling_live_tiles)
+    private val liveHeartRate: SensorTileView = root.findViewById(R.id.live_heart_rate)
+    private val liveCadence: SensorTileView = root.findViewById(R.id.live_cadence)
+    private val livePower: SensorTileView = root.findViewById(R.id.live_power)
 
     private val segmentBanner: LinearLayout = root.findViewById(R.id.cycling_segment_banner)
     private val segmentName: TextView = root.findViewById(R.id.segment_name)
@@ -64,7 +70,8 @@ class CyclingController(
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             (view.layoutParams as? ViewGroup.MarginLayoutParams)?.let { params ->
                 params.topMargin = systemBars.top + view.resources.getDimensionPixelSize(R.dimen.margin_base)
-                params.rightMargin = systemBars.right + view.resources.getDimensionPixelSize(R.dimen.margin_base)
+                params.rightMargin =
+                    systemBars.right + view.resources.getDimensionPixelSize(R.dimen.cycling_compass_margin_end)
                 view.layoutParams = params
             }
             insets
@@ -153,6 +160,19 @@ class CyclingController(
         val speed = gpsSpeedMps ?: snapshot.speedMps
         compass.speedText = speed?.let { CyclingFormatter.speedValue(it) } ?: "--"
         compass.speedUnit = CyclingFormatter.speedUnit(activity)
+
+        // Each tile hides itself when its value is null, so the column shrinks to whatever the
+        // rider actually has connected, and disappears entirely with no sensors at all.
+        liveHeartRate.value = snapshot.heartRateBpm?.toString()
+        liveCadence.value = snapshot.cadenceRpm?.toString()
+        livePower.value = snapshot.powerWatts?.toString()
+        liveTiles.visibility = if (snapshot.heartRateBpm != null || snapshot.cadenceRpm != null ||
+            snapshot.powerWatts != null
+        ) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     private companion object {

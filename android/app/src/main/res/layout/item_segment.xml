@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:gravity="center_vertical"
+  android:minHeight="@dimen/height_item_oneline"
+  android:orientation="horizontal"
+  android:paddingStart="@dimen/margin_base"
+  android:paddingEnd="@dimen/margin_base">
+  <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/margin_half"
+    android:paddingBottom="@dimen/margin_half">
+    <TextView
+      android:id="@+id/segment_row_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:lines="1"
+      android:textAppearance="@style/MwmTextAppearance.Body1"
+      tools:text="Höllviken runt" />
+    <TextView
+      android:id="@+id/segment_row_detail"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:lines="1"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      tools:text="12.4 km · Best 24m 18s" />
+  </LinearLayout>
+  <ImageView
+    android:id="@+id/segment_row_delete"
+    android:layout_width="@dimen/cycling_icon_size"
+    android:layout_height="@dimen/cycling_icon_size"
+    android:background="?selectableItemBackgroundBorderless"
+    android:contentDescription="@string/cycling_segment_delete"
+    app:srcCompat="@drawable/ic_close"
+    app:tint="?iconTint" />
+</LinearLayout>

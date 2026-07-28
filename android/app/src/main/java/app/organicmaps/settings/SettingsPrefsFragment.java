@@ -16,6 +16,7 @@ import app.organicmaps.R;
 import app.organicmaps.cycling.settings.AboutForkFragment;
 import app.organicmaps.cycling.settings.CyclingSettingsFragment;
 import app.organicmaps.cycling.rides.RidesFragment;
+import app.organicmaps.cycling.rides.SegmentsFragment;
 import app.organicmaps.downloader.OnmapDownloader;
 import app.organicmaps.editor.LanguagesFragment;
 import app.organicmaps.editor.ProfileActivity;
@@ -146,6 +147,10 @@ public class SettingsPrefsFragment extends BaseXmlSettingsFragment implements La
       else if (key.equals(getString(R.string.pref_rides_screen)))
       {
         getSettingsActivity().stackFragment(RidesFragment.class, getString(R.string.cycling_rides_title), null);
+      }
+      else if (key.equals(getString(R.string.pref_segments_screen)))
+      {
+        getSettingsActivity().stackFragment(SegmentsFragment.class, getString(R.string.cycling_segments_title), null);
       }
       else if (key.equals(getString(R.string.pref_about_fork)))
       {

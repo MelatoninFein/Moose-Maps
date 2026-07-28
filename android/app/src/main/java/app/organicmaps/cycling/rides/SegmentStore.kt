@@ -39,6 +39,12 @@ class SegmentStore(context: Context) {
         }
     }
 
+    /** Removes a segment and its recorded best, so a mistake can be undone. */
+    fun delete(segmentId: String) {
+        File(directory, "$segmentId.json").delete()
+        File(File(directory.parentFile, "segment-bests"), "$segmentId.json").delete()
+    }
+
     fun list(): List<Segment> = (directory.listFiles { f -> f.name.endsWith(".json") } ?: emptyArray())
         .mapNotNull { file ->
             try {

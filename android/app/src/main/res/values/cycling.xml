@@ -25,6 +25,8 @@
   <color name="segment_behind">#C62828</color>
   <color name="fg_compass">#DE000000</color>
   <dimen name="cycling_compass_size">96dp</dimen>
+  <!-- Clear of the track-recording indicator that also lives in the top-right corner. -->
+  <dimen name="cycling_compass_margin_end">64dp</dimen>
   <dimen name="cycling_spots_max_height">420dp</dimen>
   <dimen name="cycling_trace_height">280dp</dimen>
 

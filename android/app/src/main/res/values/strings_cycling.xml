@@ -74,6 +74,14 @@
   <string name="cycling_records_title">Personal records</string>
   <string name="cycling_records_none">Ride further than 5 km and your records will appear here.</string>
 
+  <string name="pref_segments_screen" translatable="false">SegmentsScreen</string>
+  <string name="cycling_segments_title">Segments</string>
+  <string name="cycling_segments_summary">Stretches you race yourself around</string>
+  <string name="cycling_segments_empty">No segments yet. Open a ride and save it as a segment, then your time is compared every time you ride it.</string>
+  <string name="cycling_segment_best">Best %1$s</string>
+  <string name="cycling_segment_no_time">No time yet</string>
+  <string name="cycling_segment_delete">Delete segment</string>
+
   <!-- Rides -->
   <string name="pref_rides_screen" translatable="false">RidesScreen</string>
   <string name="cycling_rides_title">Rides</string>

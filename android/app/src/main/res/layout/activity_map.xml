@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/coordinator"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
@@ -58,7 +59,43 @@
       android:layout_alignParentTop="true"
       android:layout_alignParentEnd="true"
       android:layout_marginTop="@dimen/margin_base"
-      android:layout_marginEnd="@dimen/margin_base" />
+      android:layout_marginEnd="@dimen/cycling_compass_margin_end" />
+
+    <!-- Heart rate, cadence and power. Under the compass and end-aligned with it; each tile hides
+         itself when nothing is reporting, so a rider with no sensors sees nothing at all. -->
+    <LinearLayout
+      android:id="@+id/cycling_live_tiles"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/cycling_compass"
+      android:layout_alignEnd="@+id/cycling_compass"
+      android:layout_marginTop="@dimen/margin_half"
+      android:background="@drawable/cycling_panel_bg"
+      android:gravity="center_horizontal"
+      android:orientation="vertical"
+      android:paddingStart="@dimen/margin_half"
+      android:paddingTop="@dimen/margin_quarter"
+      android:paddingEnd="@dimen/margin_half"
+      android:paddingBottom="@dimen/margin_quarter">
+
+      <app.organicmaps.cycling.ui.SensorTileView
+        android:id="@+id/live_heart_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tileLabel="@string/cycling_unit_bpm" />
+
+      <app.organicmaps.cycling.ui.SensorTileView
+        android:id="@+id/live_cadence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tileLabel="@string/cycling_unit_rpm" />
+
+      <app.organicmaps.cycling.ui.SensorTileView
+        android:id="@+id/live_power"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tileLabel="@string/cycling_unit_watts" />
+    </LinearLayout>
   </RelativeLayout>
   <androidx.fragment.app.FragmentContainerView
     android:id="@+id/search_container_fragment"
