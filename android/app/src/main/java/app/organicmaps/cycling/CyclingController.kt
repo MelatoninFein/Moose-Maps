@@ -61,6 +61,7 @@ class CyclingController(
     private val segmentName: TextView = root.findViewById(R.id.segment_name)
     private val segmentElapsed: TextView = root.findViewById(R.id.segment_elapsed)
     private val segmentDelta: TextView = root.findViewById(R.id.segment_delta)
+    private val segmentProgress: android.widget.ProgressBar = root.findViewById(R.id.segment_progress)
 
     /**
      * Built once per foregrounding rather than per fix: reading every segment and best time off
@@ -168,16 +169,23 @@ class CyclingController(
         segmentElapsed.text = formatClock(progress.elapsedMillis)
 
         val delta = progress.deltaMillis
+        val colour = when {
+            delta == null -> R.color.text_dark_subtitle
+            // Ahead reads green, behind red - the only thing worth taking in at a glance.
+            delta <= 0 -> R.color.segment_ahead
+            else -> R.color.segment_behind
+        }
         if (delta == null) {
             segmentDelta.setText(R.string.cycling_segment_no_best)
-            segmentDelta.setTextColor(ContextCompat.getColor(activity, R.color.text_dark_subtitle))
         } else {
-            val seconds = delta / 1000.0
-            segmentDelta.text = String.format(java.util.Locale.getDefault(), "%+.0fs", seconds)
-            // Ahead reads green, behind red - the only thing worth taking in at a glance.
-            val colour = if (delta <= 0) R.color.segment_ahead else R.color.segment_behind
-            segmentDelta.setTextColor(ContextCompat.getColor(activity, colour))
+            segmentDelta.text = String.format(java.util.Locale.getDefault(), "%+.0fs", delta / 1000.0)
         }
+        segmentDelta.setTextColor(ContextCompat.getColor(activity, colour))
+
+        // Same tint as the delta, so the banner reads as one thing rather than three readouts.
+        segmentProgress.progress = (progress.fractionComplete * PROGRESS_SCALE).toInt()
+        segmentProgress.progressTintList =
+            android.content.res.ColorStateList.valueOf(ContextCompat.getColor(activity, colour))
 
         if (progress.finished) {
             segmentVoice?.onSegmentFinished(
@@ -266,5 +274,8 @@ class CyclingController(
 
         /** Far enough out to accelerate into the line, close enough not to be premature. */
         const val APPROACH_WARNING_M = 300.0
+
+        /** Matches the progress bar's android:max; the fraction is 0 to 1. */
+        const val PROGRESS_SCALE = 1000f
     }
 }

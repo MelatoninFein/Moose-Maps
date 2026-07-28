@@ -29,6 +29,14 @@ data class LiveSegmentProgress(
     /** Negative is ahead of your best, positive behind. Null when there is no best yet. */
     val deltaMillis: Long?,
     val finished: Boolean,
+    /**
+     * How far round the segment you are, 0 to 1.
+     *
+     * A delta alone does not say whether four seconds is worth chasing: with a kilometre left it is,
+     * on the run-in it is not. Measured in points passed rather than metres, which is what the
+     * tracker already knows and is close enough on evenly sampled recordings.
+     */
+    val fractionComplete: Float = 0f,
 )
 
 /**
@@ -66,7 +74,7 @@ class LiveSegmentTracker(
             active = entered
             startedAtMs = timestampMs
             reachedIndex = 0
-            return LiveSegmentProgress(entered.name, 0, deltaAt(entered, 0, 0), false)
+            return LiveSegmentProgress(entered.name, 0, deltaAt(entered, 0, 0), false, 0f)
         }
 
         // Advance through the segment's points as they are passed. Scanning forward rather than
@@ -83,7 +91,10 @@ class LiveSegmentTracker(
         val atEnd = index >= current.points.size - 1 &&
             distanceTo(latitude, longitude, current.points.last()) <= SegmentMatcher.GATE_RADIUS_M
 
-        val progress = LiveSegmentProgress(current.name, elapsed, deltaAt(current, index, elapsed), atEnd)
+        val lastIndex = (current.points.size - 1).coerceAtLeast(1)
+        val fraction = if (atEnd) 1f else (index.toFloat() / lastIndex).coerceIn(0f, 1f)
+        val progress =
+            LiveSegmentProgress(current.name, elapsed, deltaAt(current, index, elapsed), atEnd, fraction)
 
         if (atEnd) {
             if (current.isLoop) {

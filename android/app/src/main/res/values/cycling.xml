@@ -33,6 +33,8 @@
   <dimen name="cycling_thumbnail_size">64dp</dimen>
   <dimen name="cycling_zone_bar_height">28dp</dimen>
   <dimen name="cycling_status_dot">10dp</dimen>
+  <!-- Wide enough to read as a bar, narrow enough that the banner stays a badge, not a panel. -->
+  <dimen name="cycling_segment_progress_width">120dp</dimen>
   <dimen name="cycling_sparkline_width">56dp</dimen>
   <dimen name="cycling_sparkline_height">28dp</dimen>
 
