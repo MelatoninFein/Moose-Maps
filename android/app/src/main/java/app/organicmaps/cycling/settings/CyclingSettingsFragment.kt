@@ -14,6 +14,7 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.ViewCompat
 import app.organicmaps.R
 import app.organicmaps.base.BaseMwmFragment
+import app.organicmaps.cycling.CyclingFormatter
 import app.organicmaps.cycling.media.MediaControlHub
 import app.organicmaps.cycling.rides.RidesFragment
 import app.organicmaps.cycling.rides.SegmentsFragment
@@ -24,6 +25,7 @@ import app.organicmaps.cycling.sensors.SensorKind
 import app.organicmaps.cycling.sensors.SensorPermissions
 import app.organicmaps.cycling.sensors.SensorScanner
 import app.organicmaps.cycling.sensors.SensorService
+import app.organicmaps.cycling.sensors.SensorSnapshot
 import app.organicmaps.cycling.sensors.SensorStatus
 import app.organicmaps.cycling.sensors.SensorStore
 import app.organicmaps.util.WindowInsetUtils.ScrollableContentInsetsListener
@@ -54,6 +56,11 @@ class CyclingSettingsFragment : BaseMwmFragment() {
     private lateinit var scanButton: Button
 
     private val discovered = linkedMapOf<String, DiscoveredSensor>()
+
+    /** Status lines of the paired rows, so a new reading updates text instead of rebuilding views. */
+    private val pairedStatusViews = linkedMapOf<String, TextView>()
+    private var latestStatuses: List<SensorStatus> = emptyList()
+    private var latestSnapshot = SensorSnapshot.EMPTY
 
     private lateinit var sensorStatus: TextView
 
@@ -123,7 +130,18 @@ class CyclingSettingsFragment : BaseMwmFragment() {
                 .stackFragment(SegmentsFragment::class.java, getString(R.string.cycling_segments_title), null)
         }
 
-        hub.statuses.observe(viewLifecycleOwner) { statuses -> bindPaired(statuses) }
+        hub.statuses.observe(viewLifecycleOwner) { statuses ->
+            latestStatuses = statuses
+            bindPaired(statuses)
+        }
+        hub.snapshot.observe(viewLifecycleOwner) { snapshot ->
+            latestSnapshot = snapshot
+            // Only the text changes, so rows are updated in place rather than rebuilt once a second
+            // under the rider's finger.
+            latestStatuses.forEach { status ->
+                pairedStatusViews[status.sensor.address]?.text = describeStatus(status)
+            }
+        }
     }
 
     override fun onPause() {
@@ -169,7 +187,6 @@ class CyclingSettingsFragment : BaseMwmFragment() {
                 SensorStore.MAX_CIRCUMFERENCE_MM,
             )
             wheelField.setText(store.wheelCircumferenceMm.toString())
-        maxHeartRateField.setText(store.maxHeartRateBpm.toString())
             return
         }
         wheelInputLayout.error = null
@@ -228,31 +245,48 @@ class CyclingSettingsFragment : BaseMwmFragment() {
             return
         }
         discovered[sensor.address] = sensor
+        renderDiscovered()
+    }
 
-        val row = layoutInflater.inflate(R.layout.item_cycling_sensor, discoveredList, false)
-        row.findViewById<TextView>(R.id.sensor_name).text = sensor.name
-        row.findViewById<TextView>(R.id.sensor_status).text = describeKinds(sensor.kinds)
-        row.findViewById<ImageView>(R.id.sensor_action).visibility = View.GONE
-        row.setOnClickListener {
-            hub.pair(sensor)
-            discovered.remove(sensor.address)
-            discoveredList.removeView(row)
-            if (!store.isEnabled) {
-                // Pairing a first sensor without enabling the feature would do nothing visible.
-                sensorsSwitch.isChecked = true
+    /**
+     * Strongest signal first.
+     *
+     * A scan in a café or at the start of a group ride turns up every strap in the room, all named
+     * something like "CYCPLUS-H2". Discovery order is arbitrary; signal strength is not - the one
+     * on your own bars is the closest thing to the phone.
+     */
+    private fun renderDiscovered() {
+        discoveredList.removeAllViews()
+        discovered.values.sortedByDescending { it.rssi }.forEach { sensor ->
+            val row = layoutInflater.inflate(R.layout.item_cycling_sensor, discoveredList, false)
+            row.findViewById<TextView>(R.id.sensor_name).text = sensor.name
+            row.findViewById<TextView>(R.id.sensor_status).text =
+                "${describeKinds(sensor.kinds)} · ${describeSignal(sensor.rssi)}"
+            row.findViewById<ImageView>(R.id.sensor_action).visibility = View.GONE
+            row.setOnClickListener {
+                hub.pair(sensor)
+                discovered.remove(sensor.address)
+                renderDiscovered()
+                if (!store.isEnabled) {
+                    // Pairing a first sensor without enabling the feature would do nothing visible.
+                    sensorsSwitch.isChecked = true
+                }
             }
+            discoveredList.addView(row)
         }
-        discoveredList.addView(row)
     }
 
     private fun bindPaired(statuses: List<SensorStatus>) {
         pairedList.removeAllViews()
+        pairedStatusViews.clear()
         pairedEmpty.visibility = if (statuses.isEmpty()) View.VISIBLE else View.GONE
 
         statuses.forEach { status ->
             val row = layoutInflater.inflate(R.layout.item_cycling_sensor, pairedList, false)
             row.findViewById<TextView>(R.id.sensor_name).text = status.sensor.name
-            row.findViewById<TextView>(R.id.sensor_status).text = describeStatus(status)
+            val statusView: TextView = row.findViewById(R.id.sensor_status)
+            statusView.text = describeStatus(status)
+            pairedStatusViews[status.sensor.address] = statusView
             row.findViewById<ImageView>(R.id.sensor_action).setOnClickListener {
                 hub.forget(status.sensor.address)
             }
@@ -269,8 +303,40 @@ class CyclingSettingsFragment : BaseMwmFragment() {
             },
         )
         val battery = status.batteryPercent?.let { getString(R.string.cycling_sensor_battery, it) }
-        return listOfNotNull(state, describeKinds(status.sensor.kinds), battery).joinToString(" · ")
+        // A live figure is the only proof the sensor is actually reading: "Connected" is equally
+        // true of a strap sitting in a jersey pocket. Until a value arrives the row names the kinds
+        // instead, which is all that is honestly known.
+        val readings = if (status.state == SensorConnectionState.CONNECTED) {
+            liveReadings(status.sensor.kinds)
+        } else {
+            emptyList()
+        }
+        val what = readings.ifEmpty { listOf(describeKinds(status.sensor.kinds)) }
+        return (listOf(state) + what + listOfNotNull(battery)).joinToString(" · ")
     }
+
+    private fun liveReadings(kinds: Set<SensorKind>): List<String> = kinds.sorted().mapNotNull { kind ->
+        when (kind) {
+            SensorKind.HEART_RATE ->
+                latestSnapshot.heartRateBpm?.let { "$it ${getString(R.string.cycling_unit_bpm)}" }
+            SensorKind.CADENCE ->
+                latestSnapshot.cadenceRpm?.let { "$it ${getString(R.string.cycling_unit_rpm)}" }
+            SensorKind.SPEED -> latestSnapshot.speedMps?.let {
+                "${CyclingFormatter.speedValue(it)} ${CyclingFormatter.speedUnit(requireContext())}"
+            }
+            SensorKind.POWER ->
+                latestSnapshot.powerWatts?.let { "$it ${getString(R.string.cycling_unit_watts)}" }
+        }
+    }
+
+    /** Words rather than dBm: -71 means nothing to a rider deciding which row is their own strap. */
+    private fun describeSignal(rssi: Int): String = getString(
+        when {
+            rssi >= STRONG_SIGNAL_DBM -> R.string.cycling_signal_strong
+            rssi >= GOOD_SIGNAL_DBM -> R.string.cycling_signal_good
+            else -> R.string.cycling_signal_weak
+        },
+    )
 
     private fun describeKinds(kinds: Set<SensorKind>): String = kinds.sorted().joinToString(", ") { kind ->
         getString(
@@ -289,5 +355,11 @@ class CyclingSettingsFragment : BaseMwmFragment() {
         }
         sensorStatus.setText(messageRes)
         sensorStatus.visibility = View.VISIBLE
+    }
+
+    private companion object {
+        // Roughly arm's length and roughly across a room, for a typical BLE sensor.
+        const val STRONG_SIGNAL_DBM = -60
+        const val GOOD_SIGNAL_DBM = -75
     }
 }

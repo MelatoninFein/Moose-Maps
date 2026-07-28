@@ -91,6 +91,10 @@
   <string name="cycling_segment_share">Share segment</string>
   <string name="cycling_segment_share_failed">Could not write the segment file.</string>
   <string name="cycling_segment_delete">Delete segment</string>
+  <!-- Signal strength while scanning, so a rider can tell which row is their own sensor. -->
+  <string name="cycling_signal_strong">Strong signal</string>
+  <string name="cycling_signal_good">Good signal</string>
+  <string name="cycling_signal_weak">Weak signal</string>
   <string name="cycling_ride_menu">Ride options</string>
   <string name="cycling_ride_rename">Rename</string>
   <string name="cycling_ride_delete">Delete ride</string>
