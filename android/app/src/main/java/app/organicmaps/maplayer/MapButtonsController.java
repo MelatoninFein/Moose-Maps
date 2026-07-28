@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider;
 import app.organicmaps.MwmActivity;
 import app.organicmaps.R;
 import app.organicmaps.cycling.ui.MusicButtons;
+import app.organicmaps.cycling.ui.QuickSpotsFragment;
 import app.organicmaps.routing.RoutingPlanViewModel;
 import app.organicmaps.sdk.Framework;
 import app.organicmaps.sdk.downloader.MapManager;
@@ -112,6 +113,13 @@ public class MapButtonsController extends Fragment
     final FloatingActionButton helpButton = mFrame.findViewById(R.id.help_button);
     // Music transport sits above the zoom controls; no-op in layouts that don't include it.
     MusicButtons.attach(mFrame, getViewLifecycleOwner());
+    // Quick-navigate sheet: saved places nearest-first, in the slot the help button vacated.
+    final View quickSpotsButton = mFrame.findViewById(R.id.quick_spots_button);
+    if (quickSpotsButton != null)
+      quickSpotsButton.setOnClickListener((v) -> {
+        if (getParentFragmentManager().findFragmentByTag(QuickSpotsFragment.TAG) == null)
+          new QuickSpotsFragment().show(getParentFragmentManager(), QuickSpotsFragment.TAG);
+      });
     final View zoomFrame = mFrame.findViewById(R.id.zoom_buttons_container);
     mFrame.findViewById(R.id.nav_zoom_in)
         .setOnClickListener((v) -> mMapButtonClickListener.onMapButtonClick(MapButtons.zoomIn));

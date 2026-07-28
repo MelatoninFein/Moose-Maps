@@ -17,6 +17,7 @@ object CyclingFormatter {
     private const val SECONDS_PER_HOUR = 3600.0
     private const val METRES_PER_KM = 1000.0
     private const val METRES_PER_MILE = 1609.344
+    private const val FEET_PER_METRE = 3.28084
 
     fun speedValue(speedMps: Double?): String {
         if (speedMps == null) {
@@ -54,6 +55,25 @@ object CyclingFormatter {
             snapshot.powerWatts?.let { add("$it ${context.getString(R.string.cycling_unit_watts)}") }
         }
         return parts.joinToString(" · ")
+    }
+
+    /**
+     * Short distance for the quick-navigate list. Metres/feet close by, kilometres/miles beyond -
+     * a rider scanning a list wants one glanceable number, not four significant figures.
+     */
+    fun distanceText(metres: Double): String = if (isImperial()) {
+        val miles = metres / METRES_PER_MILE
+        if (miles < 0.2) {
+            "${(metres * FEET_PER_METRE).toInt()} ft"
+        } else {
+            String.format(Locale.getDefault(), "%.1f mi", miles)
+        }
+    } else {
+        if (metres < METRES_PER_KM) {
+            "${metres.toInt()} m"
+        } else {
+            String.format(Locale.getDefault(), "%.1f km", metres / METRES_PER_KM)
+        }
     }
 
     private fun isImperial(): Boolean = UnitLocale.getUnits() == UnitLocale.UNITS_FOOT

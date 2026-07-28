@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="?selectableItemBackground"
+  android:gravity="center_vertical"
+  android:minHeight="@dimen/height_item_oneline"
+  android:orientation="horizontal"
+  android:paddingStart="@dimen/margin_base"
+  android:paddingEnd="@dimen/margin_base">
+
+  <TextView
+    android:id="@+id/spot_favourite"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/margin_half"
+    android:text="@string/cycling_spots_favourite_mark"
+    android:textAppearance="@style/MwmTextAppearance.Body2"
+    tools:visibility="visible" />
+
+  <TextView
+    android:id="@+id/spot_name"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:ellipsize="end"
+    android:lines="1"
+    android:textAppearance="@style/MwmTextAppearance.Body1"
+    tools:text="Cafe at the top of the hill" />
+
+  <TextView
+    android:id="@+id/spot_distance"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_half"
+    android:textAppearance="@style/MwmTextAppearance.Body4"
+    tools:text="2.4 km" />
+</LinearLayout>

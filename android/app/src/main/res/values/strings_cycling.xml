@@ -68,6 +68,13 @@
   <string name="cycling_music_access_granted">Track names and artwork are shown on the map.</string>
   <string name="cycling_music_access_missing">Playback controls already work. Grant notification access to also see track names and artwork.</string>
 
+  <!-- Quick navigate -->
+  <string name="cycling_spots_title">Navigate to</string>
+  <string name="cycling_spots_empty">No saved places yet. Bookmark somewhere and it will appear here, nearest first.</string>
+  <string name="cycling_spots_no_location">Waiting for a location fix before places can be sorted by distance.</string>
+  <string name="cycling_spots_unnamed">Unnamed place</string>
+  <string name="cycling_spots_favourite_mark" translatable="false">★</string>
+
   <!-- About -->
   <string name="pref_about_fork" translatable="false">AboutForkScreen</string>
   <string name="about_fork_title">About</string>
