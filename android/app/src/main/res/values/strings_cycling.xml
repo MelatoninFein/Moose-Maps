@@ -63,11 +63,6 @@
   <string name="cycling_music_play">Play</string>
   <string name="cycling_music_pause">Pause</string>
   <string name="cycling_music_play_pause">Play or pause</string>
-  <string name="cycling_music_unknown_track">Unknown track</string>
-  <string name="cycling_music_nothing_playing">Nothing is playing. Start a track in your music app and the controls will appear here.</string>
-  <string name="cycling_music_show_button">Show music button on the map</string>
-  <!-- %1$s is a music app name, e.g. Spotify or TIDAL. -->
-  <string name="cycling_music_open_app">Open %1$s</string>
   <string name="cycling_music_grant_access">Grant notification access</string>
   <string name="cycling_music_access_granted">Track names and artwork are shown on the map.</string>
   <string name="cycling_music_access_missing">Playback controls already work. Grant notification access to also see track names and artwork.</string>
@@ -80,10 +75,4 @@
   <string name="about_fork_osm">Map data © OpenStreetMap contributors, available under the Open Database License. Data version: %1$s</string>
   <string name="about_fork_licence">Based on Organic Maps, licensed under the Apache License 2.0.</string>
   <string name="about_fork_source">View the source code</string>
-
-  <!-- Picture-in-picture -->
-  <string name="cycling_pip_title">Floating map</string>
-  <string name="cycling_pip_enter">Shrink to floating window</string>
-  <string name="cycling_pip_no_route">No active route</string>
-  <string name="cycling_pip_unsupported">This device does not support picture-in-picture.</string>
 </resources>

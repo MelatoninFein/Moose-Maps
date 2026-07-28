@@ -36,15 +36,6 @@ class SensorStore(context: Context) {
         get() = prefs.getBoolean(KEY_OVERLAY, true)
         set(value) = prefs.edit().putBoolean(KEY_OVERLAY, value).apply()
 
-    /**
-     * Whether the music button is shown on the map. On by default and independent of whether any
-     * player is installed or notification access has been granted - the button has to be visible
-     * for the feature to be discoverable at all, and its panel explains whatever is missing.
-     */
-    var isMediaControlsVisible: Boolean
-        get() = prefs.getBoolean(KEY_MEDIA_CONTROLS, true)
-        set(value) = prefs.edit().putBoolean(KEY_MEDIA_CONTROLS, value).apply()
-
     fun loadPairedSensors(): List<PairedSensor> {
         val raw = prefs.getString(KEY_SENSORS, null) ?: return emptyList()
         return try {
@@ -91,7 +82,6 @@ class SensorStore(context: Context) {
         private const val KEY_WHEEL_CIRCUMFERENCE = "wheel_circumference_mm"
         private const val KEY_ENABLED = "enabled"
         private const val KEY_OVERLAY = "overlay_visible"
-        private const val KEY_MEDIA_CONTROLS = "media_controls_visible"
 
         private const val FIELD_ADDRESS = "address"
         private const val FIELD_NAME = "name"

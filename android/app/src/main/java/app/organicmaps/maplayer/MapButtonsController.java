@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import app.organicmaps.MwmActivity;
 import app.organicmaps.R;
+import app.organicmaps.cycling.ui.MusicButtons;
 import app.organicmaps.routing.RoutingPlanViewModel;
 import app.organicmaps.sdk.Framework;
 import app.organicmaps.sdk.downloader.MapManager;
@@ -109,6 +110,8 @@ public class MapButtonsController extends Fragment
     mBottomButtonsFrame = mFrame.findViewById(R.id.map_buttons_bottom);
 
     final FloatingActionButton helpButton = mFrame.findViewById(R.id.help_button);
+    // Music transport sits above the zoom controls; no-op in layouts that don't include it.
+    MusicButtons.attach(mFrame, getViewLifecycleOwner());
     final View zoomFrame = mFrame.findViewById(R.id.zoom_buttons_container);
     mFrame.findViewById(R.id.nav_zoom_in)
         .setOnClickListener((v) -> mMapButtonClickListener.onMapButtonClick(MapButtons.zoomIn));

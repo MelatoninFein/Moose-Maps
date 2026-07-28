@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">Download has failed</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">Try Again</string>
-    <string name="about_menu_title">About Organic Maps</string>
+    <string name="about_menu_title">About Moose Maps</string>
     <!-- Text in About screen -->
     <string name="about_headline">Free for everyone, made with love</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">The app requires hardware accelerated OpenGL. Unfortunately, your device is not supported.</string>
     <string name="download">Download</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">Please disconnect USB cable or insert memory card to use Organic Maps</string>
+    <string name="disconnect_usb_cable">Please disconnect USB cable or insert memory card to use Moose Maps</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">Please free up some space on the SD card/USB storage first in order to use the app</string>
     <string name="download_resources">Before you start using the app, please download the world overview map to your device.\nIt will use %s of storage.</string>
@@ -151,8 +151,8 @@
     <!-- Notes field in Bookmarks view -->
     <string name="description">Notes</string>
     <!-- Email Subject when sharing bookmark list -->
-    <string name="share_bookmarks_email_subject">Organic Maps bookmarks were shared with you</string>
-    <string name="share_bookmarks_email_body">Hello!\n\nAttached are my bookmarks; please open them in Organic Maps. If you don\'t have it installed you can download it here: https://omaps.app/get?kmz\n\nEnjoy travelling with Organic Maps!</string>
+    <string name="share_bookmarks_email_subject">Moose Maps bookmarks were shared with you</string>
+    <string name="share_bookmarks_email_body">Hello!\n\nAttached are my bookmarks; please open them in Moose Maps. If you don\'t have it installed you can download it here: https://omaps.app/get?kmz\n\nEnjoy travelling with Moose Maps!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">Loading Bookmarks</string>
     <!-- Kmz file successful loading -->
@@ -161,7 +161,7 @@
     <string name="load_kmz_failed">Failed to load bookmarks. The file may be corrupted or defective.</string>
     <!-- Failed to recognize the format of a bookmarks or tracks file. -->
     <string name="unknown_file_type">The file type is not recognized by the app:\n%1$s</string>
-    <!-- Failed to open a bookmarks or tracks file in Organic Maps. -->
+    <!-- Failed to open a bookmarks or tracks file in Moose Maps. -->
     <string name="failed_to_open_file">Failed to open file %1$s\n\n%2$s</string>
     <!-- resource for context menu -->
     <string name="edit">Edit</string>
@@ -172,11 +172,11 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">Map download is in progress now.</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">Check out my current location in Organic Maps! %1$s or %2$s Don\'t have offline maps? Download here: https://omaps.app/get</string>
+    <string name="my_position_share_sms">Check out my current location in Moose Maps! %1$s or %2$s Don\'t have offline maps? Download here: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
-    <string name="bookmark_share_email_subject">Hey, check out my pin in Organic Maps!</string>
+    <string name="bookmark_share_email_subject">Hey, check out my pin in Moose Maps!</string>
     <!-- Subject for emailed position -->
-    <string name="my_position_share_email_subject">Hey, check out my current location on the Organic Maps map!</string>
+    <string name="my_position_share_email_subject">Hey, check out my current location on the Moose Maps map!</string>
     <!-- Share my position using EMail, %1$@ is om:// and %2$@ is https://omaps.app link WITHOUT NAME -->
     <string name="my_position_share_email">Hi,\n\nI\'m here now: %1$s. Click this link %2$s or this one %3$s to see the place on the map.\n\nThanks.</string>
     <!-- Share button text which opens menu with more buttons, like Message, EMail, Facebook etc. -->
@@ -252,7 +252,7 @@
     <string name="menu">Menu</string>
     <!-- Text in menu -->
     <string name="website">Website</string>
-    <!-- Text in About menu, opens Organic Maps news website -->
+    <!-- Text in About menu, opens Moose Maps news website -->
     <string name="news">News</string>
     <!-- Settings: Send feedback button and dialog title -->
     <string name="feedback">Feedback</string>
@@ -266,7 +266,7 @@
     <string name="donate">Donate</string>
     <string name="already_donated">Already donated</string>
     <string name="remind_me_later">Remind later</string>
-    <string name="support_organic_maps">Support Organic Maps</string>
+    <string name="support_organic_maps">Support Moose Maps</string>
     <!-- Button in the main Help dialog -->
     <string name="how_to_support_us">Support the project</string>
     <!-- Button in the main Help dialog -->
@@ -485,7 +485,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">Community-created OpenStreetMap data as of %s. Learn more about how to edit and update the map at OpenStreetMap.org</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) is a community project to build a free and open map. It\'s the main source of map data in Organic Maps and works similar to Wikipedia. You can add or edit places and they become available to millions of users all over the World.\nJoin the community and help to make a better map for everyone!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) is a community project to build a free and open map. It\'s the main source of map data in Moose Maps and works similar to Wikipedia. You can add or edit places and they become available to millions of users all over the World.\nJoin the community and help to make a better map for everyone!</string>
     <string name="login_to_make_edits_visible">Create an OpenStreetMap account or log in to publish your map edits to the world.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d of %2$d</string>
@@ -500,7 +500,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">Note to OpenStreetMap volunteers (optional)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Describe errors on the map or things that cannot be edited with Organic Maps</string>
+    <string name="editor_note_hint">Describe errors on the map or things that cannot be edited with Moose Maps</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Your edits are uploaded to the public <a href="https://wiki.openstreetmap.org/wiki/About_OpenStreetMap">OpenStreetMap</a> database. Please do not add personal or copyrighted information.</string>
     <string name="editor_more_about_osm">More about OpenStreetMap</string>
@@ -510,7 +510,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">Operator: %s</string>
     <string name="editor_category_unsuitable_title">Can\'t find a suitable category?</string>
-    <string name="editor_category_unsuitable_text">Organic Maps allows to add simple point categories only, that means no towns, roads, lakes, building outlines, etc. Please add such categories directly to <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Check our <a href="https://organicmaps.app/faq/editing/advanced-map-editing">guide</a> for detailed step by step instructions.</string>
+    <string name="editor_category_unsuitable_text">Moose Maps allows to add simple point categories only, that means no towns, roads, lakes, building outlines, etc. Please add such categories directly to <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Check our <a href="https://organicmaps.app/faq/editing/advanced-map-editing">guide</a> for detailed step by step instructions.</string>
     <string name="downloader_no_downloaded_maps_title">You haven\'t downloaded any maps</string>
     <string name="downloader_no_downloaded_maps_message">Download maps to search and navigate offline.</string>
     <string name="current_location_unknown_error_title">Current location is unknown.</string>
@@ -568,7 +568,7 @@
     <string name="mobile_data_option_ask">Always Ask</string>
     <string name="traffic_update_maps_text">To display traffic data, maps must be updated.</string>
     <string name="big_font">Increase size for map labels</string>
-    <string name="traffic_update_app">Please update Organic Maps</string>
+    <string name="traffic_update_app">Please update Moose Maps</string>
     <!-- "traffic" as in "road congestion" -->
     <string name="traffic_data_unavailable">Traffic data is not available</string>
     <string name="enable_logging">Enable logging</string>
@@ -817,9 +817,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">Our main goal is to build fast, privacy-focused, easy-to-use maps that you will love.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">You are now using Organic Maps on the phone screen</string>
+    <string name="car_used_on_the_phone_screen">You are now using Moose Maps on the phone screen</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">You are now using Organic Maps on the car screen</string>
+    <string name="car_used_on_the_car_screen">You are now using Moose Maps on the car screen</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">You are connected to Android Auto</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -827,7 +827,7 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">To the car screen</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">Organic Maps needs location access. When it\'s safe, check the notification on your phone.</string>
+    <string name="aa_location_permissions_request">Moose Maps needs location access. When it\'s safe, check the notification on your phone.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">This app needs your permission</string>
     <!-- Grant Permissions button. -->

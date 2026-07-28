@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">Downloaden is mislukt</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">Probeer opnieuw</string>
-    <string name="about_menu_title">Over Organic Maps</string>
+    <string name="about_menu_title">Over Moose Maps</string>
     <!-- Text in About screen -->
     <string name="about_headline">Gratis voor iedereen, met liefde gemaakt</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">Een hardware geaccellereerde OpenGL is nodig. Jammer genoeg wordt uw apparaat niet ondersteund.</string>
     <string name="download">Downloaden</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">Verwijder de USB-kabel of plaats een geheugenkaart om Organic Maps te gebruiken</string>
+    <string name="disconnect_usb_cable">Verwijder de USB-kabel of plaats een geheugenkaart om Moose Maps te gebruiken</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">Maak eerst ruimte vrij op de SD-kaart/USB-opslag om de app te gebruiken</string>
     <string name="download_resources">Voordat u start, laten we de algemene wereldkaart naar uw apparaat downloaden.\nDeze neemt %s in beslag.</string>
@@ -151,8 +151,8 @@
     <!-- Notes field in Bookmarks view -->
     <string name="description">Notities</string>
     <!-- Email Subject when sharing bookmark list -->
-    <string name="share_bookmarks_email_subject">Bladwijzers van Organic Maps zijn met u gedeeld</string>
-    <string name="share_bookmarks_email_body">Hallo!\n\nBijgesloten zijn mijn bladwijzers uit de Organic Maps app. Open ze als je Organic Maps geïnstalleerd hebt. Of, als je dat niet hebt, download de app hier: https://omaps.app/get?kmz\n\nGeniet van het reizen met Organic Maps!</string>
+    <string name="share_bookmarks_email_subject">Bladwijzers van Moose Maps zijn met u gedeeld</string>
+    <string name="share_bookmarks_email_body">Hallo!\n\nBijgesloten zijn mijn bladwijzers uit de Moose Maps app. Open ze als je Moose Maps geïnstalleerd hebt. Of, als je dat niet hebt, download de app hier: https://omaps.app/get?kmz\n\nGeniet van het reizen met Moose Maps!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">Bladwijzers worden geladen</string>
     <!-- Kmz file successful loading -->
@@ -161,7 +161,7 @@
     <string name="load_kmz_failed">Bladwijzers uploaden is mislukt. Het bestand is mogelijk beschadigd of defect.</string>
     <!-- Failed to recognize the format of a bookmarks or tracks file. -->
     <string name="unknown_file_type">Het bestandstype wordt niet herkend door de app:\n%1$s</string>
-    <!-- Failed to open a bookmarks or tracks file in Organic Maps. -->
+    <!-- Failed to open a bookmarks or tracks file in Moose Maps. -->
     <string name="failed_to_open_file">Bestand openen mislukt %1$s\n\n%2$s</string>
     <!-- resource for context menu -->
     <string name="edit">Wijzig</string>
@@ -172,11 +172,11 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">De kaart wordt nu gedownload.</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">Hey, kijk naar mijn huidige locatie op Organic Maps! %1$s of %2$s Heeft u geen offline-kaarten? Download ze hier: https://omaps.app/get</string>
+    <string name="my_position_share_sms">Hey, kijk naar mijn huidige locatie op Moose Maps! %1$s of %2$s Heeft u geen offline-kaarten? Download ze hier: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
-    <string name="bookmark_share_email_subject">Hey, bekijk mijn pin op Organic Maps!</string>
+    <string name="bookmark_share_email_subject">Hey, bekijk mijn pin op Moose Maps!</string>
     <!-- Subject for emailed position -->
-    <string name="my_position_share_email_subject">Hey, bekijk mijn huidige locatie op Organic Maps!</string>
+    <string name="my_position_share_email_subject">Hey, bekijk mijn huidige locatie op Moose Maps!</string>
     <!-- Share my position using EMail, %1$@ is om:// and %2$@ is https://omaps.app link WITHOUT NAME -->
     <string name="my_position_share_email">Hoi,\n\nMomenteel ben ik hier: %1$s. Klik op deze %2$s link of deze %3$s link om de plaats op de kaart te zien.\n\nBedankt.</string>
     <!-- Share button text which opens menu with more buttons, like Message, EMail, Facebook etc. -->
@@ -252,7 +252,7 @@
     <string name="menu">Menu</string>
     <!-- Text in menu -->
     <string name="website">Website</string>
-    <!-- Text in About menu, opens Organic Maps news website -->
+    <!-- Text in About menu, opens Moose Maps news website -->
     <string name="news">Nieuws</string>
     <!-- Settings: Send feedback button and dialog title -->
     <string name="feedback">Feedback</string>
@@ -266,7 +266,7 @@
     <string name="donate">Doneer</string>
     <string name="already_donated">Reeds gedoneerd</string>
     <string name="remind_me_later">Herinner later</string>
-    <string name="support_organic_maps">Ondersteun Organic Maps</string>
+    <string name="support_organic_maps">Ondersteun Moose Maps</string>
     <!-- Button in the main Help dialog -->
     <string name="how_to_support_us">Steun het project</string>
     <!-- Button in the main Help dialog -->
@@ -485,7 +485,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">Door de gemeenschap gemaakte OpenStreetMap-gegevens tot %s. Lees meer over hoe je de kaart kunt bewerken en bijwerken op OpenStreetMap.org</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) is een gemeenschapsproject om een vrije en open kaart te bouwen. Het is de belangrijkste bron van kaartgegevens in Organic Maps en werkt ongeveer hetzelfde als Wikipedia. U kunt plaatsen toevoegen of bewerken en deze worden dan beschikbaar voor miljoenen gebruikers over de hele wereld.\nSluit u aan bij de gemeenschap en help mee om een betere kaart voor iedereen te maken!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) is een gemeenschapsproject om een vrije en open kaart te bouwen. Het is de belangrijkste bron van kaartgegevens in Moose Maps en werkt ongeveer hetzelfde als Wikipedia. U kunt plaatsen toevoegen of bewerken en deze worden dan beschikbaar voor miljoenen gebruikers over de hele wereld.\nSluit u aan bij de gemeenschap en help mee om een betere kaart voor iedereen te maken!</string>
     <string name="login_to_make_edits_visible">Maak een OpenStreetMap account aan of log in om uw kaartbewerkingen voor de wereld te publiceren.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d van %2$d</string>
@@ -500,7 +500,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">Opmerking voor OpenStreetMap vrijwilligers (optioneel)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Beschrijf fouten op de kaart of dingen die niet bewerkt kunnen worden met Organic Maps</string>
+    <string name="editor_note_hint">Beschrijf fouten op de kaart of dingen die niet bewerkt kunnen worden met Moose Maps</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Uw bewerkingen worden geüpload naar de openbare <a href="https://wiki.openstreetmap.org/wiki/NL:About">OpenStreetMap</a> database. Voeg geen persoonlijke of auteursrechtelijk beschermde informatie toe.</string>
     <string name="editor_more_about_osm">Meer over OpenStreetMap</string>
@@ -510,7 +510,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">Exploitant: %s</string>
     <string name="editor_category_unsuitable_title">Kun je geen geschikte categorie vinden?</string>
-    <string name="editor_category_unsuitable_text">Met Organic Maps kun je alleen eenvoudige puntcategorieën toevoegen, dus geen steden, wegen, meren, contouren van gebouwen, enzovoort. Voeg zulke categorieën direct toe aan <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Bekijk onze <a href="https://organicmaps.app/faq/editing/advanced-map-editing">gids</a> voor gedetailleerde stap voor stap instructies.</string>
+    <string name="editor_category_unsuitable_text">Met Moose Maps kun je alleen eenvoudige puntcategorieën toevoegen, dus geen steden, wegen, meren, contouren van gebouwen, enzovoort. Voeg zulke categorieën direct toe aan <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Bekijk onze <a href="https://organicmaps.app/faq/editing/advanced-map-editing">gids</a> voor gedetailleerde stap voor stap instructies.</string>
     <string name="downloader_no_downloaded_maps_title">U hebt geen kaarten gedownload</string>
     <string name="downloader_no_downloaded_maps_message">Download kaarten om een locatie te zoeken en offline te navigeren.</string>
     <string name="current_location_unknown_error_title">Huidige locatie is onbekend.</string>
@@ -568,7 +568,7 @@
     <string name="mobile_data_option_ask">Vraag altijd</string>
     <string name="traffic_update_maps_text">Om verkeersgegevens weer te geven, moeten de kaarten bijgewerkt worden.</string>
     <string name="big_font">Vergroot lettergrootte op de kaart</string>
-    <string name="traffic_update_app">Gelieve Organic Maps bij te werken</string>
+    <string name="traffic_update_app">Gelieve Moose Maps bij te werken</string>
     <!-- "traffic" as in "road congestion" -->
     <string name="traffic_data_unavailable">Verkeersgegevens zijn niet beschikbaar</string>
     <string name="enable_logging">Logboekregistratie inschakelen</string>
@@ -672,7 +672,7 @@
     <string name="bookmarks_text_placement_description">Wanneer er teveel markeringen zijn, kan weergave van de namen op de map vertragen.</string>
     <string name="show_to_the_right">Rechts weergeven</string>
     <string name="show_at_the_bottom">Onderaan weergeven</string>
-    <string name="enable_logging_warning_message">Schakel deze optie tijdelijk in om gedetailleerde logboekregistraties omtrent jouw probleem op te slaan en te verzenden tijdens \" Rapporteer een probleem\" in het help menu. Schakel deze optie alleen in op verzoek van Organic Maps ondersteuning.</string>
+    <string name="enable_logging_warning_message">Schakel deze optie tijdelijk in om gedetailleerde logboekregistraties omtrent jouw probleem op te slaan en te verzenden tijdens \" Rapporteer een probleem\" in het help menu. Schakel deze optie alleen in op verzoek van Moose Maps ondersteuning.</string>
     <string name="driving_options_title">Route instellingen</string>
     <!-- Recommended length for CarPlay and Android Auto is around 25-27 characters -->
     <string name="avoid_tolls">Vermijd tolwegen</string>
@@ -820,9 +820,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">Ons belangrijkste doel is om snelle, op privacy gerichte, gebruiksvriendelijke kaarten te maken waar u dol op zult zijn.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">Je gebruikt nu Organic Maps op het telefoonscherm</string>
+    <string name="car_used_on_the_phone_screen">Je gebruikt nu Moose Maps op het telefoonscherm</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">Je gebruikt nu Organic Maps op het autoscherm</string>
+    <string name="car_used_on_the_car_screen">Je gebruikt nu Moose Maps op het autoscherm</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">Je bent verbonden met Android Auto</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -830,7 +830,7 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">Naar het autoscherm</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">Organic Maps heeft locatietoegang nodig. Als het veilig is, controleer je de melding op je telefoon.</string>
+    <string name="aa_location_permissions_request">Moose Maps heeft locatietoegang nodig. Als het veilig is, controleer je de melding op je telefoon.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Deze app heeft je toestemming nodig</string>
     <!-- Grant Permissions button. -->

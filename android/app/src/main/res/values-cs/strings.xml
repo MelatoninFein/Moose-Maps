@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">Stahování selhalo</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">Zkusit znovu</string>
-    <string name="about_menu_title">O aplikaci Organic Maps</string>
+    <string name="about_menu_title">O aplikaci Moose Maps</string>
     <!-- Text in About screen -->
     <string name="about_headline">Zdarma pro všechny, vyrobené s láskou</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">Je vyžadována hardwarová akcelerace OpenGL. Bohužel, vaše zařízení není podporováno.</string>
     <string name="download">Stáhnout</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">Prosím, odpojte USB kabel nebo vložte paměťovou kartu pro použití s Organic Maps</string>
+    <string name="disconnect_usb_cable">Prosím, odpojte USB kabel nebo vložte paměťovou kartu pro použití s Moose Maps</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">Prosím, uvolněte nejprve místo na SD kartě/USB uložišti</string>
     <string name="download_resources">Ještě než začnete, bude třeba stáhnout obecnou mapu světa.\nZabere to %s.</string>
@@ -151,8 +151,8 @@
     <!-- Notes field in Bookmarks view -->
     <string name="description">Poznámky</string>
     <!-- Email Subject when sharing bookmark list -->
-    <string name="share_bookmarks_email_subject">Sdílené záložky Organic Maps</string>
-    <string name="share_bookmarks_email_body">Ahoj!\n\nV příloze najdeš mé záložky; otevři je v aplikaci Organic Maps. Pokud ji nemáš nainstalovanou, můžeš si ji stáhnout zde: https://omaps.app/get?kmz \n\nUžij si cestování s Organic Maps!</string>
+    <string name="share_bookmarks_email_subject">Sdílené záložky Moose Maps</string>
+    <string name="share_bookmarks_email_body">Ahoj!\n\nV příloze najdeš mé záložky; otevři je v aplikaci Moose Maps. Pokud ji nemáš nainstalovanou, můžeš si ji stáhnout zde: https://omaps.app/get?kmz \n\nUžij si cestování s Moose Maps!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">Nahrávání záložek</string>
     <!-- Kmz file successful loading -->
@@ -161,7 +161,7 @@
     <string name="load_kmz_failed">Nahrávání záložek se nezdařilo. Soubor může být poškozený nebo vadný.</string>
     <!-- Failed to recognize the format of a bookmarks or tracks file. -->
     <string name="unknown_file_type">Typ souboru není aplikací rozpoznán:\n%1$s</string>
-    <!-- Failed to open a bookmarks or tracks file in Organic Maps. -->
+    <!-- Failed to open a bookmarks or tracks file in Moose Maps. -->
     <string name="failed_to_open_file">Nepodařilo se otevřít soubor %1$s\n\n%2$s</string>
     <!-- resource for context menu -->
     <string name="edit">Upravit</string>
@@ -172,11 +172,11 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">Právě probíhá stahování země.</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">Podívej se na mojí polohu v Organic Maps! %1$s nebo %2$s Nemáš offline mapy? Stáhni si je zde: https://omaps.app/get</string>
+    <string name="my_position_share_sms">Podívej se na mojí polohu v Moose Maps! %1$s nebo %2$s Nemáš offline mapy? Stáhni si je zde: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
-    <string name="bookmark_share_email_subject">Koukni na mojí značku na mapě v Organic Maps!</string>
+    <string name="bookmark_share_email_subject">Koukni na mojí značku na mapě v Moose Maps!</string>
     <!-- Subject for emailed position -->
-    <string name="my_position_share_email_subject">Podívej se na mou aktuální polohu na mapě v Organic Maps!</string>
+    <string name="my_position_share_email_subject">Podívej se na mou aktuální polohu na mapě v Moose Maps!</string>
     <!-- Share my position using EMail, %1$@ is om:// and %2$@ is https://omaps.app link WITHOUT NAME -->
     <string name="my_position_share_email">Ahoj,\n\nPrávě jsem tady: %1$s. Klepni na jeden z těchto odkazů %2$s, %3$s a uvidíš toto místo na mapě.\n\nDíky.</string>
     <!-- Share button text which opens menu with more buttons, like Message, EMail, Facebook etc. -->
@@ -252,7 +252,7 @@
     <string name="menu">Nabídka</string>
     <!-- Text in menu -->
     <string name="website">Webové stránky</string>
-    <!-- Text in About menu, opens Organic Maps news website -->
+    <!-- Text in About menu, opens Moose Maps news website -->
     <string name="news">Novinky</string>
     <!-- Settings: Send feedback button and dialog title -->
     <string name="feedback">Zpětná vazba</string>
@@ -266,7 +266,7 @@
     <string name="donate">Darovat</string>
     <string name="already_donated">Již darováno</string>
     <string name="remind_me_later">Připomeň později</string>
-    <string name="support_organic_maps">Podpořit Organic Maps</string>
+    <string name="support_organic_maps">Podpořit Moose Maps</string>
     <!-- Button in the main Help dialog -->
     <string name="how_to_support_us">Podpořte projekt</string>
     <!-- Button in the main Help dialog -->
@@ -485,7 +485,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">Data OpenStreetMap vytvořená komunitou ke dni %s. Další informace o tom, jak upravovat a aktualizovat mapu, najdete na stránkách OpenStreetMap.org</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) je komunitní projekt, jehož cílem je vytvořit svobodnou a otevřenou mapu. Je hlavním zdrojem mapových dat v aplikaci Organic Maps a funguje podobně jako Wikipedie. Můžete přidávat nebo upravovat místa a ta se pak stanou dostupná milionům uživatelů po celém světě.\nPřipojte se ke komunitě a pomozte vytvořit lepší mapu pro všechny!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) je komunitní projekt, jehož cílem je vytvořit svobodnou a otevřenou mapu. Je hlavním zdrojem mapových dat v aplikaci Moose Maps a funguje podobně jako Wikipedie. Můžete přidávat nebo upravovat místa a ta se pak stanou dostupná milionům uživatelů po celém světě.\nPřipojte se ke komunitě a pomozte vytvořit lepší mapu pro všechny!</string>
     <string name="login_to_make_edits_visible">Vytvořte si účet OpenStreetMap nebo se přihlaste a zveřejněte své úpravy mapy celému světu.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d z %2$d</string>
@@ -500,7 +500,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">Poznámka pro dobrovolníky OpenStreetMap (nepovinné)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Popište chyby na mapě nebo věci, které nelze upravit pomocí aplikace Organic Maps</string>
+    <string name="editor_note_hint">Popište chyby na mapě nebo věci, které nelze upravit pomocí aplikace Moose Maps</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Vaše úpravy se nahrají do veřejné databáze <a href="https://wiki.openstreetmap.org/wiki/Cs:Co_je_OpenStreetMap">OpenStreetMap</a>. Nepřidávejte prosím osobní informace nebo informace chráněné autorskými právy.</string>
     <string name="editor_more_about_osm">Další informace o projektu OpenStreetMap</string>
@@ -510,7 +510,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">Operátor: %s</string>
     <string name="editor_category_unsuitable_title">Nemůžete najít vhodnou kategorii?</string>
-    <string name="editor_category_unsuitable_text">Organic Maps umožňuje přidávat pouze jednoduché bodové kategorie, to znamená žádná města, silnice, jezera, obrysy budov atd. Tyto kategorie prosím přidávejte přímo na <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Podrobný návod krok za krokem najdete v našem <a href="https://organicmaps.app/faq/editing/advanced-map-editing">průvodci</a>.</string>
+    <string name="editor_category_unsuitable_text">Moose Maps umožňuje přidávat pouze jednoduché bodové kategorie, to znamená žádná města, silnice, jezera, obrysy budov atd. Tyto kategorie prosím přidávejte přímo na <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Podrobný návod krok za krokem najdete v našem <a href="https://organicmaps.app/faq/editing/advanced-map-editing">průvodci</a>.</string>
     <string name="downloader_no_downloaded_maps_title">Nemáte stažené žádné mapy</string>
     <string name="downloader_no_downloaded_maps_message">Stáhněte si mapy a hledejte cestu a její cíl, i když jste offline.</string>
     <string name="current_location_unknown_error_title">Současná poloha nezjištěna.</string>
@@ -568,7 +568,7 @@
     <string name="mobile_data_option_ask">Vždy se zeptat</string>
     <string name="traffic_update_maps_text">Pro zobrazení údajů o provozu je nutné aktualizovat mapy.</string>
     <string name="big_font">Zvětšit velikost písma na mapě</string>
-    <string name="traffic_update_app">Aktualizujte Organic Maps</string>
+    <string name="traffic_update_app">Aktualizujte Moose Maps</string>
     <!-- "traffic" as in "road congestion" -->
     <string name="traffic_data_unavailable">Data o provozu nejsou k dispozici</string>
     <string name="enable_logging">Povolit protokolování</string>
@@ -823,9 +823,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">Naším hlavním cílem je vytvářet rychlé, na soukromí zaměřené a snadno použitelné mapy, které si zamilujete.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">Na obrazovce telefonu nyní používáte aplikaci Organic Maps</string>
+    <string name="car_used_on_the_phone_screen">Na obrazovce telefonu nyní používáte aplikaci Moose Maps</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">Na obrazovce auta nyní používáte aplikaci Organic Maps</string>
+    <string name="car_used_on_the_car_screen">Na obrazovce auta nyní používáte aplikaci Moose Maps</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">Jste připojeni ke službě Android Auto</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -833,7 +833,7 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">Na obrazovku auta</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">Služba Organic Maps potřebuje přístup k poloze. Když je to bezpečné, zkontrolujte oznámení v telefonu.</string>
+    <string name="aa_location_permissions_request">Služba Moose Maps potřebuje přístup k poloze. Když je to bezpečné, zkontrolujte oznámení v telefonu.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Tato aplikace potřebuje vaše povolení</string>
     <!-- Grant Permissions button. -->

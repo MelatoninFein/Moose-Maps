@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">Hentning mislykket</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">Prøv igen</string>
-    <string name="about_menu_title">Om Organic Maps</string>
+    <string name="about_menu_title">Om Moose Maps</string>
     <!-- Text in About screen -->
     <string name="about_headline">Gratis for alle, lavet med kærlighed</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">Appen kræver hardwareaccelereret OpenGL. Din enhed er desværre ikke understøttet.</string>
     <string name="download">Hent</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">Frakobl venligst USB-kabel, eller indsæt et hukommelseskort for at bruge Organic Maps</string>
+    <string name="disconnect_usb_cable">Frakobl venligst USB-kabel, eller indsæt et hukommelseskort for at bruge Moose Maps</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">Frigør først noget plads på dit SD-kort/USB lager for at bruge denne app</string>
     <string name="download_resources">Før du begynder at bruge appen, skal du hente oversigtskortet over verden til din enhed.\nDet vil bruge %s lagerplads.</string>
@@ -151,8 +151,8 @@
     <!-- Notes field in Bookmarks view -->
     <string name="description">Noter</string>
     <!-- Email Subject when sharing bookmark list -->
-    <string name="share_bookmarks_email_subject">Organic Maps bogmærker er blevet delt med dig</string>
-    <string name="share_bookmarks_email_body">Hej!\n\nVedhæftet er mine bogmærker; åbn dem venligst i Organic Maps. Hvis du ikke har den installeret, kan du downloade den her: https://omaps.app/get?kmz\n \nGod rejse med Organic Maps!</string>
+    <string name="share_bookmarks_email_subject">Moose Maps bogmærker er blevet delt med dig</string>
+    <string name="share_bookmarks_email_body">Hej!\n\nVedhæftet er mine bogmærker; åbn dem venligst i Moose Maps. Hvis du ikke har den installeret, kan du downloade den her: https://omaps.app/get?kmz\n \nGod rejse med Moose Maps!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">Indlæser bogmærker</string>
     <!-- Kmz file successful loading -->
@@ -161,7 +161,7 @@
     <string name="load_kmz_failed">Bogmærkerne kunne ikke indlæses. Filen kan være skadet eller defekt.</string>
     <!-- Failed to recognize the format of a bookmarks or tracks file. -->
     <string name="unknown_file_type">Filtypen genkendes ikke af appen:\n%1$s</string>
-    <!-- Failed to open a bookmarks or tracks file in Organic Maps. -->
+    <!-- Failed to open a bookmarks or tracks file in Moose Maps. -->
     <string name="failed_to_open_file">Kunne ikke åbne filen %1$s\n\n%2$s</string>
     <!-- resource for context menu -->
     <string name="edit">Rediger</string>
@@ -172,11 +172,11 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">Download af kort er i gang nu.</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">Hey, tjek min nuværende placering på Organic Maps! %1$s eller %2$s. Har du ikke offline kort? Download her: https://omaps.app/get</string>
+    <string name="my_position_share_sms">Hey, tjek min nuværende placering på Moose Maps! %1$s eller %2$s. Har du ikke offline kort? Download her: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
-    <string name="bookmark_share_email_subject">Hey, tjek min knappenål på Organic Maps!</string>
+    <string name="bookmark_share_email_subject">Hey, tjek min knappenål på Moose Maps!</string>
     <!-- Subject for emailed position -->
-    <string name="my_position_share_email_subject">Hey, tjek min nuværende placering på Organic Maps-kortet!</string>
+    <string name="my_position_share_email_subject">Hey, tjek min nuværende placering på Moose Maps-kortet!</string>
     <!-- Share my position using EMail, %1$@ is om:// and %2$@ is https://omaps.app link WITHOUT NAME -->
     <string name="my_position_share_email">Hej,\n\nJeg er her nu: %1$s. Tryk på dette link %2$s eller dette %3$s for at se stedet på kortet. \n\nTak.</string>
     <!-- Share button text which opens menu with more buttons, like Message, EMail, Facebook etc. -->
@@ -252,7 +252,7 @@
     <string name="menu">Menu</string>
     <!-- Text in menu -->
     <string name="website">Hjemmeside</string>
-    <!-- Text in About menu, opens Organic Maps news website -->
+    <!-- Text in About menu, opens Moose Maps news website -->
     <string name="news">Nyheder</string>
     <!-- Settings: Send feedback button and dialog title -->
     <string name="feedback">Feedback</string>
@@ -266,7 +266,7 @@
     <string name="donate">Doner</string>
     <string name="already_donated">Allerede doneret</string>
     <string name="remind_me_later">Påmind mig senere</string>
-    <string name="support_organic_maps">Støt Organic Maps</string>
+    <string name="support_organic_maps">Støt Moose Maps</string>
     <!-- Button in the main Help dialog -->
     <string name="how_to_support_us">Støt projektet</string>
     <!-- Button in the main Help dialog -->
@@ -485,7 +485,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">Fællesskabsskabte OpenStreetMap-data fra %s. Få mere at vide om, hvordan du redigerer og opdaterer kortet på OpenStreetMap.org</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) er et fællesskabsprojekt til opbygning af et gratis og åbent kort. Det er hovedkilden til kortdata i Organic Maps og fungerer på samme måde som Wikipedia. Du kan tilføje eller redigere steder, og de bliver tilgængelige for millioner af brugere over hele verden.\nSlut dig til fællesskabet og vær med til at skabe et bedre kort for alle!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) er et fællesskabsprojekt til opbygning af et gratis og åbent kort. Det er hovedkilden til kortdata i Moose Maps og fungerer på samme måde som Wikipedia. Du kan tilføje eller redigere steder, og de bliver tilgængelige for millioner af brugere over hele verden.\nSlut dig til fællesskabet og vær med til at skabe et bedre kort for alle!</string>
     <string name="login_to_make_edits_visible">Opret en OpenStreetMap-konto eller log ind for at offentliggøre dine kortredigeringer til hele verden.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d af %2$d</string>
@@ -500,7 +500,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">Note til OpenStreetMap-frivillige (valgfrit)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Beskriv fejl på kortet eller ting, der ikke kan redigeres med Organic Maps</string>
+    <string name="editor_note_hint">Beskriv fejl på kortet eller ting, der ikke kan redigeres med Moose Maps</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Dine ændringer uploades til den offentlige <a href="https://wiki.openstreetmap.org/wiki/Da:Om_OpenStreetMap">OpenStreetMap</a>-database. Tilføj venligst ikke personlige eller ophavsretligt beskyttede oplysninger.</string>
     <string name="editor_more_about_osm">Mere om OpenStreetMap</string>
@@ -510,7 +510,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">Operatør: %s</string>
     <string name="editor_category_unsuitable_title">Kan du ikke finde en passende kategori?</string>
-    <string name="editor_category_unsuitable_text">Organic Maps giver kun mulighed for at tilføje simple punktkategorier, dvs. ingen byer, veje, søer, bygningsomrids osv. Tilføj sådanne kategorier direkte til <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Se vores <a href="https://organicmaps.app/faq/editing/advanced-map-editing">guide</a> for detaljerede trin for trin-instruktioner.</string>
+    <string name="editor_category_unsuitable_text">Moose Maps giver kun mulighed for at tilføje simple punktkategorier, dvs. ingen byer, veje, søer, bygningsomrids osv. Tilføj sådanne kategorier direkte til <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Se vores <a href="https://organicmaps.app/faq/editing/advanced-map-editing">guide</a> for detaljerede trin for trin-instruktioner.</string>
     <string name="downloader_no_downloaded_maps_title">Du har ikke downloadet nogen kort</string>
     <string name="downloader_no_downloaded_maps_message">Download kort for at søge og navigere offline.</string>
     <string name="current_location_unknown_error_title">Aktuel placering er ukendt.</string>
@@ -568,7 +568,7 @@
     <string name="mobile_data_option_ask">Spørg altid</string>
     <string name="traffic_update_maps_text">Kort skal opdateres for at vise trafikdata.</string>
     <string name="big_font">Forøg størrelsen på kortetiketter</string>
-    <string name="traffic_update_app">Opdater Organic Maps</string>
+    <string name="traffic_update_app">Opdater Moose Maps</string>
     <!-- "traffic" as in "road congestion" -->
     <string name="traffic_data_unavailable">Trafikdata er ikke tilgængelige</string>
     <string name="enable_logging">Aktiver logføring</string>
@@ -815,9 +815,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">Vores hovedmål er at bygge hurtige, privatlivsfokuserede, brugervenlige kort, som du vil elske.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">Du bruger nu Organic Maps på telefonens skærm</string>
+    <string name="car_used_on_the_phone_screen">Du bruger nu Moose Maps på telefonens skærm</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">Du bruger nu Organic Maps på bilens skærm</string>
+    <string name="car_used_on_the_car_screen">Du bruger nu Moose Maps på bilens skærm</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">Du er forbundet til Android Auto</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -825,7 +825,7 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">Til bilens skærm</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">Organic Maps har brug for placeringsadgang. Når det er sikkert, kan du tjekke notifikationen på din telefon.</string>
+    <string name="aa_location_permissions_request">Moose Maps har brug for placeringsadgang. Når det er sikkert, kan du tjekke notifikationen på din telefon.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Denne app har brug for din tilladelse</string>
     <!-- Grant Permissions button. -->

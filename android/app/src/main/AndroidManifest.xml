@@ -67,14 +67,11 @@
       android:usesPermissionFlags="neverForLocation"
       tools:targetApi="s" />
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-  <!-- Keeps sensor connections alive while the map is backgrounded or in picture-in-picture. -->
+  <!-- Keeps sensor connections alive while the map is in the background. -->
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
 
   <uses-feature
       android:name="android.hardware.bluetooth_le"
-      android:required="false"/>
-  <uses-feature
-      android:name="android.software.picture_in_picture"
       android:required="false"/>
 
   <queries>
@@ -90,7 +87,7 @@
       <data android:scheme="https" />
     </intent>
     <!--
-      Package visibility for the "open your player" shortcuts in the music panel. Declared as a
+      Package visibility for launching a music app from the map. Declared as a
       category query rather than a list of package names so every installed music app is offered -
       YouTube Music, TIDAL, Qobuz, Spotify, Poweramp and anything else - instead of only the ones
       this app happens to know about.
@@ -474,18 +471,11 @@
       </intent-filter>
     </activity-alias>
 
-    <!--
-      supportsPictureInPicture lets the map shrink into a floating window while the rider uses
-      another app. The extra configChanges are required rather than cosmetic: entering or leaving
-      PiP is a configuration change, and without handling it here the activity would be destroyed
-      and recreated - tearing down and reinitialising the Drape GL surface every time.
-    //-->
     <activity
         android:name="app.organicmaps.MwmActivity"
         android:theme="@style/MwmTheme.MainActivity"
         android:launchMode="singleTask"
-        android:supportsPictureInPicture="true"
-        android:configChanges="uiMode|orientation|screenSize|smallestScreenSize|screenLayout"
+        android:configChanges="uiMode"
         android:screenOrientation="fullUser"
         android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
 

@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">下载失败</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">再试一次</string>
-    <string name="about_menu_title">关于 Organic Maps</string>
+    <string name="about_menu_title">关于 Moose Maps</string>
     <!-- Text in About screen -->
     <string name="about_headline">对每个人都免费，用爱制成</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">该应用程序需要硬件加速的 OpenGL。很遗憾，您的设备不受支持。</string>
     <string name="download">下载</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">请拔除 USB 线或插入 SD 卡以使用 Organic Maps</string>
+    <string name="disconnect_usb_cable">请拔除 USB 线或插入 SD 卡以使用 Moose Maps</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">请先释放一些 SD 卡 / USB 存储空间以使用本应用</string>
     <string name="download_resources">在您开始使用此应用程序之前，请下载全球地图到您的设备。\n它将使用 %s 的存储空间。</string>
@@ -151,8 +151,8 @@
     <!-- Notes field in Bookmarks view -->
     <string name="description">注释</string>
     <!-- Email Subject when sharing bookmark list -->
-    <string name="share_bookmarks_email_subject">已与您分享 Organic Maps 书签</string>
-    <string name="share_bookmarks_email_body">您好！\n\n附件是我的书签，请在 Organic Maps 中打开。如果您没有安装 Organic Maps，可以在这里下载: https://omaps.app/get?kmz\n\n祝您使用 Organic Maps 旅行愉快！</string>
+    <string name="share_bookmarks_email_subject">已与您分享 Moose Maps 书签</string>
+    <string name="share_bookmarks_email_body">您好！\n\n附件是我的书签，请在 Moose Maps 中打开。如果您没有安装 Moose Maps，可以在这里下载: https://omaps.app/get?kmz\n\n祝您使用 Moose Maps 旅行愉快！</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">正在加载书签</string>
     <!-- Kmz file successful loading -->
@@ -161,7 +161,7 @@
     <string name="load_kmz_failed">书签载入失败，文件可能已损坏或不完整。</string>
     <!-- Failed to recognize the format of a bookmarks or tracks file. -->
     <string name="unknown_file_type">应用程序无法识别该文件类型：\n%1$s</string>
-    <!-- Failed to open a bookmarks or tracks file in Organic Maps. -->
+    <!-- Failed to open a bookmarks or tracks file in Moose Maps. -->
     <string name="failed_to_open_file">无法打开文件 %1$s\n\n%2$s</string>
     <!-- resource for context menu -->
     <string name="edit">编辑</string>
@@ -172,11 +172,11 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">地图下载进行中。</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">嘿，在 Organic Maps 上查看我目前的位置吧！请打开 %1$s 或 %2$s 链接，还没安装离线地图？在此下载: https://omaps.app/get</string>
+    <string name="my_position_share_sms">嘿，在 Moose Maps 上查看我目前的位置吧！请打开 %1$s 或 %2$s 链接，还没安装离线地图？在此下载: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
-    <string name="bookmark_share_email_subject">嘿，看看我在 Organic Maps 上标记的图钉吧！</string>
+    <string name="bookmark_share_email_subject">嘿，看看我在 Moose Maps 上标记的图钉吧！</string>
     <!-- Subject for emailed position -->
-    <string name="my_position_share_email_subject">嗨，到 Organic Maps 查看我当前的位置！</string>
+    <string name="my_position_share_email_subject">嗨，到 Moose Maps 查看我当前的位置！</string>
     <!-- Share my position using EMail, %1$@ is om:// and %2$@ is https://omaps.app link WITHOUT NAME -->
     <string name="my_position_share_email">嗨，\n\n我现在在这：%1$s。点击此链接 %2$s 或此链接 %3$s 来查看在地图上的位置。\n\n谢谢。</string>
     <!-- Share button text which opens menu with more buttons, like Message, EMail, Facebook etc. -->
@@ -252,7 +252,7 @@
     <string name="menu">菜单</string>
     <!-- Text in menu -->
     <string name="website">网站</string>
-    <!-- Text in About menu, opens Organic Maps news website -->
+    <!-- Text in About menu, opens Moose Maps news website -->
     <string name="news">新闻</string>
     <!-- Settings: Send feedback button and dialog title -->
     <string name="feedback">反馈</string>
@@ -266,7 +266,7 @@
     <string name="donate">捐助我们</string>
     <string name="already_donated">已捐赠</string>
     <string name="remind_me_later">稍后提醒</string>
-    <string name="support_organic_maps">支持 Organic Maps</string>
+    <string name="support_organic_maps">支持 Moose Maps</string>
     <!-- Button in the main Help dialog -->
     <string name="how_to_support_us">支持本项目</string>
     <!-- Button in the main Help dialog -->
@@ -485,7 +485,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">截至 %s 的社区创建的 OpenStreetMap 数据。请访问 OpenStreetMap.org 详细了解如何编辑和更新地图</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org（OSM）是一个构建自由开放地图的社区项目。它是 Organic Maps 地图数据的主要来源，其工作原理类似于维基百科。您可以添加或编辑地点，全世界数以百万计的用户都可以使用它们！\n加入社区，共同完善地图数据，造福每个人！</string>
+    <string name="login_osm_presentation">OpenStreetMap.org（OSM）是一个构建自由开放地图的社区项目。它是 Moose Maps 地图数据的主要来源，其工作原理类似于维基百科。您可以添加或编辑地点，全世界数以百万计的用户都可以使用它们！\n加入社区，共同完善地图数据，造福每个人！</string>
     <string name="login_to_make_edits_visible">创建 OpenStreetMap 账号或登录，向全世界发布您编辑的地图。</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d / %2$d</string>
@@ -500,7 +500,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">OpenStreetMap 志愿者须知（可选）</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">描述地图上的错误或无法使用 Organic Maps 编辑的内容</string>
+    <string name="editor_note_hint">描述地图上的错误或无法使用 Moose Maps 编辑的内容</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">您的编辑内容将上传到公共<a href="https://wiki.openstreetmap.org/wiki/Zh-hans:关于">OpenStreetMap</a>数据库。请勿添加个人或受版权保护的信息。</string>
     <string name="editor_more_about_osm">关于 OpenStreetMap 的更多信息</string>
@@ -510,7 +510,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">运营方: %s</string>
     <string name="editor_category_unsuitable_title">找不到合适的类别？</string>
-    <string name="editor_category_unsuitable_text">Organic Maps 只允许添加简单的点类别，即无法添加城镇、道路、湖泊、建筑轮廓等类别。请直接向 <a href="https://www.openstreetmap.org">OpenStreetMap.org</a> 添加此类类别。请查看我们的<a href="https://organicmaps.app/faq/editing/advanced-map-editing">指南</a>，了解详细的步骤说明。</string>
+    <string name="editor_category_unsuitable_text">Moose Maps 只允许添加简单的点类别，即无法添加城镇、道路、湖泊、建筑轮廓等类别。请直接向 <a href="https://www.openstreetmap.org">OpenStreetMap.org</a> 添加此类类别。请查看我们的<a href="https://organicmaps.app/faq/editing/advanced-map-editing">指南</a>，了解详细的步骤说明。</string>
     <string name="downloader_no_downloaded_maps_title">您尚未下载任何地图</string>
     <string name="downloader_no_downloaded_maps_message">下载地图来查找位置和离线浏览。</string>
     <string name="current_location_unknown_error_title">当前位置未知。</string>
@@ -568,7 +568,7 @@
     <string name="mobile_data_option_ask">总是询问</string>
     <string name="traffic_update_maps_text">若要显示交通数据，必须更新地图。</string>
     <string name="big_font">增大地图上的字体大小</string>
-    <string name="traffic_update_app">请更新 Organic Maps</string>
+    <string name="traffic_update_app">请更新 Moose Maps</string>
     <!-- "traffic" as in "road congestion" -->
     <string name="traffic_data_unavailable">交通数据不可用</string>
     <string name="enable_logging">启用日志记录</string>
@@ -818,9 +818,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">我们的主要目标是构建您会喜欢的快速、注重隐私、易于使用的地图。</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">您现在正在手机屏幕上使用 Organic Maps</string>
+    <string name="car_used_on_the_phone_screen">您现在正在手机屏幕上使用 Moose Maps</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">您现在正在汽车屏幕上使用 Organic Maps</string>
+    <string name="car_used_on_the_car_screen">您现在正在汽车屏幕上使用 Moose Maps</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">您已连接到 Android Auto</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -828,7 +828,7 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">转到汽车屏幕</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">Organic Maps 需要位置访问权限。在安全的情况下，请查看手机上的通知。</string>
+    <string name="aa_location_permissions_request">Moose Maps 需要位置访问权限。在安全的情况下，请查看手机上的通知。</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">此应用程序需要您的许可</string>
     <!-- Grant Permissions button. -->

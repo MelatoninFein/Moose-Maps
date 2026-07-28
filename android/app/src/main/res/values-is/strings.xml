@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">Mistókst að sækja</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">Reyndu aftur</string>
-    <string name="about_menu_title">Um Organic Maps</string>
+    <string name="about_menu_title">Um Moose Maps</string>
     <!-- Text in About screen -->
     <string name="about_headline">Ókeypis fyrir alla, unnið af alúð</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">Forritið krefst OpenGL-vélbúnaðarhröðunar. Því miður er tækið þitt ekki stutt.</string>
     <string name="download">Sækja</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">Aftengdu USB-kapal eða settu inn minniskort til að nota Organic Maps</string>
+    <string name="disconnect_usb_cable">Aftengdu USB-kapal eða settu inn minniskort til að nota Moose Maps</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">Losaðu fyrst um eitthvað pláss á SD-minniskorti/USB-geymslu til að nota forritið</string>
     <string name="download_resources">Áður en þú byrjar skaltu sækja heims-yfirlitskortið yfir á tækið þitt.\nÞað mun nota %s af tiltæku minni.</string>
@@ -151,8 +151,8 @@
     <!-- Notes field in Bookmarks view -->
     <string name="description">Minnispunktar</string>
     <!-- Email Subject when sharing bookmark list -->
-    <string name="share_bookmarks_email_subject">Organic Maps bókamerkjum var deilt með þér</string>
-    <string name="share_bookmarks_email_body">Halló!\n\nMeðfylgjandi eru bókamerkin mín; endilega opnaðu þau í Organic Maps forritinu. Ef þú ert ekki með það uppsett geturðu sótt það hér: https://omaps.app/get?kmz \n\nNjóttu ferðarinnar með Organic Maps!</string>
+    <string name="share_bookmarks_email_subject">Moose Maps bókamerkjum var deilt með þér</string>
+    <string name="share_bookmarks_email_body">Halló!\n\nMeðfylgjandi eru bókamerkin mín; endilega opnaðu þau í Moose Maps forritinu. Ef þú ert ekki með það uppsett geturðu sótt það hér: https://omaps.app/get?kmz \n\nNjóttu ferðarinnar með Moose Maps!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">Hleð inn bókamerkjum</string>
     <!-- Kmz file successful loading -->
@@ -161,7 +161,7 @@
     <string name="load_kmz_failed">Mistókst að hlaða inn bókamerkjum. Skráin gæti verið skemmd eða gölluð.</string>
     <!-- Failed to recognize the format of a bookmarks or tracks file. -->
     <string name="unknown_file_type">Forritið þekkti ekki skráategundina:\n%1$s</string>
-    <!-- Failed to open a bookmarks or tracks file in Organic Maps. -->
+    <!-- Failed to open a bookmarks or tracks file in Moose Maps. -->
     <string name="failed_to_open_file">Mistókst að opna skrána %1$s \n \n%2$s</string>
     <!-- resource for context menu -->
     <string name="edit">Breyta</string>
@@ -172,11 +172,11 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">Verið er að sækja landakort.</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">Skoðaðu núverandi staðsetninguna mína á Organic Maps landakortinu! %1$s eða %2$s Ertu ekki með ónettengd kort? Sæktu þau hér: https://omaps.app/get</string>
+    <string name="my_position_share_sms">Skoðaðu núverandi staðsetninguna mína á Moose Maps landakortinu! %1$s eða %2$s Ertu ekki með ónettengd kort? Sæktu þau hér: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
-    <string name="bookmark_share_email_subject">Hæ, skoðaðu staðsetninguna mína á Organic Maps!</string>
+    <string name="bookmark_share_email_subject">Hæ, skoðaðu staðsetninguna mína á Moose Maps!</string>
     <!-- Subject for emailed position -->
-    <string name="my_position_share_email_subject">Hæ, skoðaðu núverandi staðsetninguna mína á Organic Maps landakortinu!</string>
+    <string name="my_position_share_email_subject">Hæ, skoðaðu núverandi staðsetninguna mína á Moose Maps landakortinu!</string>
     <!-- Share my position using EMail, %1$@ is om:// and %2$@ is https://omaps.app link WITHOUT NAME -->
     <string name="my_position_share_email">Hæ, \n \nÉg er núna hérna: %1$s. Smelltu á þennan tengil %2$s eða þennan %3$s til að sjá staðinn á kortinu. \n \nBestu þakkir.</string>
     <!-- Share button text which opens menu with more buttons, like Message, EMail, Facebook etc. -->
@@ -252,7 +252,7 @@
     <string name="menu">Valmynd</string>
     <!-- Text in menu -->
     <string name="website">Vefsvæði</string>
-    <!-- Text in About menu, opens Organic Maps news website -->
+    <!-- Text in About menu, opens Moose Maps news website -->
     <string name="news">Fréttir</string>
     <!-- Settings: Send feedback button and dialog title -->
     <string name="feedback">Umsagnir</string>
@@ -266,7 +266,7 @@
     <string name="donate">Styrkja</string>
     <string name="already_donated">Hef þegar styrkt verkefnið</string>
     <string name="remind_me_later">Áminna mig síðar</string>
-    <string name="support_organic_maps">Styddu við Organic Maps</string>
+    <string name="support_organic_maps">Styddu við Moose Maps</string>
     <!-- Button in the main Help dialog -->
     <string name="how_to_support_us">Styddu við verkefnið</string>
     <!-- Button in the main Help dialog -->
@@ -485,7 +485,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">OpenStreetMap-gögn gerð af þátttakendum eins og þau voru %s. Fræðstu betur um hvernig hægt sé að breyta og uppfæra landakortið á OpenStreetMap.org</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) er samfélagsverkefni sem stefnir að uppbyggingu á frjálsu og opnu landakorti. Þetta er meginuppistaðan í Organic Maps og virkar svipað og Wikipedia. Þú getur bætt við eð breytt stöðum, og verða þeir þá aðgengilegir milljónum notenda um víða veröld.\nTaktu þátt og hjálpaðu til við að gera betri landakort fyrir alla!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) er samfélagsverkefni sem stefnir að uppbyggingu á frjálsu og opnu landakorti. Þetta er meginuppistaðan í Moose Maps og virkar svipað og Wikipedia. Þú getur bætt við eð breytt stöðum, og verða þeir þá aðgengilegir milljónum notenda um víða veröld.\nTaktu þátt og hjálpaðu til við að gera betri landakort fyrir alla!</string>
     <string name="login_to_make_edits_visible">Útbúðu OpenStreetMap aðgang eða skráðu þig inn til að birta breytingarnar þínar.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d af %2$d</string>
@@ -500,7 +500,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">Minnispunktur til sjálfboðaliða OpenStreetMap (valfrjálst)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Lýstu villum á kortinu eða atriðum sem ekki er hægt að breyta með Organic Maps</string>
+    <string name="editor_note_hint">Lýstu villum á kortinu eða atriðum sem ekki er hægt að breyta með Moose Maps</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Breytingarnar þínar eru sendar inn í opinbera <a href="https://wiki.openstreetmap.org/wiki/About_OpenStreetMap">OpenStreetMap</a>-gagnagrunninn. Ekki bæta við neinum persónulegum upplýsingum eða upplýsingum með höfundarrétti.</string>
     <string name="editor_more_about_osm">Meira um OpenStreetMap</string>
@@ -510,7 +510,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">Rekstraraðili: %s</string>
     <string name="editor_category_unsuitable_title">Finnurðu ekki hentugan flokk?</string>
-    <string name="editor_category_unsuitable_text">Organic Maps leyfir aðeins að bæta við flokkum eins-punkts staða, sem þýðir engin sveitarfélagamörk, vegir, vötn, útlínur bygginga o.s.frv. Bættu slíkum atriðum beint inn í <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Skoðaðu <a href="https://organicmaps.app/faq/editing/advanced-map-editing">leiðbeiningarnar</a> okkar til að sjá hvernig það er gert, skref-fyrir-skref.</string>
+    <string name="editor_category_unsuitable_text">Moose Maps leyfir aðeins að bæta við flokkum eins-punkts staða, sem þýðir engin sveitarfélagamörk, vegir, vötn, útlínur bygginga o.s.frv. Bættu slíkum atriðum beint inn í <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Skoðaðu <a href="https://organicmaps.app/faq/editing/advanced-map-editing">leiðbeiningarnar</a> okkar til að sjá hvernig það er gert, skref-fyrir-skref.</string>
     <string name="downloader_no_downloaded_maps_title">Þú hefur ekki sótt nein kort</string>
     <string name="downloader_no_downloaded_maps_message">Sæktu landakort til að leita og rata um án nettengingar.</string>
     <string name="current_location_unknown_error_title">Fyrirliggjandi staðsetning er óþekkt.</string>
@@ -568,7 +568,7 @@
     <string name="mobile_data_option_ask">Alltaf spyrja</string>
     <string name="traffic_update_maps_text">Til að birta umferðargögn, þarf að uppfæra kortin.</string>
     <string name="big_font">Auka stærð á skýringum</string>
-    <string name="traffic_update_app">Endilega uppfærðu Organic Maps</string>
+    <string name="traffic_update_app">Endilega uppfærðu Moose Maps</string>
     <!-- "traffic" as in "road congestion" -->
     <string name="traffic_data_unavailable">Umferðargögn eru ekki tiltæk</string>
     <string name="enable_logging">Virkja atvikaskráningu</string>
@@ -820,9 +820,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">Meginmarkmið okkar er að byggja hraðvirk og auðveld landakort sm þú kannt að meta og sem passa upp á persónuupplýsingar þínar.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">Þú ert núna að nota Organic Maps á símaskjánum</string>
+    <string name="car_used_on_the_phone_screen">Þú ert núna að nota Moose Maps á símaskjánum</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">Þú ert núna að nota Organic Maps á bílskjánum</string>
+    <string name="car_used_on_the_car_screen">Þú ert núna að nota Moose Maps á bílskjánum</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">Þú ert tengd(ur) við Android Auto</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -830,7 +830,7 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">Yfir á skjá bílsins</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">Organic Maps þarf aðgang að staðsetningu. Við gott tækifæri, þegar það er öruggt, skaltu skoða tilkynninguna á símanum þínum.</string>
+    <string name="aa_location_permissions_request">Moose Maps þarf aðgang að staðsetningu. Við gott tækifæri, þegar það er öruggt, skaltu skoða tilkynninguna á símanum þínum.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Þetta forrit þarf heimild frá þér</string>
     <!-- Grant Permissions button. -->

@@ -1,4 +1,4 @@
-# OrganicBicycleMaps
+# Moose Maps
 
 An unofficial, cycling-focused fork of [Organic Maps](https://organicmaps.app/) for Android.
 
@@ -33,16 +33,9 @@ appear on the map and on the lock-screen notification.
 Pair them under **Settings → Cycling**. If you use a wheel speed sensor, set your wheel
 circumference there too, or the speed will be wrong.
 
-### Picture-in-picture
-
-Shrink the map to a floating window and keep it on screen while you use another app. Start it from
-the main menu, or let it happen automatically when you leave the app mid-route. The floating window
-shows your next turn and your live sensor readings, with music controls in the system action row.
-
 ### Music controls
 
-A floating button on the map opens a slide-out panel with play, pause, skip, the current track and
-artwork, and shortcuts to open your player. It stays out of the way until you reach for it.
+Play, pause and skip from three buttons in the map's control column, just above zoom. They work with\nany player - YouTube, YouTube Music, TIDAL, Qobuz, Spotify, Poweramp - because control goes through\nAndroid's media session rather than any one app's SDK. No account, no API key, no network access.
 
 This works with **any** Android music player — Spotify, TIDAL, and the rest — because it goes
 through the platform's media session rather than any one app's SDK. That also means no account
@@ -56,7 +49,7 @@ access, which you grant once under **Settings → Cycling**; skipping tracks wor
 You need the Android SDK (platform 36, build-tools 36.x), NDK 29+, CMake 3.22.1+ and JDK 17+.
 
 ```bash
-git clone --recurse-submodules https://github.com/YOUR-USERNAME/OrganicBicycleMaps.git
+git clone --recurse-submodules https://github.com/MelatoninFein/OrganicBicycleMaps.git
 cd OrganicBicycleMaps && bash ./configure.sh
 cd android && ./gradlew assembleGoogleDebug -Parm64
 ```

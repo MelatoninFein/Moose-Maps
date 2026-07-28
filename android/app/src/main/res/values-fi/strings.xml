@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">Lataus epäonnistui</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">Yritä uudelleen</string>
-    <string name="about_menu_title">Tietoa Organic Maps:stä</string>
+    <string name="about_menu_title">Tietoa Moose Maps:stä</string>
     <!-- Text in About screen -->
     <string name="about_headline">Ilmainen kaikille, tehty rakkaudella</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">Laitteistokiihdytetty OpenGL vaaditaan. Valitettavasti laitteesi ei ole tuettu.</string>
     <string name="download">Lataa</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">Irrota USB-kaapeli tai syötä muistikortti käyttääksesi Organic Maps -sovellusta</string>
+    <string name="disconnect_usb_cable">Irrota USB-kaapeli tai syötä muistikortti käyttääksesi Moose Maps -sovellusta</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">Vapauta ensin tilaa SD-kortilta/USB-massamuistilta käyttääksesi sovellusta</string>
     <string name="download_resources">Ennen aloitusta laitteelle tulee ladata yleinen maailmankartta.\nSe tarvitsee yhteensä %s tilaa.</string>
@@ -151,8 +151,8 @@
     <!-- Notes field in Bookmarks view -->
     <string name="description">Muistiinpanot</string>
     <!-- Email Subject when sharing bookmark list -->
-    <string name="share_bookmarks_email_subject">Jaetut Organic Maps-kirjanmerkit</string>
-    <string name="share_bookmarks_email_body">Hei! \n\nLiitteenä ovat kirjamerkkini; Avaa ne Organic Maps -sovelluksessa. Mikäli sinulla ei ole vielä sovellusta asennettuna, voit ladata sen osoitteesta: https://omaps.app/get?kmz \n\nNauti matkustamisesta Organic Maps:n kanssa!</string>
+    <string name="share_bookmarks_email_subject">Jaetut Moose Maps-kirjanmerkit</string>
+    <string name="share_bookmarks_email_body">Hei! \n\nLiitteenä ovat kirjamerkkini; Avaa ne Moose Maps -sovelluksessa. Mikäli sinulla ei ole vielä sovellusta asennettuna, voit ladata sen osoitteesta: https://omaps.app/get?kmz \n\nNauti matkustamisesta Moose Maps:n kanssa!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">Ladataan kirjanmerkkejä</string>
     <!-- Kmz file successful loading -->
@@ -161,7 +161,7 @@
     <string name="load_kmz_failed">Kirjanmerkkien lataus epäonnistui. Tiedosto saattaa olla vioittunut.</string>
     <!-- Failed to recognize the format of a bookmarks or tracks file. -->
     <string name="unknown_file_type">Sovellus ei tunnista tiedostotyyppiä:\n%1$s</string>
-    <!-- Failed to open a bookmarks or tracks file in Organic Maps. -->
+    <!-- Failed to open a bookmarks or tracks file in Moose Maps. -->
     <string name="failed_to_open_file">Tiedostoa ei onnistuttu avaamaan %1$s\n\n%2$s</string>
     <!-- resource for context menu -->
     <string name="edit">Muokkaa</string>
@@ -172,11 +172,11 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">Karttaa ladataan parhaillaan.</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">Hei, katso sijaintini Organic Maps-sovelluksessa! %1$s tai %2$s Eikö sinulla ole vielä offline-karttoja? Lataa ne täältä: https://omaps.app/get</string>
+    <string name="my_position_share_sms">Hei, katso sijaintini Moose Maps-sovelluksessa! %1$s tai %2$s Eikö sinulla ole vielä offline-karttoja? Lataa ne täältä: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
-    <string name="bookmark_share_email_subject">Hei, katso merkintäni Organic Maps-kartalla!</string>
+    <string name="bookmark_share_email_subject">Hei, katso merkintäni Moose Maps-kartalla!</string>
     <!-- Subject for emailed position -->
-    <string name="my_position_share_email_subject">Hei, kurkkaa tämänhetkinen sijaintini Organic Maps:n kartalla!</string>
+    <string name="my_position_share_email_subject">Hei, kurkkaa tämänhetkinen sijaintini Moose Maps:n kartalla!</string>
     <!-- Share my position using EMail, %1$@ is om:// and %2$@ is https://omaps.app link WITHOUT NAME -->
     <string name="my_position_share_email">Hei,\n\nOlen nyt täällä: %1$s. Klikkaa linkkiä %2$s tai %3$s nähdäksesi paikan kartalla.\n\nKiitos.</string>
     <!-- Share button text which opens menu with more buttons, like Message, EMail, Facebook etc. -->
@@ -252,7 +252,7 @@
     <string name="menu">Menu</string>
     <!-- Text in menu -->
     <string name="website">Kotisivut</string>
-    <!-- Text in About menu, opens Organic Maps news website -->
+    <!-- Text in About menu, opens Moose Maps news website -->
     <string name="news">Uutiset</string>
     <!-- Settings: Send feedback button and dialog title -->
     <string name="feedback">Palaute</string>
@@ -266,7 +266,7 @@
     <string name="donate">Lahjoita</string>
     <string name="already_donated">Jo lahjoitettu</string>
     <string name="remind_me_later">Muistuta myöhemmin</string>
-    <string name="support_organic_maps">Tue Organic Maps</string>
+    <string name="support_organic_maps">Tue Moose Maps</string>
     <!-- Button in the main Help dialog -->
     <string name="how_to_support_us">Tue projektia</string>
     <!-- Button in the main Help dialog -->
@@ -485,7 +485,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">Yhteisön luomat OpenStreetMap-tiedot %s:sta alkaen. Lisätietoja kartan muokkaamisesta ja päivittämisestä osoitteessa OpenStreetMap.org</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) on yhteisöprojekti, jonka tarkoituksena on rakentaa ilmainen ja avoin kartta. Se on Organic Mapsin tärkein karttatietojen lähde ja toimii samalla tavalla kuin Wikipedia. Voit lisätä tai muokata paikkoja, ja ne tulevat miljoonien käyttäjien saataville kaikkialla maailmassa.\nLiity yhteisöön ja auta tekemään parempi kartta kaikille!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) on yhteisöprojekti, jonka tarkoituksena on rakentaa ilmainen ja avoin kartta. Se on Moose Mapsin tärkein karttatietojen lähde ja toimii samalla tavalla kuin Wikipedia. Voit lisätä tai muokata paikkoja, ja ne tulevat miljoonien käyttäjien saataville kaikkialla maailmassa.\nLiity yhteisöön ja auta tekemään parempi kartta kaikille!</string>
     <string name="login_to_make_edits_visible">Luo OpenStreetMap-tili tai kirjaudu sisään, jotta voit julkaista karttamuokkauksesi maailmalle.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d/%2$d</string>
@@ -500,7 +500,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">Huomautus OpenStreetMapin vapaaehtoisille (valinnainen)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Kuvaile kartassa olevia virheitä tai asioita, joita ei voi muokata Organic Mapsilla.</string>
+    <string name="editor_note_hint">Kuvaile kartassa olevia virheitä tai asioita, joita ei voi muokata Moose Mapsilla.</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Muokkauksesi ladataan julkiseen <a href="https://wiki.openstreetmap.org/wiki/About_OpenStreetMap">OpenStreetMap</a>-tietokantaan. Älä lisää henkilökohtaisia tai tekijänoikeudella suojattuja tietoja.</string>
     <string name="editor_more_about_osm">Lisätietoja OpenStreetMap:sta</string>
@@ -510,7 +510,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">Operaattori: %s</string>
     <string name="editor_category_unsuitable_title">Etkö löydä sopivaa luokkaa?</string>
-    <string name="editor_category_unsuitable_text">Organic Maps mahdollistaa vain yksinkertaisten pisteluokkien lisäämisen, eli ei kaupunkeja, teitä, järviä, rakennusten ääriviivoja jne. Lisää tällaiset luokat suoraan <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Tarkista <a href="https://organicmaps.app/faq/editing/advanced-map-editing">oppaastamme</a> yksityiskohtaiset ohjeet vaihe vaiheelta.</string>
+    <string name="editor_category_unsuitable_text">Moose Maps mahdollistaa vain yksinkertaisten pisteluokkien lisäämisen, eli ei kaupunkeja, teitä, järviä, rakennusten ääriviivoja jne. Lisää tällaiset luokat suoraan <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Tarkista <a href="https://organicmaps.app/faq/editing/advanced-map-editing">oppaastamme</a> yksityiskohtaiset ohjeet vaihe vaiheelta.</string>
     <string name="downloader_no_downloaded_maps_title">Et ole ladannut yhtään karttaa</string>
     <string name="downloader_no_downloaded_maps_message">Lataa karttoja löytääksesi paikkoja ja navigoidaksesi offline-tilassa.</string>
     <string name="current_location_unknown_error_title">Nykyinen sijainti on tuntematon.</string>
@@ -568,7 +568,7 @@
     <string name="mobile_data_option_ask">Kysy aina</string>
     <string name="traffic_update_maps_text">Liikennetietojen näyttämiseksi kartat on päivitettävä.</string>
     <string name="big_font">Suurenna fonttikokoa kartalla</string>
-    <string name="traffic_update_app">Päivitä Organic Maps</string>
+    <string name="traffic_update_app">Päivitä Moose Maps</string>
     <!-- "traffic" as in "road congestion" -->
     <string name="traffic_data_unavailable">Liikennetietoja ei ole saatavilla</string>
     <string name="enable_logging">Ota loki käyttöön</string>
@@ -669,7 +669,7 @@
     <string name="bookmarks_text_placement_description">Jos kirjanmerkkejä on liikaa, niiden nimien näyttäminen kartalla voi hidastaa sovelluksen toimintaa.</string>
     <string name="show_to_the_right">Näytä oikealle</string>
     <string name="show_at_the_bottom">Näytä alareunassa</string>
-    <string name="enable_logging_warning_message">Valinta ottaa käyttöön lokikirjaukset diagnostiikkaa varten. Se voi auttaa tukihenkilöstöämme, kun he korjaavat sovelluksen ongelmia. Ota tämä ominaisuus käyttöön vain, jos Organic Maps:n tuki pyytää.</string>
+    <string name="enable_logging_warning_message">Valinta ottaa käyttöön lokikirjaukset diagnostiikkaa varten. Se voi auttaa tukihenkilöstöämme, kun he korjaavat sovelluksen ongelmia. Ota tämä ominaisuus käyttöön vain, jos Moose Maps:n tuki pyytää.</string>
     <string name="driving_options_title">Reititysvalinnat</string>
     <!-- Recommended length for CarPlay and Android Auto is around 25-27 characters -->
     <string name="avoid_tolls">Vältä maksullisia teitä</string>
@@ -815,9 +815,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">Päätavoitteemme on rakentaa nopeita, yksityisyyteen keskittyviä, helppokäyttöisiä karttoja, joista pidät.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">Käytät nyt puhelimen näytöllä Organic Maps -palvelua.</string>
+    <string name="car_used_on_the_phone_screen">Käytät nyt puhelimen näytöllä Moose Maps -palvelua.</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">Käytät nyt Organic Maps auton näytöllä</string>
+    <string name="car_used_on_the_car_screen">Käytät nyt Moose Maps auton näytöllä</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">Olet yhteydessä Android Autoon</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -825,7 +825,7 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">Auton näyttöön</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">Organic Maps tarvitsee sijaintitietoja. Kun se on turvallista, tarkista puhelimesi ilmoitus.</string>
+    <string name="aa_location_permissions_request">Moose Maps tarvitsee sijaintitietoja. Kun se on turvallista, tarkista puhelimesi ilmoitus.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Tämä sovellus tarvitsee lupasi</string>
     <!-- Grant Permissions button. -->

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Music transport as map buttons, sitting directly above the zoom controls and styled identically,
+  so they read as part of the map's own control column rather than a bolted-on panel.
+
+  Always present: transport works through media key events even with no permission granted and no
+  recognised player, so there is no state in which these buttons are useless.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/music_buttons_container"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/music_previous"
+    style="@style/MwmWidget.MapButton.Zoom"
+    android:layout_marginBottom="@dimen/margin_half"
+    android:contentDescription="@string/cycling_music_previous"
+    app:srcCompat="@drawable/ic_cycling_previous" />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/music_play_pause"
+    style="@style/MwmWidget.MapButton.Zoom"
+    android:layout_marginBottom="@dimen/margin_half"
+    android:contentDescription="@string/cycling_music_play_pause"
+    app:srcCompat="@drawable/ic_cycling_play" />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/music_next"
+    style="@style/MwmWidget.MapButton.Zoom"
+    android:contentDescription="@string/cycling_music_next"
+    app:srcCompat="@drawable/ic_cycling_next" />
+</LinearLayout>

@@ -39,7 +39,7 @@ rootProject.ext {
     versionName = ver.V2
     // Fork identity. Must not be app.organicmaps.*: that id belongs to the upstream Play Store
   // listing, and sharing it would make this build collide with it on users' devices.
-  appId = 'app.organicbicyclemaps'
+  appId = 'app.moosemaps'
     CI = System.getenv("CI") != null
 }
 

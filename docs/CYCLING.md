@@ -10,7 +10,6 @@ Everything is under `android/app/src/main/java/app/organicmaps/cycling/`.
 | --- | --- |
 | `cycling/sensors/` | Bluetooth LE sensors: heart rate, speed, cadence, power |
 | `cycling/media/` | Now-playing metadata and transport controls for any music app |
-| `cycling/pip/` | Picture-in-picture for the map |
 | `cycling/ui/`, `CyclingController` | The on-map readout and the glue into `MwmActivity` |
 | `cycling/settings/` | Settings → Cycling |
 
@@ -80,38 +79,19 @@ against the built APK by `permission-checker.gradle`.
 
 ---
 
-## 2. Picture-in-picture
 
-`PipController` + `MwmActivity`.
+## 2. Music controls (any player)
 
-- Entered manually from the main menu ("Shrink to floating window"), or automatically when the user
-  leaves the app **while navigating** — via `setAutoEnterEnabled` on Android 12+, and
-  `onUserLeaveHint` below that.
-- Aspect ratio is 4:3. 16:9 crops the map to a sliver at PiP size.
-- A PiP window cannot receive touches, so the whole map UI is hidden and replaced by
-  `cycling_pip_overlay`: next manoeuvre plus heart rate, speed and power. Interaction happens
-  through the system's PiP action row, wired to the **music transport** — skipping a track is what
-  you actually want while the map is a thumbnail.
-- `MwmActivity`'s `configChanges` was extended with
-  `orientation|screenSize|smallestScreenSize|screenLayout`. This is required, not cosmetic: entering
-  or leaving PiP is a configuration change, and without it the activity would be destroyed and
-  recreated, tearing down and reinitialising the Drape GL surface each time.
+`MediaControlHub`, surfaced by `map_buttons_music.xml` and wired by `ui/MusicButtons.kt`.
 
-  **This is the one change with a blast radius beyond the cycling code** — the activity now handles
-  rotation itself instead of being recreated. Worth exercising on rotation, split-screen and
-  fold/unfold when you first build.
+The UI is three buttons in the map's own control column, directly above zoom and styled identically.
+Always visible: transport works through media key events even with no permission granted and no
+recognised player, so there is no state in which they are useless.
 
----
-
-## 3. Music controls (Spotify, TIDAL, and anything else)
-
-`MediaControlHub`, surfaced by `cycling_media_panel.xml`.
-
-The UI is a floating action button that slides an off-canvas panel in from the trailing edge —
-**not** a permanent bar, and not delivered through picture-in-picture. Playback is reached for
-occasionally, so it costs one tap and no standing map real estate. The panel also lists installed
-players, so it is useful before anything is playing. PiP keeps transport controls in the system
-action row, because a PiP window cannot be tapped.
+Session selection treats every app equally — it takes whichever session is actually playing, and
+otherwise the most recently active, deferring to the order `getActiveSessions` returns. An earlier
+version ranked Spotify and TIDAL above everything else, which let a stale Spotify session beat the
+Qobuz or YouTube Music track actually playing.
 
 This deliberately does **not** integrate against Spotify's or TIDAL's own SDKs. Those need per-app
 API keys, an account login inside this app, and network access — all at odds with a privacy-focused
@@ -132,9 +112,9 @@ every notification is ignored; declaring it is simply the only way to hold the a
 `MediaSessionManager.getActiveSessions` requires. The user enables it by hand from Settings →
 Cycling.
 
-Spotify and TIDAL are named in `MusicApp` only to (a) prefer them when several players have an
-active session and (b) allow tapping the media bar to open the player. That needs the `<queries>`
-entries in the manifest, or package visibility on Android 11+ hides them.
+No player is named anywhere in the code. `MusicApps` discovers installed players by querying
+`CATEGORY_APP_MUSIC` through the manifest's `<queries>` block, so YouTube, YouTube Music, TIDAL,
+Qobuz, Spotify, Poweramp and anything else are all equal citizens.
 
 ---
 
@@ -142,12 +122,12 @@ entries in the manifest, or package visibility on Android 11+ hides them.
 
 | File | Change |
 | --- | --- |
-| `MwmActivity.java` | Creates `CyclingController`, forwards `onStart`/`onStop`/`onResume`/`onUserLeaveHint`/`onPictureInPictureModeChanged`, adds the PiP menu item |
+| `MwmActivity.java` | Creates `CyclingController` and forwards `onStart` |
 | `MwmApplication.java` | Creates the sensor notification channel |
 | `SettingsPrefsFragment.java` | Opens the Cycling settings screen |
-| `AndroidManifest.xml` | Bluetooth permissions, two services, PiP attributes on `MwmActivity`, `<queries>` for the players |
+| `AndroidManifest.xml` | Bluetooth permissions, two services, `<queries>` for music apps |
 | `app/build.gradle` | Permission allowlist |
-| `res/layout/activity_map.xml` | Includes the two overlays |
+| `res/layout/activity_map.xml` | Includes the sensor readout overlay |
 | `res/xml/prefs_main.xml` | Cycling entry |
 
 New resources are in files of their own (`values/cycling.xml`, `values/strings_cycling.xml`,
@@ -164,7 +144,7 @@ are lost on the next regeneration. Upstreaming any of this would mean moving the
 
 ## Building and testing
 
-Not built here — this machine has no Android SDK or NDK. To build:
+To build:
 
 ```bash
 cd android && ./gradlew assembleGoogleDebug -Parm64
@@ -189,5 +169,4 @@ The parsers and counters are unit tested. These are not, and can only be checked
 
 - Actual GATT connect / subscribe / reconnect against a real sensor.
 - Foreground-service survival across screen lock and a long ride.
-- PiP entry and exit, and the activity surviving the new `configChanges`.
 - Media session selection with Spotify and TIDAL installed together.

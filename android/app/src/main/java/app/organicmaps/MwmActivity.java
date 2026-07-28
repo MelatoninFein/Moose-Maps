@@ -610,10 +610,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
     initOnmapDownloader();
     initPositionChooser();
 
-    mCyclingController = new CyclingController(this, findViewById(R.id.coordinator), hidden -> {
-      mMapButtonsViewModel.setButtonsHidden(hidden);
-      mMapButtonsViewModel.setBottomButtonsHidden(hidden);
-    });
+    mCyclingController = new CyclingController(this, findViewById(R.id.coordinator));
   }
 
   private void updateDrivingOptionCount()
@@ -959,10 +956,6 @@ public class MwmActivity extends BaseMwmFragmentActivity
     refreshLightStatusBar();
 
     MwmApplication.from(this).getSensorHelper().addListener(this);
-
-    // Null until onSafeCreate has run, which is deferred until the C++ core is initialized.
-    if (mCyclingController != null)
-      mCyclingController.onResume();
   }
 
   @Override
@@ -1019,31 +1012,8 @@ public class MwmActivity extends BaseMwmFragmentActivity
     final String backUrl = Framework.nativeGetParsedBackUrl();
     if (!TextUtils.isEmpty(backUrl))
       Utils.openUri(this, Uri.parse(backUrl), null);
-
-    if (mCyclingController != null)
-      mCyclingController.onStop();
   }
 
-  /**
-   * Pre-Android-12 hook for the user leaving the app. On Android 12+ the system enters
-   * picture-in-picture by itself via PictureInPictureParams.setAutoEnterEnabled, so this is a no-op
-   * there - CyclingController checks whether it is already in PiP before acting.
-   */
-  @Override
-  protected void onUserLeaveHint()
-  {
-    super.onUserLeaveHint();
-    if (mCyclingController != null)
-      mCyclingController.onUserLeaving();
-  }
-
-  @Override
-  public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode, @NonNull Configuration newConfig)
-  {
-    super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig);
-    if (mCyclingController != null)
-      mCyclingController.onPictureInPictureModeChanged(isInPictureInPictureMode);
-  }
 
   @CallSuper
   @Override
@@ -1083,9 +1053,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
   public boolean handleBackPress()
   {
     final RoutingController routingController = RoutingController.get();
-    // The music panel is an overlay on top of everything else, so it closes first.
-    return ((mCyclingController != null && mCyclingController.onBackPressed()) || closeBottomSheet(MAIN_MENU_ID)
-            || closeBottomSheet(LAYERS_MENU_ID) || collapseNavMenu() || closePlacePage() || closePositionChooser()
+    return (closeBottomSheet(MAIN_MENU_ID) || closeBottomSheet(LAYERS_MENU_ID) || collapseNavMenu() || closePlacePage() || closePositionChooser()
             || closeSearchFragment() || routingController.resetToPlanningStateIfNavigating()
             || routingController.cancel());
   }
@@ -2056,13 +2024,6 @@ public class MwmActivity extends BaseMwmFragmentActivity
     shareMyLocation();
   }
 
-  public void onPictureInPictureOptionSelected()
-  {
-    closeFloatingPanels();
-    if (!mCyclingController.enterPictureInPicture())
-      Toast.makeText(this, R.string.cycling_pip_unsupported, Toast.LENGTH_SHORT).show();
-  }
-
   @Override
   @Nullable
   public ArrayList<MenuBottomSheetItem> getMenuBottomSheetItems(String id)
@@ -2082,10 +2043,6 @@ public class MwmActivity extends BaseMwmFragmentActivity
                                         this::onTrackRecordingOptionSelected));
       items.add(new MenuBottomSheetItem(R.string.share_my_location, R.drawable.ic_share,
                                         this::onShareLocationOptionSelected));
-      // Only offered where the platform supports it; on older devices the entry would always fail.
-      if (mCyclingController != null && mCyclingController.isPipSupported())
-        items.add(new MenuBottomSheetItem(R.string.cycling_pip_enter, R.drawable.ic_cycling_pip,
-                                          this::onPictureInPictureOptionSelected));
       return items;
     }
     return null;

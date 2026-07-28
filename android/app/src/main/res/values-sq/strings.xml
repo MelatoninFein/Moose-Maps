@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">Shkarkimi dështoi</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">Provo Përsëri</string>
-    <string name="about_menu_title">Rreth Organic Maps</string>
+    <string name="about_menu_title">Rreth Moose Maps</string>
     <!-- Text in About screen -->
     <string name="about_headline">Falas për të gjithë, bërë me dashuri</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">Aplikacioni kërkon OpenGL të përshpejtuar nga hardueri. Fatkeqësisht, pajisja juaj nuk mbështetet.</string>
     <string name="download">Shkarko</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">Ju lutemi shkëputni kabllon USB ose futni kartën e memories për të përdorur Organic Maps</string>
+    <string name="disconnect_usb_cable">Ju lutemi shkëputni kabllon USB ose futni kartën e memories për të përdorur Moose Maps</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">Ju lutemi lironi pak hapësirë në kartën SD/ruajtjen USB fillimisht për të përdorur aplikacionin</string>
     <string name="download_resources">Para se të filloni të përdorni aplikacionin, ju lutemi shkarkoni hartën e përgjithshme të botës në pajisjen tuaj.\nAjo do të përdorë %s të hapësirës.</string>
@@ -151,8 +151,8 @@
     <!-- Notes field in Bookmarks view -->
     <string name="description">Shënime</string>
     <!-- Email Subject when sharing bookmark list -->
-    <string name="share_bookmarks_email_subject">Faqeshënuesit e Organic Maps u ndanë me ju</string>
-    <string name="share_bookmarks_email_body">Përshëndetje!\n\nBashkëngjitur janë faqeshënuesit e mi; ju lutemi hapini ato në Organic Maps. Nëse nuk e keni të instaluar, mund ta shkarkoni këtu: https://omaps.app/get?kmz\n\nShijoni udhëtimin me Organic Maps!</string>
+    <string name="share_bookmarks_email_subject">Faqeshënuesit e Moose Maps u ndanë me ju</string>
+    <string name="share_bookmarks_email_body">Përshëndetje!\n\nBashkëngjitur janë faqeshënuesit e mi; ju lutemi hapini ato në Moose Maps. Nëse nuk e keni të instaluar, mund ta shkarkoni këtu: https://omaps.app/get?kmz\n\nShijoni udhëtimin me Moose Maps!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">Duke ngarkuar Faqeshënuesit</string>
     <!-- Kmz file successful loading -->
@@ -161,7 +161,7 @@
     <string name="load_kmz_failed">Dështoi ngarkimi i faqeshënuesve. Skedari mund të jetë i dëmtuar ose me defekt.</string>
     <!-- Failed to recognize the format of a bookmarks or tracks file. -->
     <string name="unknown_file_type">Lloji i skedarit nuk njihet nga aplikacioni:\n%1$s</string>
-    <!-- Failed to open a bookmarks or tracks file in Organic Maps. -->
+    <!-- Failed to open a bookmarks or tracks file in Moose Maps. -->
     <string name="failed_to_open_file">Dështoi hapja e skedarit %1$s\n\n%2$s</string>
     <!-- resource for context menu -->
     <string name="edit">Ndrysho</string>
@@ -172,11 +172,11 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">Shkarkimi i hartës është në progres tani.</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">Shikoni vendndodhjen time aktuale në Organic Maps! %1$s ose %2$s Nuk keni harta offline? Shkarkoni këtu: https://omaps.app/get</string>
+    <string name="my_position_share_sms">Shikoni vendndodhjen time aktuale në Moose Maps! %1$s ose %2$s Nuk keni harta offline? Shkarkoni këtu: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
-    <string name="bookmark_share_email_subject">Hej, shiko vendosjen time në Organic Maps!</string>
+    <string name="bookmark_share_email_subject">Hej, shiko vendosjen time në Moose Maps!</string>
     <!-- Subject for emailed position -->
-    <string name="my_position_share_email_subject">Hej, shiko vendndodhjen time aktuale në hartën e Organic Maps!</string>
+    <string name="my_position_share_email_subject">Hej, shiko vendndodhjen time aktuale në hartën e Moose Maps!</string>
     <!-- Share my position using EMail, %1$@ is om:// and %2$@ is https://omaps.app link WITHOUT NAME -->
     <string name="my_position_share_email">Përshëndetje,\n\nUnë jam këtu tani: %1$s. Klikoni këtë lidhje %2$s ose këtë tjetrën %3$s për të parë vendin në hartë.\n\nFaleminderit.</string>
     <!-- Share button text which opens menu with more buttons, like Message, EMail, Facebook etc. -->
@@ -252,7 +252,7 @@
     <string name="menu">Menuja</string>
     <!-- Text in menu -->
     <string name="website">Faqja e internetit</string>
-    <!-- Text in About menu, opens Organic Maps news website -->
+    <!-- Text in About menu, opens Moose Maps news website -->
     <string name="news">Lajme</string>
     <!-- Settings: Send feedback button and dialog title -->
     <string name="feedback">Reagime</string>
@@ -266,7 +266,7 @@
     <string name="donate">Dhuroni</string>
     <string name="already_donated">Tashmë keni dhuruar</string>
     <string name="remind_me_later">Kujto më vonë</string>
-    <string name="support_organic_maps">Mbështet Organic Maps</string>
+    <string name="support_organic_maps">Mbështet Moose Maps</string>
     <!-- Button in the main Help dialog -->
     <string name="how_to_support_us">Mbështet projektin</string>
     <!-- Button in the main Help dialog -->
@@ -485,7 +485,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">Të dhëna të OpenStreetMap të krijuara nga komuniteti që nga %s. Mësoni më shumë për mënyrën se si të redaktoni dhe përditësoni hartën në OpenStreetMap.org</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) është një projekt komunitar për të ndërtuar një hartë të lirë dhe të hapur. Është burimi kryesor i të dhënave të hartës në Organic Maps dhe funksionon ngjashëm me Wikipedia. Ju mund të shtoni ose redaktoni vende dhe ato bëhen të disponueshme për miliona përdorues në të gjithë botën.\nBashkohuni me komunitetin dhe ndihmoni për të bërë një hartë më të mirë për të gjithë!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) është një projekt komunitar për të ndërtuar një hartë të lirë dhe të hapur. Është burimi kryesor i të dhënave të hartës në Moose Maps dhe funksionon ngjashëm me Wikipedia. Ju mund të shtoni ose redaktoni vende dhe ato bëhen të disponueshme për miliona përdorues në të gjithë botën.\nBashkohuni me komunitetin dhe ndihmoni për të bërë një hartë më të mirë për të gjithë!</string>
     <string name="login_to_make_edits_visible">Krijoni një llogari OpenStreetMap ose hyni për të publikuar ndryshimet tuaja të hartës për botën.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d nga %2$d</string>
@@ -500,7 +500,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">Shënim për vullnetarët e OpenStreetMap (opsionale)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Përshkruani gabimet në hartë ose gjërat që nuk mund të redaktohen me Organic Maps</string>
+    <string name="editor_note_hint">Përshkruani gabimet në hartë ose gjërat që nuk mund të redaktohen me Moose Maps</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Ndryshimet tuaja ngarkohen në bazën e të dhënave publike <a href="https://wiki.openstreetmap.org/wiki/About_OpenStreetMap">OpenStreetMap</a>. Ju lutemi mos shtoni informacione personale ose të mbrojtura nga e drejta e autorit.</string>
     <string name="editor_more_about_osm">Më shumë rreth OpenStreetMap</string>
@@ -510,7 +510,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">Operatori: %s</string>
     <string name="editor_category_unsuitable_title">Nuk mund të gjeni një kategori të përshtatshme?</string>
-    <string name="editor_category_unsuitable_text">Organic Maps lejon shtimin e kategorive të thjeshta të pikave, që do të thotë jo qytete, rrugë, liqene, konture ndërtesash, etj. Ju lutemi shtoni kategori të tilla drejtpërdrejt në <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Kontrolloni <a href="https://organicmaps.app/faq/editing/advanced-map-editing">udhëzuesin tonë</a> për udhëzime të detajuara hap pas hapi.</string>
+    <string name="editor_category_unsuitable_text">Moose Maps lejon shtimin e kategorive të thjeshta të pikave, që do të thotë jo qytete, rrugë, liqene, konture ndërtesash, etj. Ju lutemi shtoni kategori të tilla drejtpërdrejt në <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Kontrolloni <a href="https://organicmaps.app/faq/editing/advanced-map-editing">udhëzuesin tonë</a> për udhëzime të detajuara hap pas hapi.</string>
     <string name="downloader_no_downloaded_maps_title">Nuk keni shkarkuar asnjë hartë</string>
     <string name="downloader_no_downloaded_maps_message">Shkarkoni harta për të kërkuar dhe lundruar jashtë linje.</string>
     <string name="current_location_unknown_error_title">Vendndodhja aktuale është e panjohur.</string>
@@ -568,7 +568,7 @@
     <string name="mobile_data_option_ask">Pyet Gjithmonë</string>
     <string name="traffic_update_maps_text">Për të shfaqur të dhënat e trafikut, hartat duhet të jenë të përditësuara.</string>
     <string name="big_font">Rrit madhësinë për etiketat e hartës</string>
-    <string name="traffic_update_app">Ju lutemi përditësoni Organic Maps</string>
+    <string name="traffic_update_app">Ju lutemi përditësoni Moose Maps</string>
     <!-- "traffic" as in "road congestion" -->
     <string name="traffic_data_unavailable">Të dhënat e trafikut nuk janë të disponueshme</string>
     <string name="enable_logging">Aktivizo regjistrimin</string>
@@ -805,9 +805,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">Qëllimi ynë kryesor është të ndërtojmë harta të shpejta, të fokusuara te privatësia dhe të lehta për t\'u përdorur që do t\'i doni.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">Tani jeni duke përdorur Organic Maps në ekranin e telefonit</string>
+    <string name="car_used_on_the_phone_screen">Tani jeni duke përdorur Moose Maps në ekranin e telefonit</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">Tani jeni duke përdorur Organic Maps në ekranin e makinës</string>
+    <string name="car_used_on_the_car_screen">Tani jeni duke përdorur Moose Maps në ekranin e makinës</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">Jeni lidhur me Android Auto</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -815,7 +815,7 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">Te ekrani i makinës</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">Organic Maps ka nevojë për qasje në vendndodhje. Kur të jetë e sigurt, kontrolloni njoftimin në telefonin tuaj.</string>
+    <string name="aa_location_permissions_request">Moose Maps ka nevojë për qasje në vendndodhje. Kur të jetë e sigurt, kontrolloni njoftimin në telefonin tuaj.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Ky aplikacion ka nevojë për lejen tuaj</string>
     <!-- Grant Permissions button. -->

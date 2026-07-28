@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">Upakuaji umeshindikana</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">Jaribu tena</string>
-    <string name="about_menu_title">Kuhusu Organic Maps</string>
+    <string name="about_menu_title">Kuhusu Moose Maps</string>
     <!-- Text in About screen -->
     <string name="about_headline">Bure kwa kila mtu, iliyotengenezwa na upendo</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">Programu inahitaji OpenGL iliyoharakishwa na vifaa. Kwa bahati mbaya, kifaa chako hakijaungwa mkono.</string>
     <string name="download">Pakua</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">Tafadhali toa kebo ya USB au weka kadi ya kumbukumbu ili kutumia Organic Maps</string>
+    <string name="disconnect_usb_cable">Tafadhali toa kebo ya USB au weka kadi ya kumbukumbu ili kutumia Moose Maps</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">Tafadhali toa nafasi kidogo kwenye kadi ya SD/hifadhi ya USB kwanza ili kutumia programu</string>
     <string name="download_resources">Kabla ya kuanza kutumia programu, tafadhali pakua ramani ya muhtasari wa dunia kwenye kifaa chako.  Itatumia %s ya hifadhi.</string>
@@ -151,8 +151,8 @@
     <!-- Notes field in Bookmarks view -->
     <string name="description">Maelezo</string>
     <!-- Email Subject when sharing bookmark list -->
-    <string name="share_bookmarks_email_subject">Organic Maps alama za ukurasa zimeshirikiwa nawe</string>
-    <string name="share_bookmarks_email_body">Habari!\n\nNimeambatanisha alamisho zangu; tafadhali zifungue kwenye Organic Maps. Ikiwa haujaweka, unaweza kupakua hapa: https://omaps.app/get?kmz\n\nFurahia kusafiri na Organic Maps!</string>
+    <string name="share_bookmarks_email_subject">Moose Maps alama za ukurasa zimeshirikiwa nawe</string>
+    <string name="share_bookmarks_email_body">Habari!\n\nNimeambatanisha alamisho zangu; tafadhali zifungue kwenye Moose Maps. Ikiwa haujaweka, unaweza kupakua hapa: https://omaps.app/get?kmz\n\nFurahia kusafiri na Moose Maps!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">Inapakia alamisho</string>
     <!-- Kmz file successful loading -->
@@ -161,7 +161,7 @@
     <string name="load_kmz_failed">Imeshindwa kupakia alamisho. Faili linaweza kuwa limeharibika au lenye kasoro.</string>
     <!-- Failed to recognize the format of a bookmarks or tracks file. -->
     <string name="unknown_file_type">Aina ya faili haitambuliwi na programu:\n%1$s</string>
-    <!-- Failed to open a bookmarks or tracks file in Organic Maps. -->
+    <!-- Failed to open a bookmarks or tracks file in Moose Maps. -->
     <string name="failed_to_open_file">Imeshindwa kufungua faili %1$s\n\n%2$s</string>
     <!-- resource for context menu -->
     <string name="edit">Hariri</string>
@@ -172,11 +172,11 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">Upakuaji wa ramani unaendelea sasa.</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">Angalia eneo langu la sasa kwenye Organic Maps! %1$s au %2$s Huna ramani za nje ya mtandao? Pakua hapa: https://omaps.app/get</string>
+    <string name="my_position_share_sms">Angalia eneo langu la sasa kwenye Moose Maps! %1$s au %2$s Huna ramani za nje ya mtandao? Pakua hapa: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
-    <string name="bookmark_share_email_subject">Hey, angalia alama yangu katika Organic Maps!</string>
+    <string name="bookmark_share_email_subject">Hey, angalia alama yangu katika Moose Maps!</string>
     <!-- Subject for emailed position -->
-    <string name="my_position_share_email_subject">Hey, angalia eneo langu la sasa kwenye ramani ya Organic Maps!</string>
+    <string name="my_position_share_email_subject">Hey, angalia eneo langu la sasa kwenye ramani ya Moose Maps!</string>
     <!-- Share my position using EMail, %1$@ is om:// and %2$@ is https://omaps.app link WITHOUT NAME -->
     <string name="my_position_share_email">Habari,  Kwa sasa niko hapa: %1$s. Bofya kiungo hiki %2$s au hiki %3$s ili kuona mahali kwenye ramani.  Asante.</string>
     <!-- Share button text which opens menu with more buttons, like Message, EMail, Facebook etc. -->
@@ -252,7 +252,7 @@
     <string name="menu">Menyu</string>
     <!-- Text in menu -->
     <string name="website">Tovuti</string>
-    <!-- Text in About menu, opens Organic Maps news website -->
+    <!-- Text in About menu, opens Moose Maps news website -->
     <string name="news">Habari</string>
     <!-- Settings: Send feedback button and dialog title -->
     <string name="feedback">Maoni</string>
@@ -266,7 +266,7 @@
     <string name="donate">Changia</string>
     <string name="already_donated">Tayari kutoa</string>
     <string name="remind_me_later">Kumbusha baadaye</string>
-    <string name="support_organic_maps">Usaidizi Organic Maps</string>
+    <string name="support_organic_maps">Usaidizi Moose Maps</string>
     <!-- Button in the main Help dialog -->
     <string name="how_to_support_us">Saidia mradi</string>
     <!-- Button in the main Help dialog -->
@@ -485,7 +485,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">Data ya OpenStreetMap iliyoundwa na jumuiya kufikia %s. Pata maelezo zaidi kuhusu jinsi ya kuhariri na kusasisha ramani katika OpenStreetMap.org</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) ni mradi wa jamii wa kuunda ramani huru na wazi. Ni chanzo kikuu cha data za ramani katika Organic Maps na inafanya kazi kwa njia inayofanana na Wikipedia. Unaweza kuongeza au kuhariri maeneo na yanapatikana kwa mamilioni ya watumiaji kote ulimwenguni. Jiunge na jamii na usaidie kutengeneza ramani bora kwa kila mtu!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) ni mradi wa jamii wa kuunda ramani huru na wazi. Ni chanzo kikuu cha data za ramani katika Moose Maps na inafanya kazi kwa njia inayofanana na Wikipedia. Unaweza kuongeza au kuhariri maeneo na yanapatikana kwa mamilioni ya watumiaji kote ulimwenguni. Jiunge na jamii na usaidie kutengeneza ramani bora kwa kila mtu!</string>
     <string name="login_to_make_edits_visible">Fungua akaunti ya OpenStreetMap au ingia ili kuchapisha mabadiliko yako ya ramani kwa ulimwengu.</string>
     <string name="download_over_mobile_header">Pakua kupitia muunganisho wa mtandao wa selula?</string>
     <string name="download_over_mobile_message">Hii inaweza kuwa ghali sana kwa baadhi ya mipango au ikiwa uko kwenye roaming.</string>
@@ -498,7 +498,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">Kumbuka kwa wanaojitolea wa OpenStreetMap (si lazima)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Eleza makosa kwenye ramani au vitu ambavyo haviwezi kuhaririwa kwa kutumiaOrganic Maps</string>
+    <string name="editor_note_hint">Eleza makosa kwenye ramani au vitu ambavyo haviwezi kuhaririwa kwa kutumiaMoose Maps</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Mabadiliko yako yanapakiwa kwenye hifadhidata ya <a href="https://wiki.openstreetmap.org/wiki/About_OpenStreetMap">OpenStreetMap</a> ya umma. Tafadhali usiongeze maelezo ya kibinafsi au yenye hakimiliki.</string>
     <string name="editor_more_about_osm">Zaidi kuhusu OpenStreetMap</string>
@@ -508,7 +508,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">Mwendeshaji: %s</string>
     <string name="editor_category_unsuitable_title">Je, huwezi kupata aina inayofaa?</string>
-    <string name="editor_category_unsuitable_text">Organic Maps inakuwezesha kuongeza tu aina rahisi za alama, ikimaanisha hakuna miji, barabara, maziwa, mipaka ya majengo, n.k. Tafadhali ongeza aina hizo moja kwa moja kwenye <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Angalia <a href="https://organicmaps.app/faq/editing/advanced-map-editing">mwongozo</a> wetu kwa maelekezo ya kina hatua kwa hatua.</string>
+    <string name="editor_category_unsuitable_text">Moose Maps inakuwezesha kuongeza tu aina rahisi za alama, ikimaanisha hakuna miji, barabara, maziwa, mipaka ya majengo, n.k. Tafadhali ongeza aina hizo moja kwa moja kwenye <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Angalia <a href="https://organicmaps.app/faq/editing/advanced-map-editing">mwongozo</a> wetu kwa maelekezo ya kina hatua kwa hatua.</string>
     <string name="downloader_no_downloaded_maps_title">Haujapakua ramani yoyote</string>
     <string name="downloader_no_downloaded_maps_message">Pakua ramani ili kutafuta na kuvinjari bila muunganisho.</string>
     <string name="current_location_unknown_error_title">Mahali pa sasa halijulikani.</string>
@@ -566,7 +566,7 @@
     <string name="mobile_data_option_ask">Daima Uliza</string>
     <string name="traffic_update_maps_text">Ili kuonyesha data za trafiki, ramani lazima zisasishwe.</string>
     <string name="big_font">Ongeza ukubwa wa lebo za ramani</string>
-    <string name="traffic_update_app">Tafadhali sasisha Organic Maps</string>
+    <string name="traffic_update_app">Tafadhali sasisha Moose Maps</string>
     <!-- "traffic" as in "road congestion" -->
     <string name="traffic_data_unavailable">Takwimu za trafiki hazipatikani</string>
     <string name="enable_logging">Wezesha kurekodi</string>
@@ -666,7 +666,7 @@
     <string name="bookmarks_text_placement_description">Ikiwa kuna alamisho nyingi sana, kuonyesha majina yao kwenye ramani kunaweza kupunguza kasi ya programu.</string>
     <string name="show_to_the_right">Onyesha upande wa kulia</string>
     <string name="show_at_the_bottom">Onyesha chini</string>
-    <string name="enable_logging_warning_message">Chaguo huwasha data kwa madhumuni ya uchunguzi. Itakuwa muhimu kwa wafanyakazi wetu ambao wanatatua matatizo ya programu. Washa chaguo hili kwa maombi ya mhudumu wa Organic Maps tu.</string>
+    <string name="enable_logging_warning_message">Chaguo huwasha data kwa madhumuni ya uchunguzi. Itakuwa muhimu kwa wafanyakazi wetu ambao wanatatua matatizo ya programu. Washa chaguo hili kwa maombi ya mhudumu wa Moose Maps tu.</string>
     <string name="driving_options_title">Machaguo ya njia</string>
     <!-- Recommended length for CarPlay and Android Auto is around 25-27 characters -->
     <string name="avoid_tolls">Epuka barabara za ushuru</string>
@@ -798,9 +798,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">Lengo letu kuu ni kujenga ramani za haraka, zinazozingatia faragha, na rahisi kutumia ambazo utapenda.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">Sasa unatumia Organic Maps kwenye skrini ya simu</string>
+    <string name="car_used_on_the_phone_screen">Sasa unatumia Moose Maps kwenye skrini ya simu</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">Sasa unatumia Organic Maps kwenye skrini ya gari</string>
+    <string name="car_used_on_the_car_screen">Sasa unatumia Moose Maps kwenye skrini ya gari</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">Umeunganishwa kwenye Android Auto</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -808,7 +808,7 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">Kwa skrini ya gari</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">Organic Maps zinahitaji ufikiaji wa eneo. Ikiwa salama, angalia arifa kwenye simu yako.</string>
+    <string name="aa_location_permissions_request">Moose Maps zinahitaji ufikiaji wa eneo. Ikiwa salama, angalia arifa kwenye simu yako.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Programu hii inahitaji idhini yako</string>
     <!-- Grant Permissions button. -->

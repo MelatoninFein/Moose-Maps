@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">Prenos ni uspel</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">Poskusi znova</string>
-    <string name="about_menu_title">O Organic Maps</string>
+    <string name="about_menu_title">O Moose Maps</string>
     <!-- Text in About screen -->
     <string name="about_headline">Brezplačno za vse, narejeno z ljubeznijo</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">Aplikacija zahteva strojno pospešen OpenGL. Žal vaša naprava ni podprta.</string>
     <string name="download">Prenesi</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">Za uporabo Organic Maps odklopite kabel USB ali vstavite pomnilniško kartico</string>
+    <string name="disconnect_usb_cable">Za uporabo Moose Maps odklopite kabel USB ali vstavite pomnilniško kartico</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">Za uporabo aplikacije najprej sprostite nekaj prostora na kartici SD/pomnilniku USB</string>
     <string name="download_resources">Preden začnete uporabljati aplikacijo, prenesite na svojo napravo pregledni zemljevid sveta.\nUporabil bo %s prostora.</string>
@@ -151,8 +151,8 @@
     <!-- Notes field in Bookmarks view -->
     <string name="description">Opombe</string>
     <!-- Email Subject when sharing bookmark list -->
-    <string name="share_bookmarks_email_subject">Z vami so bili deljeni zaznamki Organic Maps</string>
-    <string name="share_bookmarks_email_body">Živjo!\n\nV priponki so moji zaznamki; odprite jih v Organic Maps. Če aplikacije nimate nameščene, jo lahko prenesete tukaj: https://omaps.app/get?kmz\n\nUživajte v potovanju z Organic Maps!</string>
+    <string name="share_bookmarks_email_subject">Z vami so bili deljeni zaznamki Moose Maps</string>
+    <string name="share_bookmarks_email_body">Živjo!\n\nV priponki so moji zaznamki; odprite jih v Moose Maps. Če aplikacije nimate nameščene, jo lahko prenesete tukaj: https://omaps.app/get?kmz\n\nUživajte v potovanju z Moose Maps!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">Nalaganje zaznamkov</string>
     <!-- Kmz file successful loading -->
@@ -161,7 +161,7 @@
     <string name="load_kmz_failed">Nalaganje zaznamkov ni uspelo. Datoteka je morda poškodovana ali okvarjena.</string>
     <!-- Failed to recognize the format of a bookmarks or tracks file. -->
     <string name="unknown_file_type">Aplikacija ne prepozna vrste datoteke:\n%1$s</string>
-    <!-- Failed to open a bookmarks or tracks file in Organic Maps. -->
+    <!-- Failed to open a bookmarks or tracks file in Moose Maps. -->
     <string name="failed_to_open_file">Odpiranje datoteke %1$s ni uspelo\n\n%2$s</string>
     <!-- resource for context menu -->
     <string name="edit">Uredi</string>
@@ -172,11 +172,11 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">Prenos zemljevida je v teku.</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">Oglejte si mojo trenutno lokacijo v Organic Maps! %1$s ali %2$s Nimate zemljevidov brez povezave? Prenesite jih tukaj: https://omaps.app/get</string>
+    <string name="my_position_share_sms">Oglejte si mojo trenutno lokacijo v Moose Maps! %1$s ali %2$s Nimate zemljevidov brez povezave? Prenesite jih tukaj: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
-    <string name="bookmark_share_email_subject">Hej, poglej moj žebljiček v Organic Maps!</string>
+    <string name="bookmark_share_email_subject">Hej, poglej moj žebljiček v Moose Maps!</string>
     <!-- Subject for emailed position -->
-    <string name="my_position_share_email_subject">Hej, poglej mojo trenutno lokacijo na zemljevidu Organic Maps!</string>
+    <string name="my_position_share_email_subject">Hej, poglej mojo trenutno lokacijo na zemljevidu Moose Maps!</string>
     <!-- Share my position using EMail, %1$@ is om:// and %2$@ is https://omaps.app link WITHOUT NAME -->
     <string name="my_position_share_email">Živjo,\n\nZdaj sem tukaj: %1$s. Kliknite to povezavo %2$s ali to %3$s, da vidite kraj na zemljevidu.\n\nHvala.</string>
     <!-- Share button text which opens menu with more buttons, like Message, EMail, Facebook etc. -->
@@ -252,7 +252,7 @@
     <string name="menu">Meni</string>
     <!-- Text in menu -->
     <string name="website">Spletna stran</string>
-    <!-- Text in About menu, opens Organic Maps news website -->
+    <!-- Text in About menu, opens Moose Maps news website -->
     <string name="news">Novice</string>
     <!-- Settings: Send feedback button and dialog title -->
     <string name="feedback">Povratne informacije</string>
@@ -266,7 +266,7 @@
     <string name="donate">Doniraj</string>
     <string name="already_donated">Že donirano</string>
     <string name="remind_me_later">Opomni me kasneje</string>
-    <string name="support_organic_maps">Podprite Organic Maps</string>
+    <string name="support_organic_maps">Podprite Moose Maps</string>
     <!-- Button in the main Help dialog -->
     <string name="how_to_support_us">Podprite projekt</string>
     <!-- Button in the main Help dialog -->
@@ -485,7 +485,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">Podatki OpenStreetMap, ki jih je ustvarila skupnost, od %s. Več o tem, kako urejati in posodabljati zemljevid, preberite na OpenStreetMap.org</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) je projekt skupnosti za izgradnjo brezplačnega in odprtega zemljevida. Je glavni vir podatkov o zemljevidih v Organic Maps in deluje podobno kot Wikipedija. Lahko dodajate ali urejate mesta, ki postanejo na voljo milijonom uporabnikov po vsem svetu.\nPridružite se skupnosti in pomagajte ustvariti boljši zemljevid za vse!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) je projekt skupnosti za izgradnjo brezplačnega in odprtega zemljevida. Je glavni vir podatkov o zemljevidih v Moose Maps in deluje podobno kot Wikipedija. Lahko dodajate ali urejate mesta, ki postanejo na voljo milijonom uporabnikov po vsem svetu.\nPridružite se skupnosti in pomagajte ustvariti boljši zemljevid za vse!</string>
     <string name="login_to_make_edits_visible">Ustvarite račun OpenStreetMap ali se prijavite, da objavite svoja urejanja zemljevida svetu.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d od %2$d</string>
@@ -500,7 +500,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">Opomba za prostovoljce OpenStreetMap (neobvezno)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Opišite napake na zemljevidu ali stvari, ki jih ni mogoče urejati z Organic Maps</string>
+    <string name="editor_note_hint">Opišite napake na zemljevidu ali stvari, ki jih ni mogoče urejati z Moose Maps</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Vaša urejanja se naložijo v javno bazo podatkov <a href="https://wiki.openstreetmap.org/wiki/About_OpenStreetMap">OpenStreetMap</a>. Prosimo, ne dodajajte osebnih ali avtorsko zaščitenih podatkov.</string>
     <string name="editor_more_about_osm">Več o OpenStreetMap</string>
@@ -510,7 +510,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">Upravljavec: %s</string>
     <string name="editor_category_unsuitable_title">Ne najdete primerne kategorije?</string>
-    <string name="editor_category_unsuitable_text">Organic Maps omogoča dodajanje samo preprostih točkovnih kategorij, kar pomeni, da ni mest, cest, jezer, obrisov zgradb itd. Takšne kategorije dodajte neposredno na <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Preverite naš <a href="https://organicmaps.app/faq/editing/advanced-map-editing">vodnik</a> za podrobna navodila po korakih.</string>
+    <string name="editor_category_unsuitable_text">Moose Maps omogoča dodajanje samo preprostih točkovnih kategorij, kar pomeni, da ni mest, cest, jezer, obrisov zgradb itd. Takšne kategorije dodajte neposredno na <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>. Preverite naš <a href="https://organicmaps.app/faq/editing/advanced-map-editing">vodnik</a> za podrobna navodila po korakih.</string>
     <string name="downloader_no_downloaded_maps_title">Niste prenesli nobenega zemljevida</string>
     <string name="downloader_no_downloaded_maps_message">Prenesite zemljevide za iskanje in navigacijo brez povezave.</string>
     <string name="current_location_unknown_error_title">Trenutna lokacija ni znana.</string>
@@ -568,7 +568,7 @@
     <string name="mobile_data_option_ask">Vedno vprašaj</string>
     <string name="traffic_update_maps_text">Za prikaz podatkov o prometu je treba posodobiti zemljevide.</string>
     <string name="big_font">Povečaj velikost oznak na zemljevidu</string>
-    <string name="traffic_update_app">Posodobite Organic Maps</string>
+    <string name="traffic_update_app">Posodobite Moose Maps</string>
     <!-- "traffic" as in "road congestion" -->
     <string name="traffic_data_unavailable">Podatki o prometu niso na voljo</string>
     <string name="enable_logging">Omogoči beleženje</string>
@@ -821,9 +821,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">Naš glavni cilj je zgraditi hitre, zasebnosti prijazne in enostavne zemljevide, ki jih boste vzljubili.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">Zdaj uporabljate Organic Maps na zaslonu telefona</string>
+    <string name="car_used_on_the_phone_screen">Zdaj uporabljate Moose Maps na zaslonu telefona</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">Zdaj uporabljate Organic Maps na zaslonu avtomobila</string>
+    <string name="car_used_on_the_car_screen">Zdaj uporabljate Moose Maps na zaslonu avtomobila</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">Povezani ste z Android Auto</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -831,7 +831,7 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">Na zaslon avtomobila</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">Organic Maps potrebuje dostop do lokacije. Ko bo varno, preverite obvestilo na telefonu.</string>
+    <string name="aa_location_permissions_request">Moose Maps potrebuje dostop do lokacije. Ko bo varno, preverite obvestilo na telefonu.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Ta aplikacija potrebuje vaše dovoljenje</string>
     <!-- Grant Permissions button. -->

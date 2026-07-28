@@ -12,20 +12,16 @@
     android:layout_centerInParent="true"
     android:clipChildren="false"
     android:clipToPadding="false">
-    <include
-      layout="@layout/map_buttons_help"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/margin_half"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintStart_toStartOf="parent" />
+    <!-- The help button opened Organic Maps' About screen and their support channels, which don't
+         serve this fork. Search now anchors to the start edge in its place. -->
     <include
       layout="@layout/map_buttons_search_square"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/margin_half"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@+id/btn_bookmarks"
-      app:layout_constraintStart_toEndOf="@+id/help_button" />
+      app:layout_constraintStart_toStartOf="parent" />
     <include
       layout="@layout/map_buttons_bookmarks_square"
       android:layout_width="wrap_content"

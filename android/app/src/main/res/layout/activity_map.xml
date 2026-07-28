@@ -51,9 +51,6 @@
     <!-- Cycling readout and music transport. Added last so they sit above the map buttons and
          receive touches; both hide themselves when there is nothing to show. -->
     <include layout="@layout/cycling_overlay" />
-
-    <!-- Replaces the entire UI while the map is a floating picture-in-picture window. -->
-    <include layout="@layout/cycling_pip_overlay" />
   </RelativeLayout>
   <androidx.fragment.app.FragmentContainerView
     android:id="@+id/search_container_fragment"
@@ -69,9 +66,5 @@
     android:name="app.organicmaps.widget.placepage.PlacePageController"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
-
-  <!-- Music FAB and its off-canvas panel. Last child so the panel and its scrim sit above the
-       place page and routing sheets when open. -->
-  <include layout="@layout/cycling_media_panel" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
