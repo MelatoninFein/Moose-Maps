@@ -23,16 +23,6 @@
       android:text="@string/cycling_sensors_enable"
       android:textAppearance="@style/MwmTextAppearance.Body1" />
 
-    <androidx.appcompat.widget.SwitchCompat
-      android:id="@+id/cycling_overlay_enabled"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:minHeight="@dimen/height_item_oneline"
-      android:paddingStart="@dimen/margin_base"
-      android:paddingEnd="@dimen/margin_base"
-      android:text="@string/cycling_overlay_enable"
-      android:textAppearance="@style/MwmTextAppearance.Body1" />
-
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

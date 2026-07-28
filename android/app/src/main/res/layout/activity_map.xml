@@ -48,10 +48,6 @@
       android:paddingBottom="@dimen/margin_base"
       android:visibility="invisible" />
 
-    <!-- Cycling readout and music transport. Added last so they sit above the map buttons and
-         receive touches; both hide themselves when there is nothing to show. -->
-    <include layout="@layout/cycling_overlay" />
-
     <!-- Compass, top-right. Speed in the middle (GPS by default), waypoint dots on the rim. -->
     <app.organicmaps.cycling.ui.CompassView
       android:id="@+id/cycling_compass"
@@ -59,7 +55,8 @@
       android:layout_height="@dimen/cycling_compass_size"
       android:layout_alignParentTop="true"
       android:layout_alignParentEnd="true"
-      android:layout_margin="@dimen/margin_base" />
+      android:layout_marginTop="@dimen/margin_base"
+      android:layout_marginEnd="@dimen/margin_base" />
   </RelativeLayout>
   <androidx.fragment.app.FragmentContainerView
     android:id="@+id/search_container_fragment"

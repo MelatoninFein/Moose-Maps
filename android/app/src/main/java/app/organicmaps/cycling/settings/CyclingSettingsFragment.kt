@@ -43,7 +43,6 @@ class CyclingSettingsFragment : BaseMwmFragment() {
     private lateinit var store: SensorStore
 
     private lateinit var sensorsSwitch: SwitchCompat
-    private lateinit var overlaySwitch: SwitchCompat
     private lateinit var wheelInputLayout: TextInputLayout
     private lateinit var wheelField: TextInputEditText
     private lateinit var pairedList: LinearLayout
@@ -94,7 +93,6 @@ class CyclingSettingsFragment : BaseMwmFragment() {
         store = hub.store
 
         sensorsSwitch = view.findViewById(R.id.cycling_sensors_enabled)
-        overlaySwitch = view.findViewById(R.id.cycling_overlay_enabled)
         wheelInputLayout = view.findViewById(R.id.cycling_wheel_input)
         wheelField = view.findViewById(R.id.cycling_wheel_circumference)
         pairedList = view.findViewById(R.id.cycling_paired_list)
@@ -104,11 +102,9 @@ class CyclingSettingsFragment : BaseMwmFragment() {
         sensorStatus = view.findViewById(R.id.cycling_sensor_status)
 
         sensorsSwitch.isChecked = store.isEnabled
-        overlaySwitch.isChecked = store.isOverlayVisible
         wheelField.setText(store.wheelCircumferenceMm.toString())
 
         sensorsSwitch.setOnCheckedChangeListener { _, isChecked -> onSensorsToggled(isChecked) }
-        overlaySwitch.setOnCheckedChangeListener { _, isChecked -> store.isOverlayVisible = isChecked }
         scanButton.setOnClickListener { onScanClicked() }
 
         hub.statuses.observe(viewLifecycleOwner) { statuses -> bindPaired(statuses) }

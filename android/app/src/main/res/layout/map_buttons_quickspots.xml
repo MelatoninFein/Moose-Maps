@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Quick-navigate button, in the slot the Organic Maps help button used to occupy. -->
+<!-- Quick-navigate button. Styled to match the other footer buttons, not the round map controls. -->
 <com.google.android.material.floatingactionbutton.FloatingActionButton
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/quick_spots_button"
-  style="@style/MwmWidget.MapButton.Search"
+  style="@style/MwmWidget.MapButton.Square"
+  app:shapeAppearanceOverlay="@style/MwmWidget.MapButton.Square"
   android:contentDescription="@string/cycling_spots_title"
   app:srcCompat="@drawable/ic_cycling_spots" />
