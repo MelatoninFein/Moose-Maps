@@ -492,6 +492,20 @@
         android:label="@string/download_maps"
         android:parentActivityName="app.organicmaps.MwmActivity"
         android:windowSoftInputMode="adjustResize" />
+    <activity
+        android:name="app.organicmaps.cycling.rides.RidesActivity"
+        android:configChanges="orientation|screenLayout|screenSize"
+        android:screenOrientation="fullUser"
+        android:label="@string/cycling_rides_title"
+        android:parentActivityName="app.organicmaps.MwmActivity" />
+
+    <activity
+        android:name="app.organicmaps.cycling.rides.SegmentsActivity"
+        android:configChanges="orientation|screenLayout|screenSize"
+        android:screenOrientation="fullUser"
+        android:label="@string/cycling_segments_title"
+        android:parentActivityName="app.organicmaps.MwmActivity" />
+
 
     <activity
         android:name="app.organicmaps.settings.SettingsActivity"

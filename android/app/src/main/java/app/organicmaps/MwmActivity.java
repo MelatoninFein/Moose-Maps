@@ -58,6 +58,8 @@ import app.organicmaps.bookmarks.BookmarkCategoriesActivity;
 import app.organicmaps.cycling.CyclingController;
 import app.organicmaps.cycling.RideMode;
 import app.organicmaps.cycling.rides.RideRecorder;
+import app.organicmaps.cycling.rides.RidesActivity;
+import app.organicmaps.cycling.rides.SegmentsActivity;
 import app.organicmaps.downloader.DownloaderActivity;
 import app.organicmaps.downloader.OnmapDownloader;
 import app.organicmaps.editor.EditorActivity;
@@ -2038,6 +2040,18 @@ public class MwmActivity extends BaseMwmFragmentActivity
     }
   }
 
+  public void onRidesOptionSelected()
+  {
+    closeFloatingPanels();
+    startActivity(new Intent(this, RidesActivity.class));
+  }
+
+  public void onSegmentsOptionSelected()
+  {
+    closeFloatingPanels();
+    startActivity(new Intent(this, SegmentsActivity.class));
+  }
+
   public void onShareLocationOptionSelected()
   {
     closeFloatingPanels();
@@ -2065,6 +2079,10 @@ public class MwmActivity extends BaseMwmFragmentActivity
                     RideMode.INSTANCE.isRiding() ? R.string.cycling_ride_stop : R.string.cycling_ride_start,
                     R.drawable.ic_track_recording_off, -1,
                                         this::onTrackRecordingOptionSelected));
+      items.add(new MenuBottomSheetItem(R.string.cycling_rides_title, R.drawable.ic_track_recording_off,
+                                        this::onRidesOptionSelected));
+      items.add(new MenuBottomSheetItem(R.string.cycling_segments_title, R.drawable.ic_cycling_spots,
+                                        this::onSegmentsOptionSelected));
       items.add(new MenuBottomSheetItem(R.string.share_my_location, R.drawable.ic_share,
                                         this::onShareLocationOptionSelected));
       return items;
