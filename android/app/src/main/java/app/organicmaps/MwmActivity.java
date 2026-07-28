@@ -56,6 +56,7 @@ import app.organicmaps.api.Const;
 import app.organicmaps.base.BaseMwmFragmentActivity;
 import app.organicmaps.bookmarks.BookmarkCategoriesActivity;
 import app.organicmaps.cycling.CyclingController;
+import app.organicmaps.cycling.rides.RideRecorder;
 import app.organicmaps.downloader.DownloaderActivity;
 import app.organicmaps.downloader.OnmapDownloader;
 import app.organicmaps.editor.EditorActivity;
@@ -1974,6 +1975,8 @@ public class MwmActivity extends BaseMwmFragmentActivity
     }
     Toast.makeText(this, R.string.track_recording, Toast.LENGTH_SHORT).show();
     TrackRecordingService.startForegroundService(getApplicationContext());
+    // Capture sensor data alongside the GPS trace for the ride log.
+    RideRecorder.from(this).start();
     mMapButtonsViewModel.setTrackRecorderState(true);
     return true;
   }
@@ -1987,6 +1990,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
       updateCompassOffset(offsetY, offsetX);
     }
     TrackRecordingService.stopService(getApplicationContext());
+    RideRecorder.from(this).stop();
     mMapButtonsViewModel.setTrackRecorderState(false);
     if (mPlacePageViewModel.getMapObject().getValue() != null
         && mPlacePageViewModel.getMapObject().getValue().isTrackRecording())
