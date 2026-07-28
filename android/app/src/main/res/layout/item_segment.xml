@@ -44,6 +44,13 @@
       tools:text="12 Jul 2026   24m 18s  PB"
       tools:visibility="visible" />
   </LinearLayout>
+  <app.organicmaps.cycling.rides.SparklineView
+    android:id="@+id/segment_row_sparkline"
+    android:layout_width="@dimen/cycling_sparkline_width"
+    android:layout_height="@dimen/cycling_sparkline_height"
+    android:layout_marginEnd="@dimen/margin_base"
+    android:visibility="gone" />
+
   <ImageView
     android:id="@+id/segment_row_share"
     android:layout_width="@dimen/cycling_icon_size"

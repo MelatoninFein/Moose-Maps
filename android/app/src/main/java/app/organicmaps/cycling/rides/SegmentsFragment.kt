@@ -18,6 +18,7 @@ import app.organicmaps.R
 import app.organicmaps.base.BaseMwmFragment
 import app.organicmaps.cycling.CyclingFormatter
 import app.organicmaps.util.WindowInsetUtils.ScrollableContentInsetsListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.concurrent.TimeUnit
 
 /**
@@ -68,6 +69,9 @@ class SegmentsFragment : BaseMwmFragment() {
             val topThisSession = latestRide?.let { historyStore.topRunsInSession(segment.id, it) }.orEmpty()
             // Tapping expands the attempt list in place - a segment you race has a history, and
             // pushing another screen for a handful of times would be heavier than it deserves.
+            // Sloping down is progress, readable before any time is.
+            row.findViewById<SparklineView>(R.id.segment_row_sparkline).times = runs.map { it.elapsedMillis }
+
             val runsView: TextView = row.findViewById(R.id.segment_row_runs)
             row.setOnClickListener {
                 runsView.visibility = if (runsView.visibility == View.VISIBLE) View.GONE else View.VISIBLE
@@ -81,11 +85,7 @@ class SegmentsFragment : BaseMwmFragment() {
             row.findViewById<ImageView>(R.id.segment_row_share).setOnClickListener { shareSegment(segment) }
 
             row.findViewById<ImageView>(R.id.segment_row_delete).setOnClickListener {
-                historyStore.delete(segment.id)
-                SegmentStore(requireContext()).delete(segment.id)
-                // Re-render rather than removing the row, so the empty state appears when the last
-                // segment goes.
-                render(root)
+                confirmDelete(segment, runs.size, root)
             }
             list.addView(row)
         }
@@ -140,6 +140,34 @@ class SegmentsFragment : BaseMwmFragment() {
         } catch (e: IOException) {
             Toast.makeText(requireContext(), R.string.cycling_segment_share_failed, Toast.LENGTH_LONG).show()
         }
+    }
+
+    /**
+     * Deleting takes every recorded attempt with it, so it asks first.
+     *
+     * A segment ridden all season is not recoverable from anywhere else, and the delete control
+     * sits a thumb-width from the row you tap to expand it. Losing that to a mis-tap is the worst
+     * thing this screen could do.
+     */
+    private fun confirmDelete(segment: Segment, runCount: Int, root: View) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.cycling_segment_delete_title, segment.name))
+            .setMessage(
+                if (runCount > 0) {
+                    getString(R.string.cycling_segment_delete_message, runCount)
+                } else {
+                    getString(R.string.cycling_segment_delete_message_empty)
+                },
+            )
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.delete) { _, _ ->
+                SegmentHistoryStore(requireContext()).delete(segment.id)
+                SegmentStore(requireContext()).delete(segment.id)
+                // Re-render rather than removing the row, so the empty state appears when the last
+                // segment goes.
+                render(root)
+            }
+            .show()
     }
 
     private fun formatDuration(millis: Long): String {

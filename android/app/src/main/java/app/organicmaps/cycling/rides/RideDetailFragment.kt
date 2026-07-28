@@ -67,7 +67,14 @@ class RideDetailFragment : BaseMwmFragment() {
         trace.samples = samples
         // Headline figures as tiles; the long tail stays as text below the chart.
         buildStatGrid(view.findViewById(R.id.ride_stats_grid), summary)
-        stats.text = buildZones().trimStart()
+        // Zones as a proportional bar: the shape of a session reads before any number does.
+        val maxHr = SensorHub.from(requireContext()).store.maxHeartRateBpm
+        val zones = HeartRateZones.timeInZones(samples, maxHr)
+        val zoneBar: ZoneBarView = view.findViewById(R.id.ride_zone_bar)
+        zoneBar.timeInZones = zones
+        view.findViewById<TextView>(R.id.ride_zones_title).visibility =
+            if (zones.values.sum() > 0) View.VISIBLE else View.GONE
+        stats.visibility = View.GONE
 
         val chart: RideChartView = view.findViewById(R.id.ride_chart)
         chart.samples = samples

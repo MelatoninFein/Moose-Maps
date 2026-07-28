@@ -83,6 +83,11 @@
   <string name="cycling_segments_empty">No segments yet. Open a ride and save it as a segment, then your time is compared every time you ride it.</string>
   <string name="cycling_segment_best">Best %1$s</string>
   <string name="cycling_segment_no_time">No time yet</string>
+  <!-- %1$s is the segment name. -->
+  <string name="cycling_segment_delete_title">Delete %1$s?</string>
+  <!-- %1$d is how many recorded attempts will be lost. -->
+  <string name="cycling_segment_delete_message">This also deletes %1$d recorded attempts. It cannot be undone.</string>
+  <string name="cycling_segment_delete_message_empty">This cannot be undone.</string>
   <string name="cycling_segment_share">Share segment</string>
   <string name="cycling_segment_share_failed">Could not write the segment file.</string>
   <string name="cycling_segment_delete">Delete segment</string>

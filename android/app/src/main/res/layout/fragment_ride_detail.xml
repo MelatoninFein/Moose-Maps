@@ -89,6 +89,22 @@
     </com.google.android.material.chip.ChipGroup>
 
     <TextView
+      android:id="@+id/ride_zones_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_base"
+      android:text="@string/cycling_zones_title"
+      android:textAppearance="@style/MwmTextAppearance.Body2"
+      android:visibility="gone" />
+
+    <app.organicmaps.cycling.rides.ZoneBarView
+      android:id="@+id/ride_zone_bar"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/cycling_zone_bar_height"
+      android:layout_marginTop="@dimen/margin_quarter"
+      android:visibility="gone" />
+
+    <TextView
       android:id="@+id/ride_detail_stats"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
