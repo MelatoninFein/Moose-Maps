@@ -91,6 +91,13 @@
   <string name="cycling_segment_share">Share segment</string>
   <string name="cycling_segment_share_failed">Could not write the segment file.</string>
   <string name="cycling_segment_delete">Delete segment</string>
+  <string name="cycling_ride_menu">Ride options</string>
+  <string name="cycling_ride_rename">Rename</string>
+  <string name="cycling_ride_delete">Delete ride</string>
+  <string name="cycling_ride_delete_title">Delete this ride?</string>
+  <string name="cycling_ride_delete_message">The route and everything your sensors recorded are removed. This cannot be undone.</string>
+  <string name="cycling_ride_name_title">Name this ride</string>
+  <string name="cycling_ride_name_hint">Morning loop</string>
   <string name="cycling_segment_import">Import a segment</string>
   <string name="cycling_segment_import_failed">That file is not a segment.</string>
   <!-- %1$s is the segment name. -->

@@ -87,12 +87,32 @@ class RideDetailFragment : BaseMwmFragment() {
         view.findViewById<com.google.android.material.chip.Chip>(R.id.chip_power)
             .setOnCheckedChangeListener { _, checked -> chart.showPower = checked }
 
-        view.findViewById<Button>(R.id.ride_metric_speed).setOnClickListener {
-            trace.metric = RideTraceView.Metric.SPEED
-        }
-        view.findViewById<Button>(R.id.ride_metric_heart_rate).setOnClickListener {
-            trace.metric = RideTraceView.Metric.HEART_RATE
-        }
+        // A chip for a metric this ride never recorded is dead UI - toggling it changes nothing and
+        // implies the data is there to be found. Same rule the live tiles follow: a rider with no
+        // strap sees no strap controls.
+        val hasHeartRate = samples.any { it.heartRateBpm != null }
+        showChipIf(view, R.id.chip_hr, hasHeartRate)
+        showChipIf(view, R.id.chip_cadence, samples.any { it.cadenceRpm != null })
+        showChipIf(view, R.id.chip_power, samples.any { it.powerWatts != null })
+        showChipIf(view, R.id.chip_trace_heart_rate, hasHeartRate)
+
+        // Single selection, so the chosen chip shows which metric the trace is coloured by.
+        view.findViewById<com.google.android.material.chip.ChipGroup>(R.id.ride_trace_metric)
+            .setOnCheckedStateChangeListener { _, checked ->
+                trace.metric = if (checked.firstOrNull() == R.id.chip_trace_heart_rate) {
+                    RideTraceView.Metric.HEART_RATE
+                } else {
+                    RideTraceView.Metric.SPEED
+                }
+            }
+        // With the chart series all hidden the chart itself has nothing left to draw.
+        view.findViewById<View>(R.id.ride_chart).visibility =
+            if (samples.any { it.gpsSpeedMps != null || it.sensorSpeedMps != null } || hasHeartRate) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
         view.findViewById<Button>(R.id.ride_save_segment).setOnClickListener { saveAsSegment(file) }
         view.findViewById<Button>(R.id.ride_export_gpx).setOnClickListener { exportGpx(file) }
 
@@ -119,6 +139,11 @@ class RideDetailFragment : BaseMwmFragment() {
      * Only what is actually present: a ride with no power meter should not show an empty watts
      * tile, and the grid closes up around what is missing.
      */
+    private fun showChipIf(root: View, chipId: Int, present: Boolean) {
+        root.findViewById<com.google.android.material.chip.Chip>(chipId).visibility =
+            if (present) View.VISIBLE else View.GONE
+    }
+
     private fun buildStatGrid(grid: LinearLayout, summary: RideSummary) {
         grid.removeAllViews()
         val speedUnit = CyclingFormatter.speedUnit(requireContext())

@@ -10,6 +10,7 @@ import app.organicmaps.sdk.location.LocationListener
 import app.organicmaps.sdk.util.log.Logger
 import org.json.JSONObject
 import java.io.File
+import java.io.IOException
 
 /**
  * Records a ride: every GPS fix, with whatever the sensors were reporting at that moment.
@@ -169,6 +170,42 @@ class RideRecorder private constructor(context: Context) : LocationListener {
     fun samplesOf(file: File): List<RideSample> = readSamples(file)
 
     fun summaryOf(file: File): RideSummary? = RideStatistics.summarise(readSamples(file))
+
+    /**
+     * Removes a ride and anything stored beside it.
+     *
+     * Recordings could be made but never removed, so a mistaken start - or an hour of the inside of
+     * a pocket - stayed in the list for good and kept its share of the disk.
+     */
+    fun deleteRide(file: File): Boolean {
+        titleFile(file).delete()
+        return file.delete()
+    }
+
+    /**
+     * The rider's own name for a ride, or null when it has none.
+     *
+     * A sidecar beside the recording rather than a field inside it: the ride file is append-only
+     * while riding, and rewriting a finished one just to change its name risks the recording for
+     * the sake of a label.
+     */
+    fun titleOf(file: File): String? = try {
+        titleFile(file).takeIf { it.isFile }?.readText()?.trim()?.ifBlank { null }
+    } catch (e: IOException) {
+        null
+    }
+
+    fun setTitle(file: File, title: String) {
+        try {
+            val trimmed = title.trim()
+            if (trimmed.isEmpty()) titleFile(file).delete() else titleFile(file).writeText(trimmed)
+        } catch (e: IOException) {
+            Logger.w(TAG, "Could not name ride ${file.name}: ${e.message}")
+        }
+    }
+
+    // listRides only looks at .jsonl, so a sidecar never appears as a ride of its own.
+    private fun titleFile(file: File) = File(file.parentFile, "${file.name}.title")
 
     private fun readSamples(file: File): List<RideSample> = try {
         file.readLines().mapNotNull { line ->

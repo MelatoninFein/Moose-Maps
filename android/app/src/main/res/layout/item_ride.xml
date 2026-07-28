@@ -47,4 +47,16 @@
       android:textAppearance="@style/MwmTextAppearance.Body4"
       tools:text="24.3 km · 58m · 25 km/h · 148 bpm" />
   </LinearLayout>
+
+  <!-- One overflow rather than a row of icons: rides are scanned, and a delete control sitting
+       under the thumb of someone scrolling is how a recording gets lost by accident. -->
+  <ImageView
+    android:id="@+id/ride_row_menu"
+    android:layout_width="@dimen/cycling_icon_size"
+    android:layout_height="@dimen/cycling_icon_size"
+    android:layout_marginStart="@dimen/margin_half"
+    android:background="?selectableItemBackgroundBorderless"
+    android:contentDescription="@string/cycling_ride_menu"
+    app:srcCompat="@drawable/ic_more"
+    app:tint="?iconTint" />
 </LinearLayout>

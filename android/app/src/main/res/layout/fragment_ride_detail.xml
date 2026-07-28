@@ -22,21 +22,30 @@
       android:layout_width="match_parent"
       android:layout_height="@dimen/cycling_trace_height"
       android:background="@drawable/cycling_panel_bg" />
-    <LinearLayout
+    <!-- Chips, not buttons: on this screen a chip chooses what you are looking at and a button does
+         something. Two vocabularies for the same job - these picked the trace metric while the pair
+         below the chart picked the chart series - made identical decisions look unrelated, and left
+         the trace with no indication of which metric was actually being shown. -->
+    <com.google.android.material.chip.ChipGroup
+      android:id="@+id/ride_trace_metric"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="horizontal">
-      <Button
-        android:id="@+id/ride_metric_speed"
-        style="@style/CyclingMediaAppButton"
+      app:selectionRequired="true"
+      app:singleSelection="true">
+      <com.google.android.material.chip.Chip
+        android:id="@+id/chip_trace_speed"
+        style="@style/Widget.Material3.Chip.Filter"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
         android:text="@string/cycling_metric_speed" />
-      <Button
-        android:id="@+id/ride_metric_heart_rate"
-        style="@style/CyclingMediaAppButton"
+      <com.google.android.material.chip.Chip
+        android:id="@+id/chip_trace_heart_rate"
+        style="@style/Widget.Material3.Chip.Filter"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/cycling_metric_heart_rate" />
-    </LinearLayout>
+    </com.google.android.material.chip.ChipGroup>
     <!-- Figures as tiles rather than a paragraph: a rider scans these, they do not read them. -->
     <LinearLayout
       android:id="@+id/ride_stats_grid"
