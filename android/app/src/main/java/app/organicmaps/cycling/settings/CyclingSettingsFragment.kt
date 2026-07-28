@@ -15,7 +15,6 @@ import androidx.core.view.ViewCompat
 import app.organicmaps.R
 import app.organicmaps.base.BaseMwmFragment
 import app.organicmaps.cycling.media.MediaControlHub
-import app.organicmaps.cycling.media.MediaNotificationListener
 import app.organicmaps.cycling.sensors.DiscoveredSensor
 import app.organicmaps.cycling.sensors.SensorConnectionState
 import app.organicmaps.cycling.sensors.SensorHub
@@ -51,8 +50,6 @@ class CyclingSettingsFragment : BaseMwmFragment() {
     private lateinit var pairedEmpty: TextView
     private lateinit var discoveredList: LinearLayout
     private lateinit var scanButton: Button
-    private lateinit var mediaAccessSummary: TextView
-    private lateinit var mediaAccessButton: Button
 
     private val discovered = linkedMapOf<String, DiscoveredSensor>()
 
@@ -105,8 +102,6 @@ class CyclingSettingsFragment : BaseMwmFragment() {
         discoveredList = view.findViewById(R.id.cycling_discovered_list)
         scanButton = view.findViewById(R.id.cycling_scan_button)
         sensorStatus = view.findViewById(R.id.cycling_sensor_status)
-        mediaAccessSummary = view.findViewById(R.id.cycling_media_access_summary)
-        mediaAccessButton = view.findViewById(R.id.cycling_media_access_button)
 
         sensorsSwitch.isChecked = store.isEnabled
         overlaySwitch.isChecked = store.isOverlayVisible
@@ -115,17 +110,8 @@ class CyclingSettingsFragment : BaseMwmFragment() {
         sensorsSwitch.setOnCheckedChangeListener { _, isChecked -> onSensorsToggled(isChecked) }
         overlaySwitch.setOnCheckedChangeListener { _, isChecked -> store.isOverlayVisible = isChecked }
         scanButton.setOnClickListener { onScanClicked() }
-        mediaAccessButton.setOnClickListener {
-            startActivity(Intent(MediaNotificationListener.settingsIntentAction))
-        }
 
         hub.statuses.observe(viewLifecycleOwner) { statuses -> bindPaired(statuses) }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // The user may have granted notification access in system settings and come straight back.
-        bindMediaAccess()
     }
 
     override fun onPause() {
@@ -245,17 +231,6 @@ class CyclingSettingsFragment : BaseMwmFragment() {
                 hub.forget(status.sensor.address)
             }
             pairedList.addView(row)
-        }
-    }
-
-    private fun bindMediaAccess() {
-        val granted = MediaNotificationListener.isEnabled(requireContext())
-        mediaAccessSummary.setText(
-            if (granted) R.string.cycling_music_access_granted else R.string.cycling_music_access_missing,
-        )
-        mediaAccessButton.visibility = if (granted) View.GONE else View.VISIBLE
-        if (granted) {
-            media.refreshSessions()
         }
     }
 

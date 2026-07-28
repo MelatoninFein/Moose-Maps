@@ -29,14 +29,27 @@ object MusicButtons {
         }
 
         val media = MediaControlHub.from(frame.context)
-        previous.setOnClickListener { media.skipToPrevious() }
-        next.setOnClickListener { media.skipToNext() }
-        playPause.setOnClickListener { media.togglePlayPause() }
 
-        media.nowPlaying.observe(lifecycleOwner) { nowPlaying ->
-            playPause.setImageResource(
-                if (nowPlaying.isPlaying) R.drawable.ic_cycling_pause else R.drawable.ic_cycling_play,
-            )
+        fun refreshIcon() {
+            val playing = media.nowPlaying.value?.isPlaying == true || media.isMusicActive()
+            playPause.setImageResource(if (playing) R.drawable.ic_cycling_pause else R.drawable.ic_cycling_play)
         }
+
+        // Players take a moment to react to a key event, so re-read shortly after the press. This
+        // is what keeps the icon honest without notification access, where no callback ever arrives.
+        fun pressThenRefresh(action: () -> Unit) {
+            action()
+            playPause.postDelayed({ refreshIcon() }, ICON_SETTLE_MS)
+        }
+
+        previous.setOnClickListener { pressThenRefresh { media.skipToPrevious() } }
+        next.setOnClickListener { pressThenRefresh { media.skipToNext() } }
+        playPause.setOnClickListener { pressThenRefresh { media.togglePlayPause() } }
+
+        media.nowPlaying.observe(lifecycleOwner) { refreshIcon() }
+        refreshIcon()
     }
+
+    /** Long enough for a player to actually start or stop before we re-read the audio state. */
+    private const val ICON_SETTLE_MS = 400L
 }

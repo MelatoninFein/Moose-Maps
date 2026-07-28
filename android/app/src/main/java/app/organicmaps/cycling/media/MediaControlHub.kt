@@ -110,6 +110,14 @@ class MediaControlHub private constructor(context: Context) {
         start()
     }
 
+    /**
+     * Whether audio is playing, without needing any permission.
+     *
+     * The media-session metadata is only readable with notification access; this is the fallback
+     * that lets the play/pause icon show the truth for everyone else.
+     */
+    fun isMusicActive(): Boolean = audioManager?.isMusicActive == true
+
     fun togglePlayPause() {
         val controller = activeController
         if (controller == null) {
