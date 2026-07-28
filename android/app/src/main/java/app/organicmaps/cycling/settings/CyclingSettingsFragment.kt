@@ -15,6 +15,8 @@ import androidx.core.view.ViewCompat
 import app.organicmaps.R
 import app.organicmaps.base.BaseMwmFragment
 import app.organicmaps.cycling.media.MediaControlHub
+import app.organicmaps.cycling.rides.RidesFragment
+import app.organicmaps.cycling.rides.SegmentsFragment
 import app.organicmaps.cycling.sensors.DiscoveredSensor
 import app.organicmaps.cycling.sensors.SensorConnectionState
 import app.organicmaps.cycling.sensors.SensorHub
@@ -109,6 +111,17 @@ class CyclingSettingsFragment : BaseMwmFragment() {
 
         sensorsSwitch.setOnCheckedChangeListener { _, isChecked -> onSensorsToggled(isChecked) }
         scanButton.setOnClickListener { onScanClicked() }
+
+        // Rides and Segments live inside Cycling rather than as siblings of it, so Settings has one
+        // cycling entry rather than four scattered through the general list.
+        view.findViewById<Button>(R.id.cycling_open_rides).setOnClickListener {
+            (requireActivity() as app.organicmaps.settings.SettingsActivity)
+                .stackFragment(RidesFragment::class.java, getString(R.string.cycling_rides_title), null)
+        }
+        view.findViewById<Button>(R.id.cycling_open_segments).setOnClickListener {
+            (requireActivity() as app.organicmaps.settings.SettingsActivity)
+                .stackFragment(SegmentsFragment::class.java, getString(R.string.cycling_segments_title), null)
+        }
 
         hub.statuses.observe(viewLifecycleOwner) { statuses -> bindPaired(statuses) }
     }

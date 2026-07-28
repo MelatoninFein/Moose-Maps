@@ -4,6 +4,7 @@ import android.content.Context
 import android.location.Location
 import androidx.annotation.MainThread
 import app.organicmaps.MwmApplication
+import app.organicmaps.cycling.RideMode
 import app.organicmaps.cycling.sensors.SensorHub
 import app.organicmaps.sdk.location.LocationListener
 import app.organicmaps.sdk.util.log.Logger
@@ -42,6 +43,7 @@ class RideRecorder private constructor(context: Context) : LocationListener {
         sampleCount = 0
         lastWriteMs = 0L
         Logger.i(TAG, "Recording ride to ${file.name}")
+        RideMode.setRiding(true)
         MwmApplication.from(appContext).getLocationHelper().addListener(this)
     }
 
@@ -50,6 +52,7 @@ class RideRecorder private constructor(context: Context) : LocationListener {
     fun stop(): RideSummary? {
         val file = currentFile ?: return null
         MwmApplication.from(appContext).getLocationHelper().removeListener(this)
+        RideMode.setRiding(false)
         currentFile = null
 
         val summary = RideStatistics.summarise(readSamples(file))

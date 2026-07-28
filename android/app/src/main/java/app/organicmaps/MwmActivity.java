@@ -56,6 +56,7 @@ import app.organicmaps.api.Const;
 import app.organicmaps.base.BaseMwmFragmentActivity;
 import app.organicmaps.bookmarks.BookmarkCategoriesActivity;
 import app.organicmaps.cycling.CyclingController;
+import app.organicmaps.cycling.RideMode;
 import app.organicmaps.cycling.rides.RideRecorder;
 import app.organicmaps.downloader.DownloaderActivity;
 import app.organicmaps.downloader.OnmapDownloader;
@@ -2049,7 +2050,11 @@ public class MwmActivity extends BaseMwmFragmentActivity
       if (!TextUtils.isEmpty(mDonatesUrl))
         items.add(new MenuBottomSheetItem(R.string.donate, R.drawable.ic_donate, this::onDonateOptionSelected));
       items.add(new MenuBottomSheetItem(R.string.settings, R.drawable.ic_settings, this::onSettingsOptionSelected));
-      items.add(new MenuBottomSheetItem(R.string.start_track_recording, R.drawable.ic_track_recording_off, -1,
+      // "Start ride" rather than "start track recording": it now begins recording, brings the
+      // sensors up and reveals the ride instrumentation, so the old name described a fraction of it.
+      items.add(new MenuBottomSheetItem(
+                    RideMode.INSTANCE.isRiding() ? R.string.cycling_ride_stop : R.string.cycling_ride_start,
+                    R.drawable.ic_track_recording_off, -1,
                                         this::onTrackRecordingOptionSelected));
       items.add(new MenuBottomSheetItem(R.string.share_my_location, R.drawable.ic_share,
                                         this::onShareLocationOptionSelected));

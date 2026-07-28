@@ -139,20 +139,6 @@
       app:singleLineTitle="false"
       android:persistent="false"
       android:order="21"/>
-    <Preference
-      android:key="@string/pref_rides_screen"
-      android:title="@string/cycling_rides_title"
-      android:summary="@string/cycling_rides_summary"
-      app:singleLineTitle="false"
-      android:persistent="false"
-      android:order="22"/>
-    <Preference
-      android:key="@string/pref_segments_screen"
-      android:title="@string/cycling_segments_title"
-      android:summary="@string/cycling_segments_summary"
-      app:singleLineTitle="false"
-      android:persistent="false"
-      android:order="23"/>
   </androidx.preference.PreferenceCategory>
 
   <androidx.preference.PreferenceCategory
