@@ -45,6 +45,6 @@ class AboutForkFragment : BaseMwmFragment() {
     }
 
     private companion object {
-        const val SOURCE_URL = "https://github.com/MelatoninFein/OrganicBicycleMaps"
+        const val SOURCE_URL = "https://github.com/MelatoninFein/Moose-Maps"
     }
 }

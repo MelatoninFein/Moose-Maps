@@ -49,8 +49,8 @@ access, which you grant once under **Settings → Cycling**; skipping tracks wor
 You need the Android SDK (platform 36, build-tools 36.x), NDK 29+, CMake 3.22.1+ and JDK 17+.
 
 ```bash
-git clone --recurse-submodules https://github.com/MelatoninFein/OrganicBicycleMaps.git
-cd OrganicBicycleMaps && bash ./configure.sh
+git clone --recurse-submodules https://github.com/MelatoninFein/Moose-Maps.git
+cd Moose-Maps && bash ./configure.sh
 cd android && ./gradlew assembleGoogleDebug -Parm64
 ```
 
