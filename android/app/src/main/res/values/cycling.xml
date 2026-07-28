@@ -23,6 +23,7 @@
   <color name="fg_compass">#DE000000</color>
   <dimen name="cycling_compass_size">96dp</dimen>
   <dimen name="cycling_spots_max_height">420dp</dimen>
+  <dimen name="cycling_trace_height">280dp</dimen>
 
   <!-- "Open Spotify" / "Open TIDAL" buttons in the music panel. Declared here rather than
        referencing the AppCompat style from code: nonTransitiveRClass keeps library resources out

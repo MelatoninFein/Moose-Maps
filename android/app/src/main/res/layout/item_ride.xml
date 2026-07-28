@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="?selectableItemBackground"
+  android:minHeight="@dimen/height_item_oneline"
+  android:orientation="vertical"
+  android:paddingStart="@dimen/margin_base"
+  android:paddingTop="@dimen/margin_half"
+  android:paddingEnd="@dimen/margin_base"
+  android:paddingBottom="@dimen/margin_half">
+  <TextView
+    android:id="@+id/ride_date"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:lines="1"
+    android:textAppearance="@style/MwmTextAppearance.Body1"
+    tools:text="28 Jul 2026 14:22" />
+  <TextView
+    android:id="@+id/ride_stats"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:lines="1"
+    android:textAppearance="@style/MwmTextAppearance.Body4"
+    tools:text="24.3 km, 58m, 25 km/h, 148 bpm" />
+</LinearLayout>

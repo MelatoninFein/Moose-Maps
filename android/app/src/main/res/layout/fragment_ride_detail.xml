@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/ride_detail_root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_base">
+    <TextView
+      android:id="@+id/ride_detail_empty"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/cycling_rides_unreadable"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      android:visibility="gone" />
+    <app.organicmaps.cycling.rides.RideTraceView
+      android:id="@+id/ride_trace"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/cycling_trace_height"
+      android:background="@drawable/cycling_panel_bg" />
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+      <Button
+        android:id="@+id/ride_metric_speed"
+        style="@style/CyclingMediaAppButton"
+        android:layout_width="wrap_content"
+        android:text="@string/cycling_metric_speed" />
+      <Button
+        android:id="@+id/ride_metric_heart_rate"
+        style="@style/CyclingMediaAppButton"
+        android:layout_width="wrap_content"
+        android:text="@string/cycling_metric_heart_rate" />
+    </LinearLayout>
+    <TextView
+      android:id="@+id/ride_detail_stats"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_half"
+      android:lineSpacingExtra="4dp"
+      android:textAppearance="@style/MwmTextAppearance.Body3" />
+    <Button
+      android:id="@+id/ride_save_segment"
+      style="@style/CyclingMediaAppButton"
+      android:layout_marginTop="@dimen/margin_base"
+      android:text="@string/cycling_segment_save" />
+  </LinearLayout>
+</ScrollView>

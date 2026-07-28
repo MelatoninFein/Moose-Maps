@@ -68,6 +68,28 @@
   <string name="cycling_music_access_granted">Track names and artwork are shown on the map.</string>
   <string name="cycling_music_access_missing">Playback controls already work. Grant notification access to also see track names and artwork.</string>
 
+  <!-- Rides -->
+  <string name="pref_rides_screen" translatable="false">RidesScreen</string>
+  <string name="cycling_rides_title">Rides</string>
+  <string name="cycling_rides_summary">Recorded rides, traces and segments</string>
+  <string name="cycling_rides_detail_title">Ride</string>
+  <string name="cycling_rides_empty">No rides yet. Start track recording from the main menu and your ride will be logged here with sensor data.</string>
+  <string name="cycling_rides_unreadable">This ride could not be read.</string>
+  <string name="cycling_rides_distance">Distance: %1\</string>
+  <string name="cycling_rides_moving">Moving time: %1\</string>
+  <string name="cycling_rides_elapsed">Elapsed time: %1\</string>
+  <string name="cycling_rides_avg_speed">Average speed: %1\</string>
+  <string name="cycling_rides_max_speed">Max speed: %1\</string>
+  <string name="cycling_rides_avg_hr">Average heart rate: %1\ bpm</string>
+  <string name="cycling_rides_max_hr">Max heart rate: %1\ bpm</string>
+  <string name="cycling_rides_avg_cadence">Average cadence: %1\ rpm</string>
+  <string name="cycling_rides_avg_power">Average power: %1\ W</string>
+  <string name="cycling_rides_ascent">Ascent: %1\</string>
+  <string name="cycling_segment_save">Save this route as a segment</string>
+  <string name="cycling_segment_default_name">Segment %1\</string>
+  <string name="cycling_segment_saved">Saved \"%1\\". Ride it again and your time will be compared.</string>
+  <string name="cycling_segment_saved_with_time">Saved \"%1\\". This ride: %2\.</string>
+
   <!-- Quick navigate -->
   <string name="cycling_spots_title">Navigate to</string>
   <string name="cycling_spots_empty">No saved places yet. Bookmark somewhere and it will appear here, nearest first.</string>

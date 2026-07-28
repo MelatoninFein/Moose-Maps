@@ -102,6 +102,9 @@ class RideRecorder private constructor(context: Context) : LocationListener {
             ?.sortedByDescending { it.lastModified() }
             ?: emptyList()
 
+    /** Parsed samples for a finished ride, for drawing its trace. */
+    fun samplesOf(file: File): List<RideSample> = readSamples(file)
+
     fun summaryOf(file: File): RideSummary? = RideStatistics.summarise(readSamples(file))
 
     private fun readSamples(file: File): List<RideSample> = try {
