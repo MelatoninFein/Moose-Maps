@@ -32,19 +32,25 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal">
-    <TextView
-      android:id="@+id/segment_elapsed"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textAppearance="@style/MwmTextAppearance.Body2"
-      tools:text="4:32" />
+    <!--
+      The gap leads, at a size meant to be caught rather than read. It is the only figure here that
+      changes what a rider does in the next ten seconds, and at 35 km/h a glance is all it gets;
+      the elapsed time is context and sits small beside it.
+    -->
     <TextView
       android:id="@+id/segment_delta"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/margin_half"
-      android:textAppearance="@style/MwmTextAppearance.Body2"
+      android:textSize="@dimen/cycling_delta_text"
+      android:textStyle="bold"
       tools:text="+4s" />
+    <TextView
+      android:id="@+id/segment_elapsed"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/margin_half"
+      android:textAppearance="@style/MwmTextAppearance.Body3"
+      tools:text="4:32" />
   </LinearLayout>
 
   <!--

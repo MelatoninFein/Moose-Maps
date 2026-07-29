@@ -35,32 +35,96 @@ class RidesFragment : BaseMwmFragment() {
         val list: LinearLayout = view.findViewById(R.id.rides_list)
         val empty: TextView = view.findViewById(R.id.rides_empty)
         val recordsTitle: TextView = view.findViewById(R.id.records_title)
-        val recordsBody: TextView = view.findViewById(R.id.records_body)
+        val recordsGrid: LinearLayout = view.findViewById(R.id.records_grid)
+        val totalsTitle: TextView = view.findViewById(R.id.totals_title)
+        val totalsGrid: LinearLayout = view.findViewById(R.id.totals_grid)
         list.removeAllViews()
+        recordsGrid.removeAllViews()
+        totalsGrid.removeAllViews()
 
         val recorder = RideRecorder.from(requireContext())
         val rides = recorder.listRides()
 
+        val emptyAction: View = view.findViewById(R.id.rides_empty_action)
         if (rides.isEmpty()) {
             empty.visibility = View.VISIBLE
             recordsTitle.visibility = View.GONE
-            recordsBody.visibility = View.GONE
+            totalsTitle.visibility = View.GONE
+            // Recording starts on the map, so the empty state offers the way back to it rather
+            // than leaving the rider to find it.
+            emptyAction.visibility = View.VISIBLE
+            emptyAction.setOnClickListener { requireActivity().finish() }
             return
         }
         empty.visibility = View.GONE
+        emptyAction.visibility = View.GONE
 
-        recordsTitle.visibility = View.VISIBLE
-        recordsBody.visibility = View.VISIBLE
-        recordsBody.text = buildRecords(recorder, rides)
-
-        rides.forEach { file ->
-            // Samples are read once and used for both the summary and the thumbnail: parsing the
-            // file twice per row would double the cost of opening a long list.
+        // Parsed once per ride and reused for the totals, the records, the rows and the thumbnails.
+        // Reading each file four times would make a season's list slow to open for no gain.
+        val parsed = rides.mapNotNull { file ->
             val samples = recorder.samplesOf(file)
-            val summary = RideStatistics.summarise(samples) ?: return@forEach
+            RideStatistics.summarise(samples)?.let { Triple(file, it, samples) }
+        }
+
+        buildTotals(totalsTitle, totalsGrid, parsed.map { it.second })
+        buildRecords(recordsTitle, recordsGrid, parsed.map { it.third })
+
+        var lastMonth = ""
+        parsed.forEach { (file, summary, samples) ->
+            val month = monthLabel(summary.startedAtMs)
+            if (month != lastMonth) {
+                lastMonth = month
+                val monthRides = parsed.filter { monthLabel(it.second.startedAtMs) == month }
+                val header = layoutInflater.inflate(R.layout.item_ride_month, list, false) as TextView
+                header.text = "$month · " +
+                    CyclingFormatter.distanceText(monthRides.sumOf { it.second.distanceMetres })
+                list.addView(header)
+            }
             list.addView(createRow(list, file, summary, samples))
         }
     }
+
+    /**
+     * This month at the top: distance, time and how many rides.
+     *
+     * "How much have I ridden this month" is the question a rider opens this screen with, and it
+     * was the one thing the screen could not answer without adding up the rows by hand.
+     */
+    private fun buildTotals(title: TextView, grid: LinearLayout, summaries: List<RideSummary>) {
+        val monthStart = java.util.Calendar.getInstance().apply {
+            set(java.util.Calendar.DAY_OF_MONTH, 1)
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+        val thisMonth = summaries.filter { it.startedAtMs >= monthStart }
+        if (thisMonth.isEmpty()) {
+            title.visibility = View.GONE
+            grid.visibility = View.GONE
+            return
+        }
+        title.visibility = View.VISIBLE
+        grid.visibility = View.VISIBLE
+
+        fillGrid(
+            grid,
+            listOf(
+                CyclingFormatter.distanceText(thisMonth.sumOf { it.distanceMetres })
+                    to getString(R.string.cycling_metric_distance),
+                formatDuration(thisMonth.sumOf { it.movingMillis })
+                    to getString(R.string.cycling_metric_moving),
+                thisMonth.size.toString() to getString(R.string.cycling_metric_rides),
+                CyclingFormatter.distanceText(thisMonth.sumOf { it.ascentMetres })
+                    to getString(R.string.cycling_metric_ascent),
+            ),
+        )
+    }
+
+    private fun monthLabel(startedAtMs: Long): String =
+        java.text.SimpleDateFormat("LLLL yyyy", java.util.Locale.getDefault())
+            .format(Date(startedAtMs))
 
     private fun refresh() = view?.let { render(it) }
 
@@ -70,17 +134,57 @@ class RidesFragment : BaseMwmFragment() {
      * Computed on open rather than stored: it has to be re-derived whenever a ride is added or
      * removed anyway, and a rider has tens of rides, not thousands.
      */
-    private fun buildRecords(recorder: RideRecorder, rides: List<java.io.File>): String {
-        val bests = PersonalRecords.TRACKED_DISTANCES.associateWith { distance ->
-            rides.mapNotNull { PersonalRecords.fastestOverDistance(recorder.samplesOf(it), distance) }.minOrNull()
-        }.filterValues { it != null }
+    private fun buildRecords(title: TextView, grid: LinearLayout, rides: List<List<RideSample>>) {
+        val bests = PersonalRecords.TRACKED_DISTANCES.mapNotNull { distance ->
+            rides.mapNotNull { PersonalRecords.fastestOverDistance(it, distance) }
+                .minOrNull()
+                ?.let { distance to it }
+        }
 
         if (bests.isEmpty()) {
-            return getString(R.string.cycling_records_none)
+            // Nothing beaten yet is worth saying once; an empty panel would just look broken.
+            title.visibility = View.GONE
+            grid.visibility = View.GONE
+            return
         }
-        return bests.entries.joinToString("\n") { (distance, millis) ->
-            "${CyclingFormatter.distanceText(distance)}   ${formatDuration(millis!!)}"
+        title.visibility = View.VISIBLE
+        grid.visibility = View.VISIBLE
+        // The time is the achievement and the distance names it, so the time is the large figure.
+        fillGrid(
+            grid,
+            bests.map { (distance, millis) ->
+                formatTime(millis) to CyclingFormatter.distanceText(distance)
+            },
+        )
+    }
+
+    /** Lays value/label pairs out as the same tiles the ride screen uses. */
+    private fun fillGrid(grid: LinearLayout, tiles: List<Pair<String, String>>) {
+        tiles.chunked(TILES_PER_ROW).forEach { rowTiles ->
+            val row = LinearLayout(requireContext()).apply { orientation = LinearLayout.HORIZONTAL }
+            rowTiles.forEach { (value, label) ->
+                val tile = layoutInflater.inflate(R.layout.item_ride_stat, row, false)
+                tile.findViewById<TextView>(R.id.stat_value).text = value
+                tile.findViewById<TextView>(R.id.stat_label).text = label
+                row.addView(tile)
+            }
+            // Pad a short final row so its tiles keep the same width as the rows above.
+            repeat(TILES_PER_ROW - rowTiles.size) {
+                row.addView(View(requireContext()), LinearLayout.LayoutParams(0, 1, 1f))
+            }
+            grid.addView(row)
         }
+    }
+
+    /** Records are minutes and seconds, not the rounded hours the ride rows use. */
+    private fun formatTime(millis: Long): String {
+        val totalSeconds = TimeUnit.MILLISECONDS.toSeconds(millis)
+        return String.format(
+            java.util.Locale.getDefault(),
+            "%d:%02d",
+            totalSeconds / 60,
+            totalSeconds % 60,
+        )
     }
 
     private fun createRow(
@@ -178,5 +282,6 @@ class RidesFragment : BaseMwmFragment() {
     private companion object {
         const val MENU_RENAME = 1
         const val MENU_DELETE = 2
+        const val TILES_PER_ROW = 3
     }
 }

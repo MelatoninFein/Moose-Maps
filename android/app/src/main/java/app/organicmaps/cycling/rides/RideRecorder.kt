@@ -30,8 +30,22 @@ class RideRecorder private constructor(context: Context) : LocationListener {
     private var sampleCount = 0
     private var lastWriteMs = 0L
 
+    private var startedAtMs = 0L
+    private var distanceMetres = 0.0
+    private var lastPosition: Pair<Double, Double>? = null
+
     val isRecording: Boolean
         get() = currentFile != null
+
+    /**
+     * Elapsed milliseconds and metres covered so far, or null when nothing is being recorded.
+     *
+     * Accumulated here rather than in the map screen: the recorder sees every fix, while the map
+     * only sees the ones that arrive while it is in the foreground, so a status line counting for
+     * itself under-reported any ride where the rider pocketed the phone.
+     */
+    val liveProgress: Pair<Long, Double>?
+        get() = if (isRecording) (System.currentTimeMillis() - startedAtMs) to distanceMetres else null
 
     @MainThread
     fun start() {
@@ -43,6 +57,9 @@ class RideRecorder private constructor(context: Context) : LocationListener {
         currentFile = file
         sampleCount = 0
         lastWriteMs = 0L
+        startedAtMs = System.currentTimeMillis()
+        distanceMetres = 0.0
+        lastPosition = null
         Logger.i(TAG, "Recording ride to ${file.name}")
         RideMode.setRiding(true)
         MwmApplication.from(appContext).getLocationHelper().addListener(this)
@@ -91,6 +108,16 @@ class RideRecorder private constructor(context: Context) : LocationListener {
             cadenceRpm = snapshot?.cadenceRpm,
             powerWatts = snapshot?.powerWatts,
         )
+
+        lastPosition?.let { (previousLat, previousLon) ->
+            distanceMetres += RideStatistics.haversineMetres(
+                previousLat,
+                previousLon,
+                location.latitude,
+                location.longitude,
+            )
+        }
+        lastPosition = location.latitude to location.longitude
 
         try {
             file.appendText(sample.toJson().toString() + "\n")

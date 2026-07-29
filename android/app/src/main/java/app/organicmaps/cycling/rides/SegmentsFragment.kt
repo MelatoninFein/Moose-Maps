@@ -114,22 +114,15 @@ class SegmentsFragment : BaseMwmFragment() {
             ).joinToString(" · ")
 
             val runs = historyStore.runs(segment.id)
-            val topAllTime = historyStore.topRuns(segment.id)
-            val latestRide = historyStore.latestRideId(segment.id)
-            val topThisSession = latestRide?.let { historyStore.topRunsInSession(segment.id, it) }.orEmpty()
-            // Tapping expands the attempt list in place - a segment you race has a history, and
-            // pushing another screen for a handful of times would be heavier than it deserves.
             // Sloping down is progress, readable before any time is.
             row.findViewById<SparklineView>(R.id.segment_row_sparkline).times = runs.map { it.elapsedMillis }
 
-            val runsView: TextView = row.findViewById(R.id.segment_row_runs)
+            // Opens the segment's own screen. Expanding two ranked tables inside a single label in
+            // the row was never legible, and it left no room for the course itself.
             row.setOnClickListener {
-                runsView.visibility = if (runsView.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-                runsView.text = if (runs.isEmpty()) {
-                    getString(R.string.cycling_segment_runs_none)
-                } else {
-                    buildTables(topAllTime, topThisSession)
-                }
+                val args = Bundle().apply { putString(SegmentDetailFragment.EXTRA_SEGMENT_ID, segment.id) }
+                (requireActivity() as app.organicmaps.settings.SettingsActivity)
+                    .stackFragment(SegmentDetailFragment::class.java, segment.name, args)
             }
 
             row.findViewById<ImageView>(R.id.segment_row_menu).setOnClickListener { anchor ->
@@ -138,31 +131,6 @@ class SegmentsFragment : BaseMwmFragment() {
             list.addView(row)
         }
     }
-
-    /**
-     * Two ranked tables: your quickest ever, and your quickest from the most recent outing.
-     *
-     * All-time answers "am I getting faster"; this session answers "which lap was my good one",
-     * which is the question while the ride is still fresh.
-     */
-    private fun buildTables(allTime: List<SegmentRun>, session: List<SegmentRun>): String {
-        val builder = StringBuilder()
-        builder.append(getString(R.string.cycling_segment_top_all_time)).append("\n")
-        builder.append(rank(allTime))
-        if (session.isNotEmpty()) {
-            builder.append("\n\n").append(getString(R.string.cycling_segment_top_session)).append("\n")
-            builder.append(rank(session))
-        }
-        return builder.toString()
-    }
-
-    private fun rank(runs: List<SegmentRun>): String = runs.mapIndexed { index, run ->
-        val date = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT)
-            .format(java.util.Date(run.startedAtMs))
-        val pb = if (run.wasPersonalBest) "  ${getString(R.string.cycling_segment_pb_mark)}" else ""
-        val heartRate = run.averageHeartRateBpm?.let { "  $it ${getString(R.string.cycling_unit_bpm)}" }.orEmpty()
-        "${index + 1}.  ${formatDuration(run.elapsedMillis)}   $date$heartRate$pb"
-    }.joinToString("\n")
 
     private fun showRowMenu(anchor: View, segment: Segment, runCount: Int, root: View) {
         androidx.appcompat.widget.PopupMenu(requireContext(), anchor).apply {

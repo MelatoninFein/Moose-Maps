@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  One attempt in a ranked list. Rank and time are the two things being compared, so they lead; the
+  date and heart rate sit underneath where they can be read without competing.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:background="?selectableItemBackground"
   android:gravity="center_vertical"
   android:minHeight="@dimen/height_item_oneline"
   android:orientation="horizontal"
-  android:paddingStart="@dimen/margin_base"
-  android:paddingEnd="@dimen/margin_base">
+  android:paddingTop="@dimen/margin_quarter"
+  android:paddingBottom="@dimen/margin_quarter">
 
   <TextView
-    android:id="@+id/spot_favourite"
-    android:layout_width="wrap_content"
+    android:id="@+id/run_rank"
+    android:layout_width="@dimen/cycling_rank_width"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/margin_half"
-    android:text="@string/cycling_spots_favourite_mark"
     android:textAppearance="@style/MwmTextAppearance.Body2"
-    tools:visibility="visible" />
+    tools:text="1" />
 
   <LinearLayout
     android:layout_width="0dp"
@@ -26,35 +27,28 @@
     android:orientation="vertical">
 
     <TextView
-      android:id="@+id/spot_name"
+      android:id="@+id/run_time"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:ellipsize="end"
       android:lines="1"
       android:textAppearance="@style/MwmTextAppearance.Body1"
-      tools:text="Cafe at the top of the hill" />
+      tools:text="14m 02s" />
 
-    <!-- Which list it came from. "Favourites" meant whichever category happened to be first, which
-         is not something the rider ever chose; naming the list makes the ordering honest. -->
     <TextView
-      android:id="@+id/spot_category"
+      android:id="@+id/run_detail"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:ellipsize="end"
       android:lines="1"
       android:textAppearance="@style/MwmTextAppearance.Body4"
-      android:visibility="gone"
-      tools:text="Coast rides"
-      tools:visibility="visible" />
+      tools:text="28 Jul 2026 · 162 bpm" />
   </LinearLayout>
 
-  <!-- Distance alone does not say whether a place is on your way or behind you. The bearing was
-       already being computed for the compass and simply never shown. -->
   <TextView
-    android:id="@+id/spot_distance"
+    android:id="@+id/run_badge"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin_half"
     android:textAppearance="@style/MwmTextAppearance.Body4"
-    tools:text="2.4 km NE" />
+    android:visibility="gone"
+    tools:text="PB"
+    tools:visibility="visible" />
 </LinearLayout>

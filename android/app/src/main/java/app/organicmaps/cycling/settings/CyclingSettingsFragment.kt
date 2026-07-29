@@ -116,6 +116,13 @@ class CyclingSettingsFragment : BaseMwmFragment() {
         wheelField.setText(store.wheelCircumferenceMm.toString())
         maxHeartRateField.setText(store.maxHeartRateBpm.toString())
 
+        val intro: LinearLayout = view.findViewById(R.id.cycling_intro)
+        intro.visibility = if (store.hasSeenIntro) View.GONE else View.VISIBLE
+        view.findViewById<Button>(R.id.cycling_intro_dismiss).setOnClickListener {
+            store.hasSeenIntro = true
+            intro.visibility = View.GONE
+        }
+
         sensorsSwitch.setOnCheckedChangeListener { _, isChecked -> onSensorsToggled(isChecked) }
         scanButton.setOnClickListener { onScanClicked() }
 
@@ -142,6 +149,13 @@ class CyclingSettingsFragment : BaseMwmFragment() {
                 pairedStatusViews[status.sensor.address]?.text = describeStatus(status)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // The level is only read on connect, so a strap left connected all morning would otherwise
+        // report the charge it had at breakfast.
+        hub.refreshBatteries()
     }
 
     override fun onPause() {

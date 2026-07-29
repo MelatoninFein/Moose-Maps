@@ -56,6 +56,7 @@ import app.organicmaps.api.Const;
 import app.organicmaps.base.BaseMwmFragmentActivity;
 import app.organicmaps.bookmarks.BookmarkCategoriesActivity;
 import app.organicmaps.cycling.CyclingController;
+import app.organicmaps.cycling.CyclingFormatter;
 import app.organicmaps.cycling.RideMode;
 import app.organicmaps.cycling.rides.RideRecorder;
 import app.organicmaps.cycling.rides.RidesActivity;
@@ -2022,9 +2023,37 @@ public class MwmActivity extends BaseMwmFragmentActivity
   public void onTrackRecordingOptionSelected()
   {
     if (TrackRecorder.nativeIsTrackRecordingEnabled())
-      toggleTrackRecordingPP();
+      confirmAndFinishRide();
     else
       startTrackRecording();
+  }
+
+  /**
+   * Ends the ride, after asking.
+   *
+   * A ride cannot be ridden again, and this control sits in a menu opened one-handed on the bars,
+   * so a single mis-tap used to end four hours of recording silently. The dialog also states what
+   * is being finished, which is the only place the whole ride is summarised before it is filed.
+   */
+  public void confirmAndFinishRide()
+  {
+    final kotlin.Pair<Long, Double> progress = RideRecorder.from(this).getLiveProgress();
+    final String summary;
+    if (progress == null)
+      summary = "";
+    else
+    {
+      final long seconds = progress.getFirst() / 1000;
+      summary = String.format(java.util.Locale.getDefault(), "%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60,
+                              seconds % 60)
+              + " · " + CyclingFormatter.INSTANCE.distanceText(progress.getSecond());
+    }
+    new MaterialAlertDialogBuilder(this)
+        .setTitle(R.string.cycling_ride_finish_title)
+        .setMessage(getString(R.string.cycling_ride_finish_message, summary))
+        .setNegativeButton(R.string.cancel, null)
+        .setPositiveButton(R.string.cycling_ride_stop, (dialog, which) -> saveAndStopTrackRecording())
+        .show();
   }
 
   private void toggleTrackRecordingPP()

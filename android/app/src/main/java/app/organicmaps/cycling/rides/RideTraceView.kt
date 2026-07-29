@@ -44,6 +44,30 @@ class RideTraceView @JvmOverloads constructor(
      */
     private val markerPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
+    /**
+     * Draws a bare course, for a saved segment rather than a ridden one.
+     *
+     * A segment stores only where it goes, so there is nothing to grade it by; the renderer already
+     * draws an unmeasured stretch grey, which is the honest look for a course nobody has ridden yet.
+     */
+    var coursePoints: List<SegmentPoint> = emptyList()
+        set(value) {
+            field = value
+            samples = value.map { point ->
+                RideSample(
+                    timestampMs = 0,
+                    latitude = point.latitude,
+                    longitude = point.longitude,
+                    altitudeMetres = null,
+                    gpsSpeedMps = null,
+                    sensorSpeedMps = null,
+                    heartRateBpm = null,
+                    cadenceRpm = null,
+                    powerWatts = null,
+                )
+            }
+        }
+
     /** The sample marked on the route, driven by scrubbing the chart. */
     var highlightIndex: Int? = null
         set(value) {

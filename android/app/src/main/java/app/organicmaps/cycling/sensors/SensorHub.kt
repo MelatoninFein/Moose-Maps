@@ -144,6 +144,18 @@ class SensorHub private constructor(context: Context) : SensorLink.Listener {
         scanner?.stop()
     }
 
+    /**
+     * Asks every connected sensor for its battery level again.
+     *
+     * Called when the settings screen appears rather than on a timer: that is the moment the number
+     * is actually read, and a radio round trip for a figure nobody is looking at costs the sensor
+     * charge for nothing.
+     */
+    @MainThread
+    fun refreshBatteries() {
+        links.values.forEach { it.refreshBattery() }
+    }
+
     fun isPaired(address: String): Boolean = pairedSensors.any { it.address == address }
 
     private fun connect(sensor: PairedSensor) {

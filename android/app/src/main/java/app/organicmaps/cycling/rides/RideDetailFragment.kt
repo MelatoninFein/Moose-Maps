@@ -78,7 +78,6 @@ class RideDetailFragment : BaseMwmFragment() {
 
         wireChart(view)
 
-        view.findViewById<Button>(R.id.ride_save_segment).setOnClickListener { saveAsSegment(file) }
         view.findViewById<Button>(R.id.ride_export_gpx).setOnClickListener { exportGpx(file) }
 
         val trim: com.google.android.material.slider.RangeSlider = view.findViewById(R.id.ride_trim)
@@ -91,6 +90,20 @@ class RideDetailFragment : BaseMwmFragment() {
             // Redraw the trace so the chosen stretch is visible rather than guessed at.
             trace.samples = trimmedSamples()
             updateTrimLabel(trimLabel)
+        }
+
+        // First tap reveals the stretch picker, second saves what was picked. Asking for the whole
+        // ride is the common case, so the picker starts covering all of it and can simply be
+        // confirmed - the two taps cost nothing to someone who does not want to trim.
+        val saveButton: Button = view.findViewById(R.id.ride_save_segment)
+        saveButton.setOnClickListener {
+            if (trim.visibility == View.VISIBLE) {
+                saveAsSegment(file)
+            } else {
+                trim.visibility = View.VISIBLE
+                trimLabel.visibility = View.VISIBLE
+                saveButton.setText(R.string.cycling_segment_save_confirm)
+            }
         }
     }
 

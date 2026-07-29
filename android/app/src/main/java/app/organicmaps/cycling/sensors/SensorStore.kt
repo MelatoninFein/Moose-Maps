@@ -31,6 +31,17 @@ class SensorStore(context: Context) {
         get() = prefs.getBoolean(KEY_ENABLED, false)
         set(value) = prefs.edit().putBoolean(KEY_ENABLED, value).apply()
 
+    /**
+     * Whether the rider has dismissed the explanation of what this fork adds.
+     *
+     * Nothing described sensors, rides or racing anywhere: the features were discoverable only by
+     * opening every screen. A card that can be read once and dismissed says it without turning
+     * first launch into a tour.
+     */
+    var hasSeenIntro: Boolean
+        get() = prefs.getBoolean(KEY_SEEN_INTRO, false)
+        set(value) = prefs.edit().putBoolean(KEY_SEEN_INTRO, value).apply()
+
     /** Whether the live sensor readout is drawn over the map. */
     var isOverlayVisible: Boolean
         get() = prefs.getBoolean(KEY_OVERLAY, true)
@@ -93,6 +104,7 @@ class SensorStore(context: Context) {
         private const val KEY_WHEEL_CIRCUMFERENCE = "wheel_circumference_mm"
         private const val KEY_ENABLED = "enabled"
         private const val KEY_OVERLAY = "overlay_visible"
+        private const val KEY_SEEN_INTRO = "seen_intro"
         private const val KEY_MAX_HR = "max_heart_rate_bpm"
 
         private const val FIELD_ADDRESS = "address"

@@ -21,6 +21,23 @@
       android:text="@string/cycling_spots_title"
       android:textAppearance="@style/MwmTextAppearance.Body2" />
 
+    <!-- Sixty saved places is more than can be scanned at a junction, and the one you want is
+         often not the nearest. Typing three letters beats scrolling. Hidden when the list is short
+         enough to read at a glance, so the common case stays a two-tap operation. -->
+    <EditText
+      android:id="@+id/quick_spots_filter"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/margin_base"
+      android:layout_marginEnd="@dimen/margin_base"
+      android:layout_marginBottom="@dimen/margin_half"
+      android:hint="@string/cycling_spots_filter_hint"
+      android:imeOptions="actionSearch"
+      android:inputType="text"
+      android:maxLines="1"
+      android:textAppearance="@style/MwmTextAppearance.Body3"
+      android:visibility="gone" />
+
     <TextView
       android:id="@+id/quick_spots_empty"
       android:layout_width="match_parent"

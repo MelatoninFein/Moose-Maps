@@ -17,6 +17,7 @@ import app.organicmaps.cycling.sensors.SensorService
 import app.organicmaps.cycling.sensors.SensorSnapshot
 import app.organicmaps.cycling.rides.LiveSegmentProgress
 import app.organicmaps.cycling.rides.LiveSegmentTracker
+import app.organicmaps.cycling.rides.RideRecorder
 import app.organicmaps.cycling.rides.SegmentVoice
 import app.organicmaps.cycling.rides.SegmentBestStore
 import app.organicmaps.cycling.rides.SegmentStore
@@ -52,10 +53,6 @@ class CyclingController(
     private val rideStatus: LinearLayout = root.findViewById(R.id.cycling_ride_status)
     private val rideStatusText: TextView = root.findViewById(R.id.ride_status_text)
 
-    /** Accumulated while riding, so the status line does not re-parse the ride file every second. */
-    private var rideStartedAtMs = 0L
-    private var rideDistanceMetres = 0.0
-    private var lastFix: Location? = null
 
     private val segmentBanner: LinearLayout = root.findViewById(R.id.cycling_segment_banner)
     private val segmentName: TextView = root.findViewById(R.id.segment_name)
@@ -96,6 +93,19 @@ class CyclingController(
         // the rest of the time.
         RideMode.riding.observe(activity) { riding -> applyRideMode(riding) }
 
+        // Ending a ride is not undoable, so this confirms rather than stopping on the first tap.
+        root.findViewById<View>(R.id.ride_status_stop).setOnClickListener {
+            (activity as? app.organicmaps.MwmActivity)?.confirmAndFinishRide()
+        }
+
+        // Nothing else on the map says whether a paired sensor is actually connected, so the tiles
+        // are the way back to the screen that does.
+        val openSensorSettings = View.OnClickListener {
+            app.organicmaps.settings.SettingsActivity.startForCycling(activity)
+        }
+        liveTiles.setOnClickListener(openSensorSettings)
+        compass.setOnClickListener(openSensorSettings)
+
         sensors.snapshot.observe(activity) { snapshot -> bindSensors(snapshot) }
         applyRideMode(RideMode.isRiding)
     }
@@ -133,7 +143,7 @@ class CyclingController(
         gpsSpeedMps = if (location.hasSpeed()) location.speed.toDouble() else gpsSpeedMps
         // Bookmarks don't move, but the rider does - recompute bearings on each fix, not more often.
         compass.waypoints = CompassWaypoints.nearest(location.latitude, location.longitude)
-        updateRideStatus(location)
+        updateRideStatus()
         updateSegment(location)
         bindSensors(sensors.snapshot.value ?: SensorSnapshot.EMPTY)
     }
@@ -215,32 +225,12 @@ class CyclingController(
     private fun applyRideMode(riding: Boolean) {
         compass.visibility = View.VISIBLE
         rideStatus.visibility = if (riding) View.VISIBLE else View.GONE
-        if (riding && rideStartedAtMs == 0L) {
-            rideStartedAtMs = System.currentTimeMillis()
-            rideDistanceMetres = 0.0
-            lastFix = null
-        } else if (!riding) {
-            rideStartedAtMs = 0L
-        }
     }
 
     /** Elapsed and distance while riding, so a rider can see the ride is actually being recorded. */
-    private fun updateRideStatus(location: Location) {
-        if (!RideMode.isRiding) {
-            lastFix = null
-            return
-        }
-        lastFix?.let { previous ->
-            rideDistanceMetres += app.organicmaps.cycling.rides.RideStatistics.haversineMetres(
-                previous.latitude,
-                previous.longitude,
-                location.latitude,
-                location.longitude,
-            )
-        }
-        lastFix = location
-
-        val elapsed = (System.currentTimeMillis() - rideStartedAtMs) / 1000
+    private fun updateRideStatus() {
+        val (elapsedMillis, metres) = RideRecorder.from(activity).liveProgress ?: return
+        val elapsed = elapsedMillis / 1000
         val clock = String.format(
             java.util.Locale.getDefault(),
             "%d:%02d:%02d",
@@ -248,7 +238,7 @@ class CyclingController(
             (elapsed % 3600) / 60,
             elapsed % 60,
         )
-        rideStatusText.text = "$clock · ${CyclingFormatter.distanceText(rideDistanceMetres)}"
+        rideStatusText.text = "$clock · ${CyclingFormatter.distanceText(metres)}"
     }
 
     private fun bindSensors(snapshot: SensorSnapshot) {

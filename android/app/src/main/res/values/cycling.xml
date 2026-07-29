@@ -35,6 +35,12 @@
   <dimen name="cycling_status_dot">10dp</dimen>
   <!-- Wide enough to read as a bar, narrow enough that the banner stays a badge, not a panel. -->
   <dimen name="cycling_segment_progress_width">120dp</dimen>
+  <!-- Full width on the segment screen, where the trend is the point rather than a hint. -->
+  <dimen name="cycling_sparkline_detail_height">64dp</dimen>
+  <!-- Fits "10." without the times below it shifting. -->
+  <dimen name="cycling_rank_width">32dp</dimen>
+  <!-- Read at speed from a bar-mounted phone, so sized like a bike computer's main figure. -->
+  <dimen name="cycling_delta_text">30sp</dimen>
   <dimen name="cycling_sparkline_width">56dp</dimen>
   <dimen name="cycling_sparkline_height">28dp</dimen>
 

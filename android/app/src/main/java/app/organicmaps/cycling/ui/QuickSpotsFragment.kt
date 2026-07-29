@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.widget.doAfterTextChanged
 import app.organicmaps.MwmApplication
 import app.organicmaps.R
 import app.organicmaps.cycling.CyclingFormatter
@@ -49,6 +51,29 @@ class QuickSpotsFragment : BottomSheetDialogFragment() {
         }
 
         empty.visibility = View.GONE
+        fill(list, spots)
+
+        // Only offered once the list is longer than can be taken in at a glance, so the common case
+        // of "the cafe two streets away" stays a two-tap operation with nothing to read.
+        val filter: EditText = view.findViewById(R.id.quick_spots_filter)
+        if (spots.size > FILTER_THRESHOLD) {
+            filter.visibility = View.VISIBLE
+            filter.doAfterTextChanged { text ->
+                val query = text?.toString()?.trim().orEmpty()
+                val matching = if (query.isEmpty()) {
+                    spots
+                } else {
+                    spots.filter { it.name.contains(query, ignoreCase = true) }
+                }
+                fill(list, matching)
+                empty.visibility = if (matching.isEmpty()) View.VISIBLE else View.GONE
+                empty.setText(R.string.cycling_spots_no_match)
+            }
+        }
+    }
+
+    private fun fill(list: LinearLayout, spots: List<QuickSpot>) {
+        list.removeAllViews()
         spots.forEach { spot -> list.addView(createRow(inflater = layoutInflater, parent = list, spot = spot)) }
     }
 
@@ -57,10 +82,15 @@ class QuickSpotsFragment : BottomSheetDialogFragment() {
 
         row.findViewById<TextView>(R.id.spot_name).text =
             spot.name.ifBlank { getString(R.string.cycling_spots_unnamed) }
+        // Direction as well as distance: one says how far, the other says whether it is your way.
         row.findViewById<TextView>(R.id.spot_distance).text =
-            CyclingFormatter.distanceText(spot.distanceMetres)
+            "${CyclingFormatter.distanceText(spot.distanceMetres)} ${spot.cardinal}"
         row.findViewById<TextView>(R.id.spot_favourite).visibility =
             if (spot.isFavourite) View.VISIBLE else View.GONE
+        row.findViewById<TextView>(R.id.spot_category).apply {
+            text = spot.categoryName
+            visibility = if (spot.categoryName.isBlank()) View.GONE else View.VISIBLE
+        }
 
         row.setOnClickListener { navigateTo(spot) }
         return row
@@ -81,5 +111,8 @@ class QuickSpotsFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "QuickSpotsFragment"
+
+        /** Above this many rows, scrolling costs more than typing three letters. */
+        private const val FILTER_THRESHOLD = 8
     }
 }

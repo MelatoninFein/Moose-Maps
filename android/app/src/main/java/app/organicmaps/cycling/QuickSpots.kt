@@ -11,7 +11,26 @@ data class QuickSpot(
     val distanceMetres: Double,
     val bearingDegrees: Double,
     val isFavourite: Boolean,
-)
+    /** The bookmark list it came from, so the ordering can be explained rather than assumed. */
+    val categoryName: String,
+) {
+
+    /**
+     * The bearing as one of eight points of the compass.
+     *
+     * "2.4 km" does not say whether somewhere is on your way or back the way you came, and the
+     * bearing was already being computed for the compass dial and simply never shown.
+     */
+    val cardinal: String
+        get() {
+            val index = (((bearingDegrees % 360 + 360) % 360) / 45.0).toInt() % COMPASS_POINTS.size
+            return COMPASS_POINTS[index]
+        }
+
+    private companion object {
+        val COMPASS_POINTS = listOf("N", "NE", "E", "SE", "S", "SW", "W", "NW")
+    }
+}
 
 /**
  * Builds the quick-navigate list: every saved place, ordered by how far away it is.
@@ -43,6 +62,7 @@ object QuickSpots {
                         distanceMetres = CompassWaypoints.distanceMetres(latitude, longitude, info.lat, info.lon),
                         bearingDegrees = CompassWaypoints.bearingDegrees(latitude, longitude, info.lat, info.lon),
                         isFavourite = category.id == favouriteCategoryId,
+                        categoryName = category.name.orEmpty(),
                     )
                 }
             }

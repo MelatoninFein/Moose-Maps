@@ -125,21 +125,28 @@
       style="@style/CyclingMediaAppButton"
       android:layout_marginTop="@dimen/margin_base"
       android:text="@string/cycling_rides_export" />
-    <!-- Segment trimming: pick a stretch inside the ride rather than saving the whole outing. -->
+    <!-- Segment trimming: pick a stretch inside the ride rather than saving the whole outing.
+         Hidden until asked for. Most visits to this screen are to look at a ride, not to cut a
+         segment out of it, and a slider that does nothing on those visits is just clutter that
+         also invites an accidental drag. -->
     <TextView
       android:id="@+id/ride_trim_label"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/margin_base"
       android:textAppearance="@style/MwmTextAppearance.Body4"
-      tools:text="Segment: 2.1 km to 6.4 km" />
+      android:visibility="gone"
+      tools:text="Segment covers 4.3 km of this ride"
+      tools:visibility="visible" />
 
     <com.google.android.material.slider.RangeSlider
       android:id="@+id/ride_trim"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:valueFrom="0"
-      android:valueTo="100" />
+      android:valueTo="100"
+      android:visibility="gone"
+      tools:visibility="visible" />
 
     <Button
       android:id="@+id/ride_save_segment"

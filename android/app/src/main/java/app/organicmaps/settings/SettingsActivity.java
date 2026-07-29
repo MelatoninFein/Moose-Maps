@@ -18,10 +18,23 @@ public class SettingsActivity
                                            PreferenceFragmentCompat.OnPreferenceStartScreenCallback
 {
   private static final String EXTRA_OPEN_VOICE_INSTRUCTIONS = "open_voice_instructions";
+  private static final String EXTRA_OPEN_CYCLING = "open_cycling";
 
   public static void startForVoiceInstructions(@NonNull Context context)
   {
     final Intent intent = new Intent(context, SettingsActivity.class).putExtra(EXTRA_OPEN_VOICE_INSTRUCTIONS, true);
+    context.startActivity(intent);
+  }
+
+  /**
+   * Opens the cycling settings directly, for the readouts on the map.
+   *
+   * A blank heart-rate tile means the strap has dropped, and until now the map offered no route to
+   * the one screen that can say so - the rider had to know it was three taps into Settings.
+   */
+  public static void startForCycling(@NonNull Context context)
+  {
+    final Intent intent = new Intent(context, SettingsActivity.class).putExtra(EXTRA_OPEN_CYCLING, true);
     context.startActivity(intent);
   }
 
@@ -44,6 +57,10 @@ public class SettingsActivity
 
     if (savedInstanceState == null && getIntent().getBooleanExtra(EXTRA_OPEN_VOICE_INSTRUCTIONS, false))
       stackFragment(VoiceInstructionsSettingsFragment.class, getString(R.string.pref_tts_enable_title), null);
+
+    if (savedInstanceState == null && getIntent().getBooleanExtra(EXTRA_OPEN_CYCLING, false))
+      stackFragment(app.organicmaps.cycling.settings.CyclingSettingsFragment.class,
+                    getString(R.string.cycling_settings_title), null);
   }
 
   @Override

@@ -13,6 +13,39 @@
     android:paddingTop="@dimen/margin_base"
     android:paddingBottom="@dimen/margin_base">
 
+    <!--
+      What this fork adds, once.
+
+      Nothing described any of it anywhere: sensors, ride recording and racing yourself were
+      discoverable only by opening every screen and guessing. A card that is read once and
+      dismissed says it without turning first launch into a tour nobody asked for.
+    -->
+    <LinearLayout
+      android:id="@+id/cycling_intro"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/margin_base"
+      android:background="@drawable/cycling_panel_bg"
+      android:orientation="vertical"
+      android:padding="@dimen/margin_base"
+      android:visibility="gone">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cycling_intro_body"
+        android:textAppearance="@style/MwmTextAppearance.Body3" />
+
+      <Button
+        android:id="@+id/cycling_intro_dismiss"
+        style="@style/CyclingMediaAppButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/margin_half"
+        android:text="@string/cycling_intro_dismiss" />
+    </LinearLayout>
+
     <!-- Rides and Segments live inside Cycling, so Settings carries one cycling entry rather than
          four scattered through the general list. -->
     <Button

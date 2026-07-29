@@ -46,6 +46,22 @@ class SensorLink(
     private val operations = ArrayDeque<() -> Unit>()
     private var operationInFlight = false
 
+    /** Held after discovery so the level can be re-read without walking the service tree again. */
+    private var batteryCharacteristic: BluetoothGattCharacteristic? = null
+
+    /**
+     * Re-reads the battery level.
+     *
+     * The level was read once when the sensor connected and never again, so a strap left connected
+     * all morning reported the charge it had at breakfast - which is worse than showing nothing,
+     * because it looks current. The battery service does not notify, so a read is the only way.
+     */
+    fun refreshBattery() {
+        val characteristic = batteryCharacteristic ?: return
+        val connection = gatt ?: return
+        enqueue { connection.readCharacteristic(characteristic) }
+    }
+
     fun connect() {
         if (gatt != null) {
             return
@@ -107,6 +123,7 @@ class SensorLink(
 
             val battery = gatt.getService(GattProfiles.BATTERY_SERVICE)
                 ?.getCharacteristic(GattProfiles.BATTERY_LEVEL)
+            batteryCharacteristic = battery
             if (battery != null) {
                 enqueue { gatt.readCharacteristic(battery) }
             }

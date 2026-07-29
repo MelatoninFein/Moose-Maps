@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A month heading between ride rows. A season's rides in one undifferentiated column gives no sense
+  of when anything happened; a heading turns scrolling into navigating.
+-->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/ride_month"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingStart="@dimen/margin_base"
+  android:paddingTop="@dimen/margin_base"
+  android:paddingEnd="@dimen/margin_base"
+  android:paddingBottom="@dimen/margin_quarter"
+  android:textAppearance="@style/MwmTextAppearance.Body2"
+  tools:text="July 2026 · 340 km" />

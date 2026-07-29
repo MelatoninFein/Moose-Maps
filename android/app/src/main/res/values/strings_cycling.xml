@@ -95,6 +95,19 @@
   <string name="cycling_signal_strong">Strong signal</string>
   <string name="cycling_signal_good">Good signal</string>
   <string name="cycling_signal_weak">Weak signal</string>
+  <string name="cycling_intro_body">Start a ride from the map menu and it records your route, along with anything your Bluetooth sensors report. Save a stretch of a finished ride as a segment, and every time you ride it again you are timed against your own best — with the gap read out as you go.</string>
+  <string name="cycling_intro_dismiss">Got it</string>
+  <string name="cycling_rides_empty_action">Back to the map</string>
+  <string name="cycling_spots_filter_hint">Filter by name</string>
+  <string name="cycling_spots_no_match">Nothing saved matches that.</string>
+  <string name="cycling_metric_attempts">Attempts</string>
+  <string name="cycling_metric_best">Best</string>
+  <string name="cycling_metric_average">Average</string>
+  <string name="cycling_totals_title">This month</string>
+  <string name="cycling_metric_rides">Rides</string>
+  <string name="cycling_ride_finish_title">Finish this ride?</string>
+  <!-- %1$s is the ride so far, e.g. "1:24:06 · 38.2 km". -->
+  <string name="cycling_ride_finish_message">%1$s will be saved and the recording stopped.</string>
   <string name="cycling_ride_menu">Ride options</string>
   <string name="cycling_ride_rename">Rename</string>
   <string name="cycling_ride_delete">Delete ride</string>
@@ -148,6 +161,7 @@
   <string name="cycling_rides_export">Export as GPX</string>
   <string name="cycling_rides_export_failed">Could not write the GPX file.</string>
   <string name="cycling_segment_save">Save this route as a segment</string>
+  <string name="cycling_segment_save_confirm">Save the selected stretch</string>
   <string name="cycling_segment_default_name">Segment %1$s</string>
   <string name="cycling_segment_saved">Saved %1$s. Ride it again and your time will be compared.</string>
   <string name="cycling_segment_saved_with_time">Saved %1$s. This ride: %2$s.</string>
