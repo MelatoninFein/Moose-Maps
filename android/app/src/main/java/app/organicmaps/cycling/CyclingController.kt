@@ -61,6 +61,11 @@ class CyclingController(
     private val segmentElapsed: TextView = root.findViewById(R.id.segment_elapsed)
     private val segmentDelta: TextView = root.findViewById(R.id.segment_delta)
     private val segmentProgress: android.widget.ProgressBar = root.findViewById(R.id.segment_progress)
+    private val segmentDeltaBar: app.organicmaps.cycling.rides.DeltaBarView =
+        root.findViewById(R.id.segment_delta_bar)
+    private val segmentSectors: app.organicmaps.cycling.rides.SectorLightsView =
+        root.findViewById(R.id.segment_sectors)
+    private val lapResult: LinearLayout = root.findViewById(R.id.cycling_lap_result)
 
     /**
      * Built once per foregrounding rather than per fix: reading every segment and best time off
@@ -224,16 +229,60 @@ class CyclingController(
         segmentProgress.progressTintList =
             android.content.res.ColorStateList.valueOf(ContextCompat.getColor(activity, colour))
 
+        segmentDeltaBar.deltaMillis = delta
+        segmentSectors.grades = progress.sectorGrades
+        segmentSectors.currentSector = progress.currentSector
+
         if (progress.finished) {
-            segmentVoice?.onSegmentFinished(
-                progress.segmentName,
-                progress.elapsedMillis,
-                (progress.deltaMillis ?: 0L) < 0L,
-            )
+            val personalBest = (progress.deltaMillis ?: 0L) < 0L
+            segmentVoice?.onSegmentFinished(progress.segmentName, progress.elapsedMillis, personalBest)
             lastSegmentName = null
+            showLapResult(progress, personalBest)
             // Leave the final time up briefly rather than snapping away at the line.
             segmentBanner.postDelayed({ segmentBanner.visibility = View.GONE }, FINISH_LINGER_MS)
         }
+    }
+
+    /**
+     * The classification card at the line.
+     *
+     * Crossing the finish is the one moment a rider genuinely wants a number, and it used to pass
+     * with a spoken sentence and a banner quietly fading. The time, the gap and the three sector
+     * colours put the whole lap on screen in the second it is still interesting.
+     */
+    private fun showLapResult(progress: LiveSegmentProgress, personalBest: Boolean) {
+        lapResult.findViewById<TextView>(R.id.lap_result_name).text = progress.segmentName
+        lapResult.findViewById<TextView>(R.id.lap_result_time).text = formatClock(progress.elapsedMillis)
+
+        val deltaView: TextView = lapResult.findViewById(R.id.lap_result_delta)
+        val delta = progress.deltaMillis
+        if (delta == null) {
+            deltaView.setText(R.string.cycling_segment_no_best)
+            deltaView.setTextColor(ContextCompat.getColor(activity, R.color.text_dark_subtitle))
+        } else {
+            deltaView.text = activity.getString(
+                R.string.cycling_lap_delta,
+                String.format(java.util.Locale.getDefault(), "%+.0f", delta / 1000.0),
+            )
+            deltaView.setTextColor(
+                ContextCompat.getColor(activity, if (delta <= 0) R.color.segment_ahead else R.color.segment_behind),
+            )
+        }
+
+        lapResult.findViewById<app.organicmaps.cycling.rides.SectorLightsView>(R.id.lap_result_sectors).apply {
+            grades = progress.sectorGrades
+            // Nothing is still to come at the finish, so no sector is drawn as pending.
+            currentSector = -1
+        }
+        lapResult.findViewById<TextView>(R.id.lap_result_splits).text =
+            progress.sectorMillis.joinToString("   ") { formatClock(it) }
+        lapResult.findViewById<TextView>(R.id.lap_result_badge).visibility =
+            if (personalBest) View.VISIBLE else View.GONE
+
+        lapResult.visibility = View.VISIBLE
+        // Tapping clears it early; otherwise it goes on its own so a rider never has to touch it.
+        lapResult.setOnClickListener { lapResult.visibility = View.GONE }
+        lapResult.postDelayed({ lapResult.visibility = View.GONE }, FINISH_LINGER_MS)
     }
 
     private fun formatClock(millis: Long): String {

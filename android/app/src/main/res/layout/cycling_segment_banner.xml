@@ -54,9 +54,29 @@
   </LinearLayout>
 
   <!--
+    The gap as a bar growing from the centre, the way every racing game draws it. Left is ahead,
+    right is behind, and which side is filled registers long before a number could be read.
+  -->
+  <app.organicmaps.cycling.rides.DeltaBarView
+    android:id="@+id/segment_delta_bar"
+    android:layout_width="@dimen/cycling_segment_progress_width"
+    android:layout_height="@dimen/cycling_delta_bar_height"
+    android:layout_marginTop="@dimen/margin_quarter" />
+
+  <!--
+    Three sector lights. Purple, green and yellow mean on a bike exactly what they mean on a timing
+    screen, so a rider who has watched a race needs no explanation: it says where the lap went, and
+    says it at the top of the climb rather than at the finish.
+  -->
+  <app.organicmaps.cycling.rides.SectorLightsView
+    android:id="@+id/segment_sectors"
+    android:layout_width="@dimen/cycling_segment_progress_width"
+    android:layout_height="@dimen/cycling_sector_light_height"
+    android:layout_marginTop="@dimen/margin_quarter" />
+
+  <!--
     How far round you are. Four seconds down means something different with a kilometre left than
-    it does on the run-in, and the delta alone never said which one you were looking at. Tinted the
-    same green or red as the delta, so the whole banner reads as one thing at a glance.
+    it does on the run-in, and the delta alone never said which one you were looking at.
   -->
   <ProgressBar
     android:id="@+id/segment_progress"

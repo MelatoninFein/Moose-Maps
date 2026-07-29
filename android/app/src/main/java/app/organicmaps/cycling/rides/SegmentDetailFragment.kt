@@ -41,6 +41,8 @@ class SegmentDetailFragment : BaseMwmFragment() {
 
         buildStats(view.findViewById(R.id.segment_stats_grid), segment, runs, best)
 
+        showSectors(view, best)
+
         view.findViewById<SparklineView>(R.id.segment_detail_sparkline).times = runs.map { it.elapsedMillis }
 
         val allTimeTitle: TextView = view.findViewById(R.id.segment_all_time_title)
@@ -67,6 +69,38 @@ class SegmentDetailFragment : BaseMwmFragment() {
             sessionTitle.visibility = View.VISIBLE
             fillRuns(sessionList, session)
         }
+    }
+
+    /**
+     * The best lap's sectors, graded against the outright record for each.
+     *
+     * Same colours as the live banner and the finish card on purpose: purple, green and yellow have
+     * to mean one thing across the app or they mean nothing. Here they answer where the remaining
+     * time is - a yellow middle sector in your best lap is the bit still worth attacking.
+     */
+    private fun showSectors(view: View, best: SegmentBest?) {
+        val sectors = best?.splitsMillis?.let { Sectors.sectorTimes(it) }.orEmpty()
+        val title: TextView = view.findViewById(R.id.segment_sector_title)
+        val lights: SectorLightsView = view.findViewById(R.id.segment_sector_lights)
+        val times: TextView = view.findViewById(R.id.segment_sector_times)
+        if (sectors.isEmpty()) {
+            return
+        }
+
+        title.visibility = View.VISIBLE
+        lights.visibility = View.VISIBLE
+        times.visibility = View.VISIBLE
+        lights.currentSector = -1
+        lights.grades = sectors.mapIndexed { index, millis ->
+            SectorGrade.of(
+                actualMillis = millis,
+                recordMillis = best?.sectorRecordsMillis?.getOrNull(index),
+                // Compared against the record only: this *is* the best lap, so grading it against
+                // itself would paint every sector green and say nothing.
+                bestLapMillis = null,
+            )
+        }
+        times.text = sectors.joinToString("   ") { formatDuration(it) }
     }
 
     private fun buildStats(

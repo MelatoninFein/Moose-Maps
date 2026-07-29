@@ -105,6 +105,10 @@
   <string name="cycling_metric_average">Average</string>
   <string name="cycling_totals_title">This month</string>
   <string name="cycling_metric_rides">Rides</string>
+  <string name="cycling_segment_sectors_title">Sectors of your best lap</string>
+  <string name="cycling_lap_personal_best">PERSONAL BEST</string>
+  <!-- %1$s is the gap in seconds, already signed, e.g. "-3" or "+4". -->
+  <string name="cycling_lap_delta">%1$ss on your best</string>
   <string name="cycling_ride_pause">Pause recording</string>
   <string name="cycling_ride_resume">Resume recording</string>
   <string name="cycling_ride_finish_title">Finish this ride?</string>

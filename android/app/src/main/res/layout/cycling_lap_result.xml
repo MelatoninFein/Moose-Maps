@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The classification at the end of a lap.
+
+  A lap used to end with the banner simply fading out, so the one moment a rider actually wants a
+  number - the moment they cross the line - passed with a spoken sentence and nothing to look at.
+  This is the card every racing game puts up at the flag: the time, the gap, and where it went.
+
+  Centred and tappable to dismiss, gone by itself after a few seconds.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/cycling_lap_result"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_centerInParent="true"
+  android:background="@drawable/cycling_panel_bg"
+  android:gravity="center_horizontal"
+  android:orientation="vertical"
+  android:paddingStart="@dimen/margin_double"
+  android:paddingTop="@dimen/margin_base"
+  android:paddingEnd="@dimen/margin_double"
+  android:paddingBottom="@dimen/margin_base"
+  android:visibility="gone"
+  tools:visibility="visible">
+
+  <TextView
+    android:id="@+id/lap_result_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:lines="1"
+    android:textAppearance="@style/MwmTextAppearance.Body4"
+    tools:text="Höllviken runt" />
+
+  <!-- The lap time, at the size a finish deserves. -->
+  <TextView
+    android:id="@+id/lap_result_time"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/cycling_lap_result_text"
+    android:textStyle="bold"
+    tools:text="14:02" />
+
+  <TextView
+    android:id="@+id/lap_result_delta"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="@style/MwmTextAppearance.Body2"
+    tools:text="−3s on your best" />
+
+  <!-- Where the lap went, in the colours a timing screen uses. -->
+  <app.organicmaps.cycling.rides.SectorLightsView
+    android:id="@+id/lap_result_sectors"
+    android:layout_width="@dimen/cycling_lap_result_sectors"
+    android:layout_height="@dimen/cycling_sector_light_height"
+    android:layout_marginTop="@dimen/margin_half" />
+
+  <TextView
+    android:id="@+id/lap_result_splits"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_quarter"
+    android:textAppearance="@style/MwmTextAppearance.Body4"
+    tools:text="4:31   5:02   4:29" />
+
+  <TextView
+    android:id="@+id/lap_result_badge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_half"
+    android:text="@string/cycling_lap_personal_best"
+    android:textAppearance="@style/MwmTextAppearance.Body2"
+    android:textStyle="bold"
+    android:visibility="gone"
+    tools:visibility="visible" />
+</LinearLayout>

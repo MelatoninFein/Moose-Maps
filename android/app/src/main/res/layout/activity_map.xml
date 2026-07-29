@@ -54,6 +54,8 @@
 
     <include layout="@layout/cycling_segment_banner" />
 
+    <include layout="@layout/cycling_lap_result" />
+
     <app.organicmaps.cycling.ui.CompassView
       android:id="@+id/cycling_compass"
       android:layout_width="@dimen/cycling_compass_size"

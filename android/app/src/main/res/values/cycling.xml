@@ -42,6 +42,10 @@
   <dimen name="cycling_rank_width">32dp</dimen>
   <!-- Read at speed from a bar-mounted phone, so sized like a bike computer's main figure. -->
   <dimen name="cycling_delta_text">30sp</dimen>
+  <dimen name="cycling_delta_bar_height">8dp</dimen>
+  <dimen name="cycling_sector_light_height">5dp</dimen>
+  <dimen name="cycling_lap_result_text">44sp</dimen>
+  <dimen name="cycling_lap_result_sectors">160dp</dimen>
   <dimen name="cycling_sparkline_width">56dp</dimen>
   <dimen name="cycling_sparkline_height">28dp</dimen>
 

@@ -33,6 +33,33 @@
       android:orientation="vertical"
       android:padding="@dimen/margin_half" />
 
+    <!-- The best lap broken into sectors, coloured against the outright record for each. Two
+         greens and a yellow says where the time is still sitting. -->
+    <TextView
+      android:id="@+id/segment_sector_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_base"
+      android:text="@string/cycling_segment_sectors_title"
+      android:textAppearance="@style/MwmTextAppearance.Body2"
+      android:visibility="gone" />
+
+    <app.organicmaps.cycling.rides.SectorLightsView
+      android:id="@+id/segment_sector_lights"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/cycling_sector_light_height"
+      android:layout_marginTop="@dimen/margin_quarter"
+      android:visibility="gone" />
+
+    <TextView
+      android:id="@+id/segment_sector_times"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_quarter"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      android:visibility="gone"
+      tools:text="4:31   5:02   4:29" />
+
     <!-- Are you getting faster? Answered before any time is read. -->
     <app.organicmaps.cycling.rides.SparklineView
       android:id="@+id/segment_detail_sparkline"
