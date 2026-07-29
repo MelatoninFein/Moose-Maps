@@ -3,4 +3,11 @@
 <resources>
   <color name="bg_compass">#CC202124</color>
   <color name="fg_compass">#DEFFFFFF</color>
+
+  <!-- Inverted for the dark card: a translucent black on it reads as nothing at all. -->
+  <color name="hud_track">#1FFFFFFF</color>
+  <color name="hud_progress">#4DFFFFFF</color>
+  <color name="hud_tick">#DEFFFFFF</color>
+  <color name="hud_sector_pending">#99FFFFFF</color>
+  <color name="hud_sector_unreached">#33FFFFFF</color>
 </resources>

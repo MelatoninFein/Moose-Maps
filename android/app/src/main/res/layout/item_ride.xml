@@ -52,8 +52,9 @@
        under the thumb of someone scrolling is how a recording gets lost by accident. -->
   <ImageView
     android:id="@+id/ride_row_menu"
-    android:layout_width="@dimen/cycling_icon_size"
-    android:layout_height="@dimen/cycling_icon_size"
+    android:layout_width="@dimen/cycling_touch_target"
+    android:layout_height="@dimen/cycling_touch_target"
+    android:padding="@dimen/cycling_touch_padding"
     android:layout_marginStart="@dimen/margin_half"
     android:background="?selectableItemBackgroundBorderless"
     android:contentDescription="@string/cycling_ride_menu"

@@ -171,7 +171,7 @@ class RideDetailFragment : BaseMwmFragment() {
             summary.averageHeartRateBpm?.let { add("$it" to getString(R.string.cycling_unit_bpm)) }
             summary.averageCadenceRpm?.let { add("$it" to getString(R.string.cycling_unit_rpm)) }
             summary.averagePowerWatts?.let { add("$it" to getString(R.string.cycling_unit_watts)) }
-            add(CyclingFormatter.distanceText(summary.ascentMetres) to getString(R.string.cycling_metric_ascent))
+            add(CyclingFormatter.ascentText(summary.ascentMetres) to getString(R.string.cycling_metric_ascent))
         }
 
         tiles.chunked(TILES_PER_ROW).forEach { rowTiles ->

@@ -45,8 +45,9 @@
        the row you tap to expand is a mis-tap away from a season of times. -->
   <ImageView
     android:id="@+id/segment_row_menu"
-    android:layout_width="@dimen/cycling_icon_size"
-    android:layout_height="@dimen/cycling_icon_size"
+    android:layout_width="@dimen/cycling_touch_target"
+    android:layout_height="@dimen/cycling_touch_target"
+    android:padding="@dimen/cycling_touch_padding"
     android:background="?selectableItemBackgroundBorderless"
     android:contentDescription="@string/cycling_segment_menu"
     app:srcCompat="@drawable/ic_more"

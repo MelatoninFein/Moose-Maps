@@ -46,6 +46,16 @@
         android:text="@string/cycling_intro_dismiss" />
     </LinearLayout>
 
+    <!--
+      Headings, because this screen is otherwise seventeen controls in one undifferentiated column:
+      two navigation buttons, a switch, two text fields, two lists, a scan and a permission link,
+      with nothing saying which belong together. Three groups match the three reasons to be here -
+      look at what you rode, connect what measures it, tell it about your bike.
+    -->
+    <TextView
+      style="@style/CyclingSettingsHeading"
+      android:text="@string/cycling_section_records" />
+
     <!-- Rides and Segments live inside Cycling, so Settings carries one cycling entry rather than
          four scattered through the general list. -->
     <Button
@@ -58,15 +68,10 @@
       style="@style/CyclingMediaAppButton"
       android:text="@string/cycling_segments_title" />
 
-    <androidx.appcompat.widget.SwitchCompat
-      android:id="@+id/cycling_sensors_enabled"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:minHeight="@dimen/height_item_oneline"
-      android:paddingStart="@dimen/margin_base"
-      android:paddingEnd="@dimen/margin_base"
-      android:text="@string/cycling_sensors_enable"
-      android:textAppearance="@style/MwmTextAppearance.Body1" />
+
+    <TextView
+      style="@style/CyclingSettingsHeading"
+      android:text="@string/cycling_section_bike" />
 
     <TextView
       android:layout_width="match_parent"
@@ -139,7 +144,19 @@
         android:maxLength="3" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Sensors -->
+    <TextView
+      style="@style/CyclingSettingsHeading"
+      android:text="@string/cycling_section_sensors" />
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/cycling_sensors_enabled"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:minHeight="@dimen/height_item_oneline"
+      android:paddingStart="@dimen/margin_base"
+      android:paddingEnd="@dimen/margin_base"
+      android:text="@string/cycling_sensors_enable"
+      android:textAppearance="@style/MwmTextAppearance.Body1" />
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -183,9 +200,7 @@
 
     <Button
       android:id="@+id/cycling_scan_button"
-      style="@style/Widget.AppCompat.Button.Borderless.Colored"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      style="@style/CyclingPrimaryButton"
       android:layout_marginStart="@dimen/margin_half"
       android:text="@string/cycling_sensors_scan" />
 

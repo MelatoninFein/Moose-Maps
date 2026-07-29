@@ -61,6 +61,19 @@ object CyclingFormatter {
      * Short distance for the quick-navigate list. Metres/feet close by, kilometres/miles beyond -
      * a rider scanning a list wants one glanceable number, not four significant figures.
      */
+    /**
+     * Climbing, always in metres or feet.
+     *
+     * This used to go through [distanceText], which turns anything over a kilometre into "1.2 km" -
+     * so a good day in the hills read as a distance. Nobody anywhere quotes ascent that way; a
+     * four-figure number of metres is the whole point of saying it.
+     */
+    fun ascentText(metres: Double): String = if (isImperial()) {
+        "${(metres * FEET_PER_METRE).toInt()} ft"
+    } else {
+        "${metres.toInt()} m"
+    }
+
     fun distanceText(metres: Double): String = if (isImperial()) {
         val miles = metres / METRES_PER_MILE
         if (miles < 0.2) {

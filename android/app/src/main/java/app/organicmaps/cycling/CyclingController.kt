@@ -60,7 +60,6 @@ class CyclingController(
     private val segmentName: TextView = root.findViewById(R.id.segment_name)
     private val segmentElapsed: TextView = root.findViewById(R.id.segment_elapsed)
     private val segmentDelta: TextView = root.findViewById(R.id.segment_delta)
-    private val segmentProgress: android.widget.ProgressBar = root.findViewById(R.id.segment_progress)
     private val segmentDeltaBar: app.organicmaps.cycling.rides.DeltaBarView =
         root.findViewById(R.id.segment_delta_bar)
     private val segmentSectors: app.organicmaps.cycling.rides.SectorLightsView =
@@ -224,12 +223,8 @@ class CyclingController(
         }
         segmentDelta.setTextColor(ContextCompat.getColor(activity, colour))
 
-        // Same tint as the delta, so the banner reads as one thing rather than three readouts.
-        segmentProgress.progress = (progress.fractionComplete * PROGRESS_SCALE).toInt()
-        segmentProgress.progressTintList =
-            android.content.res.ColorStateList.valueOf(ContextCompat.getColor(activity, colour))
-
         segmentDeltaBar.deltaMillis = delta
+        segmentDeltaBar.fractionComplete = progress.fractionComplete
         segmentSectors.grades = progress.sectorGrades
         segmentSectors.currentSector = progress.currentSector
 
@@ -361,7 +356,5 @@ class CyclingController(
         /** Far enough out to accelerate into the line, close enough not to be premature. */
         const val APPROACH_WARNING_M = 300.0
 
-        /** Matches the progress bar's android:max; the fraction is 0 to 1. */
-        const val PROGRESS_SCALE = 1000f
     }
 }

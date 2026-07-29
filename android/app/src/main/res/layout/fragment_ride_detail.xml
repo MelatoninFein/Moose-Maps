@@ -120,11 +120,6 @@
       android:layout_marginTop="@dimen/margin_half"
       android:lineSpacingExtra="4dp"
       android:textAppearance="@style/MwmTextAppearance.Body3" />
-    <Button
-      android:id="@+id/ride_export_gpx"
-      style="@style/CyclingMediaAppButton"
-      android:layout_marginTop="@dimen/margin_base"
-      android:text="@string/cycling_rides_export" />
     <!-- Segment trimming: pick a stretch inside the ride rather than saving the whole outing.
          Hidden until asked for. Most visits to this screen are to look at a ride, not to cut a
          segment out of it, and a slider that does nothing on those visits is just clutter that
@@ -148,10 +143,18 @@
       android:visibility="gone"
       tools:visibility="visible" />
 
+    <!-- Both actions together at the end. Export used to sit between the zone bar and the trim
+         block, so the two things you can do with a ride were separated by a control belonging to
+         only one of them. -->
     <Button
       android:id="@+id/ride_save_segment"
       style="@style/CyclingMediaAppButton"
       android:layout_marginTop="@dimen/margin_base"
       android:text="@string/cycling_segment_save" />
+
+    <Button
+      android:id="@+id/ride_export_gpx"
+      style="@style/CyclingMediaAppButton"
+      android:text="@string/cycling_rides_export" />
   </LinearLayout>
 </ScrollView>

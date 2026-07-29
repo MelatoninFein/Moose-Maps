@@ -116,7 +116,7 @@ class RidesFragment : BaseMwmFragment() {
                 formatDuration(thisMonth.sumOf { it.movingMillis })
                     to getString(R.string.cycling_metric_moving),
                 thisMonth.size.toString() to getString(R.string.cycling_metric_rides),
-                CyclingFormatter.distanceText(thisMonth.sumOf { it.ascentMetres })
+                CyclingFormatter.ascentText(thisMonth.sumOf { it.ascentMetres })
                     to getString(R.string.cycling_metric_ascent),
             ),
         )

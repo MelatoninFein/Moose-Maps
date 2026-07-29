@@ -7,6 +7,8 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
+import app.organicmaps.R
 import kotlin.math.abs
 
 /**
@@ -26,14 +28,20 @@ class DeltaBarView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : View(context, attrs, defStyleAttr) {
 
+    // Resolved from resources rather than fixed, because the card underneath follows the theme:
+    // a translucent white track is invisible on a light card, and black on a dark one.
     private val trackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = Color.argb(0x55, 0x00, 0x00, 0x00)
+        color = ContextCompat.getColor(context, R.color.hud_track)
     }
     private val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
+    private val progressPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+        color = ContextCompat.getColor(context, R.color.hud_progress)
+    }
     private val centrePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = Color.WHITE
+        color = ContextCompat.getColor(context, R.color.hud_tick)
     }
     private val rect = RectF()
 
@@ -45,6 +53,19 @@ class DeltaBarView @JvmOverloads constructor(
             invalidate()
         }
 
+    /**
+     * How far round the segment you are, 0 to 1, drawn as the filled part of the track.
+     *
+     * This used to be a second bar directly underneath - same width, same shape, different meaning,
+     * which is a good way to make a rider read neither. Progress is the track the delta rides on,
+     * which is what it always was conceptually.
+     */
+    var fractionComplete: Float = 0f
+        set(value) {
+            field = value.coerceIn(0f, 1f)
+            invalidate()
+        }
+
     override fun onDraw(canvas: Canvas) {
         val delta = deltaMillis ?: return
         val centre = width / 2f
@@ -52,6 +73,10 @@ class DeltaBarView @JvmOverloads constructor(
 
         rect.set(0f, 0f, width.toFloat(), height.toFloat())
         canvas.drawRoundRect(rect, radius, radius, trackPaint)
+
+        // Progress fills the track from the left, under the delta.
+        rect.set(0f, 0f, width * fractionComplete, height.toFloat())
+        canvas.drawRoundRect(rect, radius, radius, progressPaint)
 
         // Clamped, so a rider who is a minute down still sees a full bar rather than an overflow.
         val extent = (abs(delta).toFloat() / FULL_SCALE_MS).coerceIn(0f, 1f) * centre
@@ -95,6 +120,11 @@ class SectorLightsView @JvmOverloads constructor(
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
     private val rect = RectF()
 
+    // The lit colours are saturated enough to hold on either theme; the unlit ones are not, so
+    // they come from resources with a night variant.
+    private val pendingColour = ContextCompat.getColor(context, R.color.hud_sector_pending)
+    private val unreachedColour = ContextCompat.getColor(context, R.color.hud_sector_unreached)
+
     var grades: List<SectorGrade> = emptyList()
         set(value) {
             field = value
@@ -116,8 +146,8 @@ class SectorLightsView @JvmOverloads constructor(
         for (sector in 0 until Sectors.COUNT) {
             paint.color = when {
                 sector < grades.size -> colourFor(grades[sector])
-                sector == currentSector -> PENDING
-                else -> UNREACHED
+                sector == currentSector -> pendingColour
+                else -> unreachedColour
             }
             val left = sector * (cellWidth + gap)
             rect.set(left, 0f, left + cellWidth, height.toFloat())
@@ -138,7 +168,5 @@ class SectorLightsView @JvmOverloads constructor(
         val RECORD = Color.rgb(0x9C, 0x27, 0xB0)
         val IMPROVED = Color.rgb(0x2E, 0xC4, 0x66)
         val SLOWER = Color.rgb(0xFF, 0xC1, 0x07)
-        val PENDING = Color.argb(0x99, 0xFF, 0xFF, 0xFF)
-        val UNREACHED = Color.argb(0x44, 0xFF, 0xFF, 0xFF)
     }
 }

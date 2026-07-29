@@ -14,8 +14,9 @@
 
   <ImageView
     android:id="@+id/sensor_icon"
-    android:layout_width="@dimen/cycling_icon_size"
-    android:layout_height="@dimen/cycling_icon_size"
+    android:layout_width="@dimen/cycling_touch_target"
+    android:layout_height="@dimen/cycling_touch_target"
+    android:padding="@dimen/cycling_touch_padding"
     android:layout_marginEnd="@dimen/margin_base"
     android:contentDescription="@string/cycling_sensors_title"
     app:srcCompat="@drawable/ic_cycling_sensor"
@@ -50,8 +51,9 @@
 
   <ImageView
     android:id="@+id/sensor_action"
-    android:layout_width="@dimen/cycling_icon_size"
-    android:layout_height="@dimen/cycling_icon_size"
+    android:layout_width="@dimen/cycling_touch_target"
+    android:layout_height="@dimen/cycling_touch_target"
+    android:padding="@dimen/cycling_touch_padding"
     android:background="?selectableItemBackgroundBorderless"
     android:contentDescription="@string/cycling_sensors_forget"
     app:srcCompat="@drawable/ic_close"

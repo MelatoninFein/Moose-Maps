@@ -43,8 +43,9 @@
        ride, and the only control here used to be one that ended it. -->
   <ImageView
     android:id="@+id/ride_status_pause"
-    android:layout_width="@dimen/cycling_icon_size"
-    android:layout_height="@dimen/cycling_icon_size"
+    android:layout_width="@dimen/cycling_touch_target"
+    android:layout_height="@dimen/cycling_touch_target"
+    android:padding="@dimen/cycling_touch_padding"
     android:layout_marginStart="@dimen/margin_half"
     android:background="?selectableItemBackgroundBorderless"
     android:contentDescription="@string/cycling_ride_pause"
@@ -53,8 +54,9 @@
 
   <ImageView
     android:id="@+id/ride_status_stop"
-    android:layout_width="@dimen/cycling_icon_size"
-    android:layout_height="@dimen/cycling_icon_size"
+    android:layout_width="@dimen/cycling_touch_target"
+    android:layout_height="@dimen/cycling_touch_target"
+    android:padding="@dimen/cycling_touch_padding"
     android:layout_marginStart="@dimen/margin_half"
     android:background="?selectableItemBackgroundBorderless"
     android:contentDescription="@string/cycling_ride_stop"

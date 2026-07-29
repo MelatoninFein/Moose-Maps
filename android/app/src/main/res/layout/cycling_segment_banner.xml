@@ -73,17 +73,4 @@
     android:layout_width="@dimen/cycling_segment_progress_width"
     android:layout_height="@dimen/cycling_sector_light_height"
     android:layout_marginTop="@dimen/margin_quarter" />
-
-  <!--
-    How far round you are. Four seconds down means something different with a kilometre left than
-    it does on the run-in, and the delta alone never said which one you were looking at.
-  -->
-  <ProgressBar
-    android:id="@+id/segment_progress"
-    style="?android:attr/progressBarStyleHorizontal"
-    android:layout_width="@dimen/cycling_segment_progress_width"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_quarter"
-    android:max="1000"
-    tools:progress="600" />
 </LinearLayout>

@@ -7,6 +7,13 @@
   <dimen name="cycling_artwork_size">40dp</dimen>
   <dimen name="cycling_media_button">44dp</dimen>
   <dimen name="cycling_icon_size">24dp</dimen>
+  <!--
+    Icon buttons are laid out at this size with the padding below, so the glyph still draws at
+    cycling_icon_size while the tappable box meets the 48dp minimum. The ride pause and stop are
+    pressed at speed and possibly through gloves; a 24dp target is a miss waiting to happen.
+  -->
+  <dimen name="cycling_touch_target">48dp</dimen>
+  <dimen name="cycling_touch_padding">12dp</dimen>
   <dimen name="cycling_toggle_size">32dp</dimen>
   <dimen name="cycling_panel_bottom_margin">96dp</dimen>
 
@@ -23,6 +30,14 @@
   <!-- Green when ahead of your best, red when behind. -->
   <color name="segment_ahead">#2E7D32</color>
   <color name="segment_behind">#C62828</color>
+
+  <!-- The unlit parts of the race HUD. These sit on a card that follows the theme, so they cannot
+       be a fixed white: on a light card a translucent white reads as nothing at all. -->
+  <color name="hud_track">#1F000000</color>
+  <color name="hud_progress">#3D000000</color>
+  <color name="hud_tick">#8A000000</color>
+  <color name="hud_sector_pending">#61000000</color>
+  <color name="hud_sector_unreached">#1F000000</color>
   <color name="fg_compass">#DE000000</color>
   <dimen name="cycling_compass_size">96dp</dimen>
   <!-- Clear of the track-recording indicator that also lives in the top-right corner. -->
@@ -56,5 +71,28 @@
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:gravity">start|center_vertical</item>
+  </style>
+  <!--
+    A section heading on the cycling screen. Seventeen controls in one column with nothing grouping
+    them made every setting look equally important; these say which belong together.
+  -->
+  <style name="CyclingSettingsHeading" parent="MwmTextAppearance.Body2">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:paddingStart">@dimen/margin_base</item>
+    <item name="android:paddingEnd">@dimen/margin_base</item>
+    <item name="android:paddingTop">@dimen/margin_base</item>
+    <item name="android:paddingBottom">@dimen/margin_quarter</item>
+    <item name="android:textAllCaps">true</item>
+  </style>
+
+  <!--
+    Scanning is what this screen exists to do, and it was styled as borderless text sitting among a
+    dozen other borderless text controls. A filled button is the one thing here that should look
+    like an action.
+  -->
+  <style name="CyclingPrimaryButton" parent="Widget.AppCompat.Button.Colored">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
   </style>
 </resources>
