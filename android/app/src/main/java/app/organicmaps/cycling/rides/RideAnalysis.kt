@@ -84,9 +84,21 @@ object PersonalRecords {
      * tail forward while it still does. Linear rather than quadratic, which matters on a four-hour
      * ride of ~14,000 samples.
      */
-    fun fastestOverDistance(samples: List<RideSample>, targetMetres: Double): Long? {
-        if (samples.size < 2) {
-            return null
+    fun fastestOverDistance(samples: List<RideSample>, targetMetres: Double): Long? =
+        fastestOverDistances(samples, listOf(targetMetres))[targetMetres]
+
+    /**
+     * The same, for several distances at once.
+     *
+     * The sort and the cumulative-distance pass are the expensive part and do not depend on the
+     * target at all, so asking for four distances separately did the same haversine walk over every
+     * sample four times. On a season of hundred rides at ~3,600 samples each that was well over a
+     * million redundant trigonometric calls before the list could be drawn - all on the main thread
+     * while the rider waited.
+     */
+    fun fastestOverDistances(samples: List<RideSample>, targets: List<Double>): Map<Double, Long?> {
+        if (samples.size < 2 || targets.isEmpty()) {
+            return emptyMap()
         }
         val ordered = samples.sortedBy { it.timestampMs }
 
@@ -100,10 +112,23 @@ object PersonalRecords {
                 ordered[i].longitude,
             )
         }
-        if (cumulative.last() < targetMetres) {
-            return null
-        }
 
+        val total = cumulative.last()
+        return targets.associateWith { target ->
+            if (total < target) null else fastestWindow(ordered, cumulative, target)
+        }
+    }
+
+    /**
+     * Two pointers over the samples: extend the window until it spans the distance, then pull the
+     * tail forward while it still does. Linear rather than quadratic, which matters on a four-hour
+     * ride of ~14,000 samples.
+     */
+    private fun fastestWindow(
+        ordered: List<RideSample>,
+        cumulative: DoubleArray,
+        targetMetres: Double,
+    ): Long? {
         var best: Long? = null
         var tail = 0
         for (head in 1 until ordered.size) {

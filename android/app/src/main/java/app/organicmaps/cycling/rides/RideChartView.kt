@@ -29,8 +29,14 @@ class RideChartView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : View(context, attrs, defStyleAttr) {
 
-    /** One drawable series, already reduced to plain numbers. */
-    private data class Series(val label: String, val colour: Int, val values: List<Double?>)
+    /** One drawable series, already reduced to plain numbers with its own scale. */
+    private data class Series(
+        val label: String,
+        val colour: Int,
+        val values: List<Double?>,
+        val minimum: Double,
+        val maximum: Double,
+    )
 
     /** The drawable area, once the axis labels have taken their margin. */
     private data class Plot(val left: Float, val right: Float, val top: Float, val bottom: Float)
@@ -49,18 +55,50 @@ class RideChartView @JvmOverloads constructor(
     var samples: List<RideSample> = emptyList()
         set(value) {
             field = value.sortedBy { it.timestampMs }
-            invalidate()
+            rebuildSeries()
         }
 
     /** Which series to draw. Toggled from the ride screen so the chart doesn't become soup. */
     var showHeartRate = true
-        set(value) { field = value; invalidate() }
+        set(value) { field = value; rebuildSeries() }
     var showSpeed = true
-        set(value) { field = value; invalidate() }
+        set(value) { field = value; rebuildSeries() }
     var showCadence = false
-        set(value) { field = value; invalidate() }
+        set(value) { field = value; rebuildSeries() }
     var showPower = false
-        set(value) { field = value; invalidate() }
+        set(value) { field = value; rebuildSeries() }
+
+    /**
+     * The drawable series, rebuilt only when the data or the chosen series change.
+     *
+     * They were previously assembled inside onDraw, which allocated four lists and re-derived each
+     * series' minimum and maximum on every frame. Scrubbing redraws on every touch move, so that
+     * was several allocations and a full pass over the ride per finger movement - exactly the
+     * pattern that produces visible stutter.
+     */
+    private var series: List<Series> = emptyList()
+
+    private fun rebuildSeries() {
+        val points = samples
+        series = buildList {
+            if (showHeartRate) add(build("HR", HR_COLOUR, points.map { it.heartRateBpm?.toDouble() }))
+            if (showSpeed) add(build(SPEED_LABEL, SPEED_COLOUR, points.map { it.gpsSpeedMps ?: it.sensorSpeedMps }))
+            if (showCadence) add(build("Cad", CADENCE_COLOUR, points.map { it.cadenceRpm?.toDouble() }))
+            if (showPower) add(build("Pwr", POWER_COLOUR, points.map { it.powerWatts?.toDouble() }))
+        }
+        invalidate()
+    }
+
+    /**
+     * Each series is scaled to its own range: heart rate and speed share no units, and a common
+     * axis would flatten one of them into the baseline.
+     */
+    private fun build(label: String, colour: Int, values: List<Double?>): Series {
+        val present = values.filterNotNull()
+        val minimum = present.minOrNull() ?: 0.0
+        val maximum = max(present.maxOrNull() ?: 1.0, minimum + 1e-6)
+        return Series(label, colour, values, minimum, maximum)
+    }
 
     /**
      * The sample being inspected, or null when nothing is.
@@ -136,23 +174,13 @@ class RideChartView @JvmOverloads constructor(
         canvas.drawLine(left, bottom, right, bottom, axisPaint)
         canvas.drawLine(left, (top + bottom) / 2, right, (top + bottom) / 2, axisPaint)
 
-        val series = buildList {
-            if (showHeartRate) add(Series("HR", HR_COLOUR, points.map { it.heartRateBpm?.toDouble() }))
-            if (showSpeed) add(Series(SPEED_LABEL, SPEED_COLOUR, points.map { it.gpsSpeedMps ?: it.sensorSpeedMps }))
-            if (showCadence) add(Series("Cad", CADENCE_COLOUR, points.map { it.cadenceRpm?.toDouble() }))
-            if (showPower) add(Series("Pwr", POWER_COLOUR, points.map { it.powerWatts?.toDouble() }))
-        }
-
         var labelX = left
         series.forEach { entry ->
-            // Each series is scaled to its own range: heart rate and speed share no units, and a
-            // common axis would flatten one of them into the baseline.
-            val present = entry.values.filterNotNull()
-            if (present.isEmpty()) {
+            if (entry.values.all { it == null }) {
                 return@forEach
             }
-            val minimum = present.min()
-            val maximum = max(present.max(), minimum + 1e-6)
+            val minimum = entry.minimum
+            val maximum = entry.maximum
 
             linePaint.color = entry.colour
             val path = Path()

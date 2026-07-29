@@ -26,36 +26,68 @@ object CompassWaypoints {
 
     private const val TAG = "CompassWaypoints"
 
+    /** Long enough to cost nothing at 1 Hz, short enough that a place saved mid-ride shows up. */
+    private const val CACHE_TTL_MS = 60_000L
+
     /**
      * Reads bookmarks and returns the nearest ones as compass waypoints.
      *
      * Runs on whatever thread calls it and touches JNI, so callers should keep the cadence low -
      * once per location update is plenty, since bookmarks don't move.
      */
-    fun nearest(latitude: Double, longitude: Double): List<CompassView.Waypoint> = try {
-        val categories = BookmarkManager.INSTANCE.categories
-        val favouriteCategoryId = categories.firstOrNull()?.id
+    fun nearest(latitude: Double, longitude: Double): List<CompassView.Waypoint> = positions()
+        .map { position ->
+            Triple(
+                distanceMetres(latitude, longitude, position.latitude, position.longitude),
+                bearingDegrees(latitude, longitude, position.latitude, position.longitude),
+                position.isFavourite,
+            )
+        }
+        .filter { it.first <= MAX_DISTANCE_METRES }
+        .sortedBy { it.first }
+        .take(MAX_WAYPOINTS)
+        .map { CompassView.Waypoint(it.second, it.third) }
 
-        categories
-            .flatMap { category ->
+    private class Position(val latitude: Double, val longitude: Double, val isFavourite: Boolean)
+
+    private var cached: List<Position> = emptyList()
+    private var cachedAtMs = 0L
+
+    /**
+     * Bookmark positions, re-read from JNI at most once a minute.
+     *
+     * This is called on every location fix, and the read costs one JNI round trip *per bookmark* -
+     * so a rider with a few hundred saved places was crossing into native code hundreds of times a
+     * second, on the main thread, for an answer that only changes when they save a new place. The
+     * maths that follows is cheap; the crossing was not.
+     */
+    private fun positions(): List<Position> {
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (cachedAtMs != 0L && now - cachedAtMs < CACHE_TTL_MS) {
+            return cached
+        }
+        cachedAtMs = now
+        cached = try {
+            val categories = BookmarkManager.INSTANCE.categories
+            val favouriteCategoryId = categories.firstOrNull()?.id
+            categories.flatMap { category ->
                 (0 until category.bookmarksCount).mapNotNull { index ->
                     val id = category.getBookmarkIdByPosition(index)
                     val info = BookmarkManager.INSTANCE.getBookmarkInfo(id) ?: return@mapNotNull null
-                    Triple(info.lat, info.lon, category.id == favouriteCategoryId)
+                    Position(info.lat, info.lon, category.id == favouriteCategoryId)
                 }
             }
-            .map { (lat, lon, isFavourite) ->
-                val distance = distanceMetres(latitude, longitude, lat, lon)
-                Triple(distance, bearingDegrees(latitude, longitude, lat, lon), isFavourite)
-            }
-            .filter { it.first <= MAX_DISTANCE_METRES }
-            .sortedBy { it.first }
-            .take(MAX_WAYPOINTS)
-            .map { CompassView.Waypoint(it.second, it.third) }
-    } catch (e: RuntimeException) {
-        // Bookmarks live behind JNI; a failure here must not take the map down.
-        Logger.w(TAG, "Could not read bookmarks for the compass: ${e.message}")
-        emptyList()
+        } catch (e: RuntimeException) {
+            // Bookmarks live behind JNI; a failure here must not take the map down.
+            Logger.w(TAG, "Could not read bookmarks for the compass: ${e.message}")
+            emptyList()
+        }
+        return cached
+    }
+
+    /** Forces the next read to go to JNI, for when the map knows bookmarks have changed. */
+    fun invalidate() {
+        cachedAtMs = 0L
     }
 
     /** Great-circle distance, good enough at the scale a compass dot is meaningful. */

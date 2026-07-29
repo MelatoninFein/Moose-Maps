@@ -59,28 +59,73 @@ class RidesFragment : BaseMwmFragment() {
         empty.visibility = View.GONE
         emptyAction.visibility = View.GONE
 
-        // Parsed once per ride and reused for the totals, the records, the rows and the thumbnails.
-        // Reading each file four times would make a season's list slow to open for no gain.
+        // Summaries come off disk, where finishing the ride already put them. Nothing here parses a
+        // single sample, so the list appears immediately however many rides it holds.
         val parsed = rides.mapNotNull { file ->
-            val samples = recorder.samplesOf(file)
-            RideStatistics.summarise(samples)?.let { Triple(file, it, samples) }
+            recorder.storedSummary(file)?.let { file to it }
         }
 
         buildTotals(totalsTitle, totalsGrid, parsed.map { it.second })
-        buildRecords(recordsTitle, recordsGrid, parsed.map { it.third })
 
+        // Each month's distance totalled in one pass. Re-scanning the whole list inside the loop to
+        // total the month being started made this quadratic, and re-formatted every date twice over.
+        val monthTotals = parsed
+            .groupBy { monthLabel(it.second.startedAtMs) }
+            .mapValues { (_, rides) -> rides.sumOf { it.second.distanceMetres } }
+
+        val traces = mutableMapOf<String, RideTraceView>()
         var lastMonth = ""
-        parsed.forEach { (file, summary, samples) ->
+        parsed.forEach { (file, summary) ->
             val month = monthLabel(summary.startedAtMs)
             if (month != lastMonth) {
                 lastMonth = month
-                val monthRides = parsed.filter { monthLabel(it.second.startedAtMs) == month }
                 val header = layoutInflater.inflate(R.layout.item_ride_month, list, false) as TextView
-                header.text = "$month · " +
-                    CyclingFormatter.distanceText(monthRides.sumOf { it.second.distanceMetres })
+                header.text = "$month · " + CyclingFormatter.distanceText(monthTotals[month] ?: 0.0)
                 list.addView(header)
             }
-            list.addView(createRow(list, file, summary, samples))
+            val row = createRow(list, file, summary)
+            traces[file.name] = row.findViewById(R.id.ride_thumbnail)
+            list.addView(row)
+        }
+
+        loadSamplesInBackground(recorder, parsed.map { it.first }, traces, recordsTitle, recordsGrid)
+    }
+
+    /**
+     * Route thumbnails and the personal records, off the main thread.
+     *
+     * These are the only two things that genuinely need every sample of every ride, and doing them
+     * inline meant a season's worth of JSON parsing between the rider tapping Rides and seeing
+     * anything at all. The rows are already on screen by the time this starts; thumbnails and
+     * records appear as they are worked out.
+     */
+    private fun loadSamplesInBackground(
+        recorder: RideRecorder,
+        files: List<java.io.File>,
+        traces: Map<String, RideTraceView>,
+        recordsTitle: TextView,
+        recordsGrid: LinearLayout,
+    ) {
+        val generation = ++renderGeneration
+        val handler = android.os.Handler(android.os.Looper.getMainLooper())
+        worker.execute {
+            val perRide = mutableListOf<Map<Double, Long?>>()
+            files.forEach { file ->
+                val samples = recorder.samplesOf(file)
+                perRide += PersonalRecords.fastestOverDistances(samples, PersonalRecords.TRACKED_DISTANCES)
+                handler.post {
+                    // A re-render while this was running means these results belong to a list that
+                    // no longer exists.
+                    if (isAdded && generation == renderGeneration) {
+                        traces[file.name]?.samples = samples
+                    }
+                }
+            }
+            handler.post {
+                if (isAdded && generation == renderGeneration) {
+                    buildRecords(recordsTitle, recordsGrid, perRide)
+                }
+            }
         }
     }
 
@@ -122,9 +167,12 @@ class RidesFragment : BaseMwmFragment() {
         )
     }
 
-    private fun monthLabel(startedAtMs: Long): String =
+    /** Built once. Constructing a SimpleDateFormat parses its pattern, so per-call was per-ride waste. */
+    private val monthFormat by lazy {
         java.text.SimpleDateFormat("LLLL yyyy", java.util.Locale.getDefault())
-            .format(Date(startedAtMs))
+    }
+
+    private fun monthLabel(startedAtMs: Long): String = monthFormat.format(Date(startedAtMs))
 
     private fun refresh() = view?.let { render(it) }
 
@@ -134,9 +182,10 @@ class RidesFragment : BaseMwmFragment() {
      * Computed on open rather than stored: it has to be re-derived whenever a ride is added or
      * removed anyway, and a rider has tens of rides, not thousands.
      */
-    private fun buildRecords(title: TextView, grid: LinearLayout, rides: List<List<RideSample>>) {
+    private fun buildRecords(title: TextView, grid: LinearLayout, perRide: List<Map<Double, Long?>>) {
+        grid.removeAllViews()
         val bests = PersonalRecords.TRACKED_DISTANCES.mapNotNull { distance ->
-            rides.mapNotNull { PersonalRecords.fastestOverDistance(it, distance) }
+            perRide.mapNotNull { it[distance] }
                 .minOrNull()
                 ?.let { distance to it }
         }
@@ -187,17 +236,10 @@ class RidesFragment : BaseMwmFragment() {
         )
     }
 
-    private fun createRow(
-        parent: ViewGroup,
-        file: java.io.File,
-        summary: RideSummary,
-        samples: List<RideSample>,
-    ): View {
+    private fun createRow(parent: ViewGroup, file: java.io.File, summary: RideSummary): View {
         val row = layoutInflater.inflate(R.layout.item_ride, parent, false)
 
-        // Speed-graded, same renderer as the full-size trace - a fast ride reads warm even at 64dp.
-        row.findViewById<RideTraceView>(R.id.ride_thumbnail).samples = samples
-
+        // The thumbnail is filled in once its samples have been read off the main thread.
         val date = Date(summary.startedAtMs)
         val stamp = "${DateFormat.getMediumDateFormat(requireContext()).format(date)} " +
             DateFormat.getTimeFormat(requireContext()).format(date)
@@ -277,6 +319,17 @@ class RidesFragment : BaseMwmFragment() {
         val hours = TimeUnit.MILLISECONDS.toHours(millis)
         val minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
         return if (hours > 0) "${hours}h ${minutes}m" else "${minutes}m"
+    }
+
+    /** One thread: the work is disk-bound, so running rides in parallel would only thrash. */
+    private val worker = java.util.concurrent.Executors.newSingleThreadExecutor()
+
+    /** Bumped on every render, so results from a superseded pass are discarded rather than applied. */
+    private var renderGeneration = 0
+
+    override fun onDestroy() {
+        worker.shutdownNow()
+        super.onDestroy()
     }
 
     private companion object {

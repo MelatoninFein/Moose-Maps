@@ -112,7 +112,10 @@ class RideRecorder private constructor(context: Context) : LocationListener {
         currentFile = null
         lastFinishedFileName = null
 
-        val summary = RideStatistics.summarise(readSamples(file))
+        // Read once. A four-hour ride is ~14,000 JSON lines, and parsing it twice at the moment the
+        // rider taps Finish is the worst possible time to do the work twice.
+        val samples = readSamples(file)
+        val summary = RideStatistics.summarise(samples)
         if (summary == null) {
             // A ride with one fix is a false start, not a ride worth keeping.
             Logger.i(TAG, "Discarding ride with $sampleCount sample(s)")
@@ -120,7 +123,7 @@ class RideRecorder private constructor(context: Context) : LocationListener {
             return null
         }
         writeSummary(file, summary)
-        recordSegmentBests(readSamples(file), file.nameWithoutExtension)
+        recordSegmentBests(samples, file.nameWithoutExtension)
         lastFinishedFileName = file.name
         return summary
     }
@@ -250,6 +253,48 @@ class RideRecorder private constructor(context: Context) : LocationListener {
     fun samplesOf(file: File): List<RideSample> = readSamples(file)
 
     fun summaryOf(file: File): RideSummary? = RideStatistics.summarise(readSamples(file))
+
+    /**
+     * The summary written when the ride finished, without re-reading its samples.
+     *
+     * Every finished ride already has this on disk and nothing ever read it back, so opening the
+     * list re-derived from scratch what had been computed once: a season of rides meant parsing
+     * hundreds of thousands of JSON lines on the main thread to show figures that were sitting in
+     * a file all along. Falls back to parsing for rides recorded before the summary existed.
+     */
+    fun storedSummary(file: File): RideSummary? {
+        val summaryFile = File(file.parentFile, file.nameWithoutExtension + ".summary.json")
+        if (!summaryFile.isFile) {
+            return summaryOf(file)
+        }
+        return try {
+            val json = JSONObject(summaryFile.readText())
+            RideSummary(
+                startedAtMs = json.getLong("startedAtMs"),
+                endedAtMs = json.getLong("endedAtMs"),
+                distanceMetres = json.getDouble("distanceMetres"),
+                movingMillis = json.getLong("movingMillis"),
+                averageSpeedMps = json.optDoubleOrNull("averageSpeedMps"),
+                maxSpeedMps = json.optDoubleOrNull("maxSpeedMps"),
+                averageHeartRateBpm = json.optIntOrNull("averageHeartRateBpm"),
+                maxHeartRateBpm = json.optIntOrNull("maxHeartRateBpm"),
+                averageCadenceRpm = json.optIntOrNull("averageCadenceRpm"),
+                averagePowerWatts = json.optIntOrNull("averagePowerWatts"),
+                ascentMetres = json.getDouble("ascentMetres"),
+                sampleCount = json.getInt("sampleCount"),
+            )
+        } catch (e: org.json.JSONException) {
+            // A truncated summary must not hide the ride; the samples are the source of truth.
+            Logger.w(TAG, "Unreadable summary for ${file.name}: ${e.message}")
+            summaryOf(file)
+        }
+    }
+
+    private fun JSONObject.optDoubleOrNull(key: String): Double? =
+        if (isNull(key)) null else optDouble(key)
+
+    private fun JSONObject.optIntOrNull(key: String): Int? =
+        if (isNull(key)) null else optInt(key)
 
     /**
      * Removes a ride and anything stored beside it.

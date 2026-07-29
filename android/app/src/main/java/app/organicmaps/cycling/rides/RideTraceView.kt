@@ -78,14 +78,36 @@ class RideTraceView @JvmOverloads constructor(
     var metric: Metric = Metric.SPEED
         set(value) {
             field = value
+            range = metricRange(samples)
             invalidate()
         }
 
     var samples: List<RideSample> = emptyList()
         set(value) {
             field = value
+            // Bounds depend only on the samples, so they are found once here rather than on every
+            // draw. Four min/max passes over a 14,000-point ride, per frame, is a lot of work to
+            // repeat for an answer that cannot have changed.
+            bounds = if (value.size < 2) {
+                null
+            } else {
+                Bounds(
+                    minLat = value.minOf { it.latitude },
+                    maxLat = value.maxOf { it.latitude },
+                    minLon = value.minOf { it.longitude },
+                    maxLon = value.maxOf { it.longitude },
+                )
+            }
+            range = metricRange(value)
             invalidate()
         }
+
+    private class Bounds(val minLat: Double, val maxLat: Double, val minLon: Double, val maxLon: Double)
+
+    private var bounds: Bounds? = null
+
+    /** Cached alongside the bounds; it too depends only on the samples and the chosen metric. */
+    private var range: Pair<Double, Double> = 0.0 to 1.0
 
     override fun onDraw(canvas: Canvas) {
         val points = samples
@@ -93,10 +115,11 @@ class RideTraceView @JvmOverloads constructor(
             return
         }
 
-        val minLat = points.minOf { it.latitude }
-        val maxLat = points.maxOf { it.latitude }
-        val minLon = points.minOf { it.longitude }
-        val maxLon = points.maxOf { it.longitude }
+        val extent = bounds ?: return
+        val minLat = extent.minLat
+        val maxLat = extent.maxLat
+        val minLon = extent.minLon
+        val maxLon = extent.maxLon
 
         val padding = dp(12f)
         val usableWidth = width - padding * 2
@@ -119,7 +142,6 @@ class RideTraceView @JvmOverloads constructor(
         // Screen y grows downward, latitude grows northward, so this is inverted.
         fun projectY(lat: Double) = (offsetY + (maxLat - lat) * scale).toFloat()
 
-        val range = metricRange(points)
         linePaint.strokeWidth = dp(4f)
 
         var distanceSinceArrow = 0.0

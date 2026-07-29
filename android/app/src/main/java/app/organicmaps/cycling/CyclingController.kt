@@ -151,6 +151,9 @@ class CyclingController(
         MwmApplication.from(activity).getLocationHelper().addListener(this)
         MwmApplication.from(activity).getSensorHelper().addListener(this)
 
+        // Coming back to the map is the likeliest moment for a bookmark to have been added.
+        CompassWaypoints.invalidate()
+
         val segments = SegmentStore(activity).list()
         val bests = SegmentBestStore(activity).loadAll(segments.map { it.id })
         segmentTracker = LiveSegmentTracker(segments, bests)
