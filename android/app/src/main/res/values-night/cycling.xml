@@ -5,6 +5,8 @@
   <color name="fg_compass">#DEFFFFFF</color>
 
   <!-- Inverted for the dark card: a translucent black on it reads as nothing at all. -->
+  <color name="chart_elevation_fill">#1AFFFFFF</color>
+  <color name="chart_elevation_line">#4DFFFFFF</color>
   <color name="hud_track">#1FFFFFFF</color>
   <color name="hud_progress">#4DFFFFFF</color>
   <color name="hud_tick">#DEFFFFFF</color>

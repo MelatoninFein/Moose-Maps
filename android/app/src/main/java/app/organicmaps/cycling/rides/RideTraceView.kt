@@ -116,11 +116,6 @@ class RideTraceView @JvmOverloads constructor(
         }
 
         val extent = bounds ?: return
-        val minLat = extent.minLat
-        val maxLat = extent.maxLat
-        val minLon = extent.minLon
-        val maxLon = extent.maxLon
-
         val padding = dp(12f)
         val usableWidth = width - padding * 2
         val usableHeight = height - padding * 2
@@ -128,47 +123,32 @@ class RideTraceView @JvmOverloads constructor(
             return
         }
 
+        val minLat = extent.minLat
+        val maxLat = extent.maxLat
         // Longitude degrees shrink toward the poles; without this correction a north-south ride
         // looks stretched sideways.
+        val squeeze = cos(Math.toRadians((minLat + maxLat) / 2))
         val latSpan = max(maxLat - minLat, 1e-6)
-        val lonSpan = max((maxLon - minLon) * cos(Math.toRadians((minLat + maxLat) / 2)), 1e-6)
+        val lonSpan = max((extent.maxLon - extent.minLon) * squeeze, 1e-6)
         // One scale for both axes keeps the route's actual shape rather than distorting it to fill.
         val scale = min(usableWidth / lonSpan, usableHeight / latSpan)
         val offsetX = padding + (usableWidth - lonSpan * scale) / 2
         val offsetY = padding + (usableHeight - latSpan * scale) / 2
 
-        fun projectX(lon: Double) =
-            (offsetX + (lon - minLon) * cos(Math.toRadians((minLat + maxLat) / 2)) * scale).toFloat()
+        fun projectX(lon: Double) = (offsetX + (lon - extent.minLon) * squeeze * scale).toFloat()
         // Screen y grows downward, latitude grows northward, so this is inverted.
         fun projectY(lat: Double) = (offsetY + (maxLat - lat) * scale).toFloat()
 
         linePaint.strokeWidth = dp(4f)
 
-        var distanceSinceArrow = 0.0
-        for (i in 1 until points.size) {
-            val previous = points[i - 1]
-            val current = points[i]
+        drawRoute(canvas, points, ::projectX, ::projectY)
 
-            val x1 = projectX(previous.longitude)
-            val y1 = projectY(previous.latitude)
-            val x2 = projectX(current.longitude)
-            val y2 = projectY(current.latitude)
-
-            val value = metricValue(current)
-            linePaint.color = colourFor(value, range)
-            canvas.drawLine(x1, y1, x2, y2, linePaint)
-
-            // Arrow spacing shortens as speed rises, so a fast section visibly bristles with them
-            // while a slow climb is nearly bare.
-            val speed = current.gpsSpeedMps ?: current.sensorSpeedMps ?: 0.0
-            val spacing = arrowSpacingPx(speed)
-            val segmentLength = Math.hypot((x2 - x1).toDouble(), (y2 - y1).toDouble())
-            distanceSinceArrow += segmentLength
-            if (distanceSinceArrow >= spacing && segmentLength > 0.5) {
-                distanceSinceArrow = 0.0
-                arrowPaint.color = linePaint.color
-                drawArrow(canvas, x1, y1, x2, y2)
-            }
+        if (coursePoints.isEmpty()) {
+            drawEnds(
+                canvas,
+                projectX(points.first().longitude), projectY(points.first().latitude),
+                projectX(points.last().longitude), projectY(points.last().latitude),
+            )
         }
 
         // The moment being inspected on the chart below, marked on the road where it happened.
@@ -184,6 +164,54 @@ class RideTraceView @JvmOverloads constructor(
             markerPaint.color = android.graphics.Color.BLACK
             canvas.drawCircle(x, y, dp(6f), markerPaint)
         }
+    }
+
+    /** The coloured line itself, with arrows spaced by how fast that stretch was ridden. */
+    private fun drawRoute(
+        canvas: Canvas,
+        points: List<RideSample>,
+        projectX: (Double) -> Float,
+        projectY: (Double) -> Float,
+    ) {
+        var distanceSinceArrow = 0.0
+        for (i in 1 until points.size) {
+            val previous = points[i - 1]
+            val current = points[i]
+
+            val x1 = projectX(previous.longitude)
+            val y1 = projectY(previous.latitude)
+            val x2 = projectX(current.longitude)
+            val y2 = projectY(current.latitude)
+
+            linePaint.color = colourFor(metricValue(current), range)
+            canvas.drawLine(x1, y1, x2, y2, linePaint)
+
+            // Arrow spacing shortens as speed rises, so a fast section visibly bristles with them
+            // while a slow climb is nearly bare.
+            val speed = current.gpsSpeedMps ?: current.sensorSpeedMps ?: 0.0
+            val segmentLength = Math.hypot((x2 - x1).toDouble(), (y2 - y1).toDouble())
+            distanceSinceArrow += segmentLength
+            if (distanceSinceArrow >= arrowSpacingPx(speed) && segmentLength > 0.5) {
+                distanceSinceArrow = 0.0
+                arrowPaint.color = linePaint.color
+                drawArrow(canvas, x1, y1, x2, y2)
+            }
+        }
+    }
+
+    /**
+     * Where it began and where it ended.
+     *
+     * A closed loop is otherwise a shape with no direction: the arrows say which way round it was
+     * ridden, but nothing said which end was the start.
+     */
+    private fun drawEnds(canvas: Canvas, startX: Float, startY: Float, endX: Float, endY: Float) {
+        markerPaint.style = Paint.Style.FILL
+        val radius = dp(5f)
+        markerPaint.color = START_COLOUR
+        canvas.drawCircle(startX, startY, radius, markerPaint)
+        markerPaint.color = FINISH_COLOUR
+        canvas.drawCircle(endX, endY, radius, markerPaint)
     }
 
     private fun metricValue(sample: RideSample): Double? = when (metric) {
@@ -250,5 +278,9 @@ class RideTraceView @JvmOverloads constructor(
         /** ~54 km/h: beyond this everything is simply "fast" as far as arrow density goes. */
         const val MAX_EXPECTED_SPEED_MPS = 15.0
         const val ARROW_SPREAD = 0.5
+
+        /** Green away, red home - saturated enough to hold against any part of the speed gradient. */
+        val START_COLOUR = Color.rgb(0x2E, 0x7D, 0x32)
+        val FINISH_COLOUR = Color.rgb(0xC6, 0x28, 0x28)
     }
 }

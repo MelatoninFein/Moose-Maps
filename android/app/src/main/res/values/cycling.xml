@@ -33,6 +33,9 @@
 
   <!-- The unlit parts of the race HUD. These sit on a card that follows the theme, so they cannot
        be a fixed white: on a light card a translucent white reads as nothing at all. -->
+  <!-- The terrain the other chart lines are read against: quiet enough not to compete. -->
+  <color name="chart_elevation_fill">#14000000</color>
+  <color name="chart_elevation_line">#40000000</color>
   <color name="hud_track">#1F000000</color>
   <color name="hud_progress">#3D000000</color>
   <color name="hud_tick">#8A000000</color>
@@ -45,7 +48,9 @@
   <dimen name="cycling_compass_top_allowance">52dp</dimen>
   <dimen name="cycling_spots_max_height">420dp</dimen>
   <dimen name="cycling_trace_height">280dp</dimen>
-  <dimen name="cycling_chart_height">160dp</dimen>
+  <!-- Taller than it was: the chart now carries the elevation profile behind the lines and a
+       labelled distance axis beneath them, and 160dp left the terrain squeezed into a strip. -->
+  <dimen name="cycling_chart_height">210dp</dimen>
   <dimen name="cycling_thumbnail_size">64dp</dimen>
   <dimen name="cycling_zone_bar_height">28dp</dimen>
   <dimen name="cycling_status_dot">10dp</dimen>
