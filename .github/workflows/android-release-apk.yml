@@ -1,9 +1,14 @@
 # Builds the Android APK and attaches it to a GitHub Release.
 #
-# The APK is debug-signed. That needs no keystore and no repository secrets, which keeps this
-# workflow runnable by anyone who forks the project — at the cost of Android showing a stronger
-# "unknown developer" warning on install, and the build never being upgradable to a Play listing.
-# To move to release signing later, add a keystore as a secret and swap the assemble task.
+# Built from the `fast` type: release settings — not debuggable, no JNI debug, R8 shrinking — but
+# signed with the checked-in debug key. That needs no keystore and no repository secrets, which
+# keeps this workflow runnable by anyone who forks the project, at the cost of Android showing a
+# stronger "unknown developer" warning on install and the build never being upgradable to a Play
+# listing. To move to release signing later, add a keystore as a secret and swap the signing config.
+#
+# It used to build assembleGoogleDebug, which was measurably the wrong thing to hand out: a debug
+# build runs without ART's usual optimisation, and this project sets jniDebuggable on it, which
+# slows the C++ core and the map renderer.
 #
 # Triggered by pushing a tag like v2026.07.28, or manually from the Actions tab.
 
@@ -54,7 +59,7 @@ jobs:
 
       - name: Build APK
         working-directory: android
-        run: ./gradlew assembleGoogleDebug -Parm64 --console=plain
+        run: ./gradlew assembleGoogleFast -Parm64 --console=plain
 
       - name: Locate the APK
         id: apk

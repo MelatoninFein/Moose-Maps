@@ -216,6 +216,22 @@ android {
       signingConfig = signingConfigs.debug
       matchingFallbacks = ['release']
     }
+
+    // What the published APK is built from.
+    //
+    // Every build handed out so far was assembleGoogleDebug, which is a poor thing to distribute:
+    // a debug build is debuggable, so ART runs the whole app without its usual optimisation, and
+    // this project additionally sets jniDebuggable on it - which slows the C++ core and the map
+    // renderer, the very code a rider stares at for three hours.
+    //
+    // Release settings with the checked-in debug key, so it needs no secure.properties and anyone
+    // forking the project can still build it. No applicationIdSuffix: this is the actual app, not a
+    // variant of it. Signing is unchanged, so Android still warns about an unknown developer.
+    fast {
+      initWith release
+      signingConfig = signingConfigs.debug
+      matchingFallbacks = ['release']
+    }
   }
 
   // Keep uncompressed only what truly benefits. .mwm, packed_polygons.bin (memory-mapped and seeked)
