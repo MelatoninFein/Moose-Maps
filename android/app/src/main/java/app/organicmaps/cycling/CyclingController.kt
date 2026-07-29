@@ -95,14 +95,28 @@ class CyclingController(
      */
     private fun applyCompassInsets() {
         val insets = systemBarInsets ?: return
-        val params = compass.layoutParams as? ViewGroup.MarginLayoutParams ?: return
         val resources = compass.resources
         val recordingShift = if (RideMode.isRiding) resources.getDimensionPixelSize(R.dimen.map_button_size) else 0
 
-        params.topMargin = insets.top + recordingShift +
-            resources.getDimensionPixelSize(R.dimen.cycling_compass_top_allowance)
-        params.rightMargin = insets.right + resources.getDimensionPixelSize(R.dimen.margin_half)
-        compass.layoutParams = params
+        (compass.layoutParams as? ViewGroup.MarginLayoutParams)?.let { params ->
+            params.topMargin = insets.top + recordingShift +
+                resources.getDimensionPixelSize(R.dimen.cycling_compass_top_allowance)
+            params.rightMargin = insets.right + resources.getDimensionPixelSize(R.dimen.margin_half)
+            compass.layoutParams = params
+        }
+
+        // The ride status had no inset at all, so it was drawn behind the clock and battery - the
+        // elapsed time, the one number it exists to show, was the part that got cut off. It also
+        // sat exactly on the layers button, which upstream anchors to the same top-start corner.
+        // Dropping below that button gives the left edge a single column: layers, then the ride.
+        (rideStatus.layoutParams as? ViewGroup.MarginLayoutParams)?.let { params ->
+            params.topMargin = insets.top +
+                resources.getDimensionPixelSize(R.dimen.map_button_size) +
+                resources.getDimensionPixelSize(R.dimen.nav_frame_padding) * 2
+            // marginStart rather than leftMargin, so it stays on the leading edge in RTL layouts.
+            params.marginStart = insets.left + resources.getDimensionPixelSize(R.dimen.margin_half)
+            rideStatus.layoutParams = params
+        }
     }
 
     init {
