@@ -498,6 +498,12 @@
         android:screenOrientation="fullUser"
         android:label="@string/cycling_rides_title"
         android:parentActivityName="app.organicmaps.MwmActivity" />
+    <activity
+        android:name="app.organicmaps.cycling.rides.RideSummaryActivity"
+        android:configChanges="orientation|screenLayout|screenSize"
+        android:screenOrientation="fullUser"
+        android:label="@string/cycling_ride_finished"
+        android:parentActivityName="app.organicmaps.MwmActivity" />
 
     <activity
         android:name="app.organicmaps.cycling.rides.SegmentsActivity"

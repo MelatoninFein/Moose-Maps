@@ -67,16 +67,12 @@ class RideDetailFragment : BaseMwmFragment() {
         trace.samples = samples
         // Headline figures as tiles; the long tail stays as text below the chart.
         buildStatGrid(view.findViewById(R.id.ride_stats_grid), summary)
-        // Zones as a proportional bar: the shape of a session reads before any number does.
-        val maxHr = SensorHub.from(requireContext()).store.maxHeartRateBpm
-        val zones = HeartRateZones.timeInZones(samples, maxHr)
-        val zoneBar: ZoneBarView = view.findViewById(R.id.ride_zone_bar)
-        zoneBar.timeInZones = zones
-        view.findViewById<TextView>(R.id.ride_zones_title).visibility =
-            if (zones.values.sum() > 0) View.VISIBLE else View.GONE
+        showZones(view)
+        showCoverage(view)
         stats.visibility = View.GONE
 
         wireChart(view)
+        wireFinishHeader(view, file)
 
         view.findViewById<Button>(R.id.ride_export_gpx).setOnClickListener { exportGpx(file) }
 
@@ -105,6 +101,141 @@ class RideDetailFragment : BaseMwmFragment() {
                 saveButton.setText(R.string.cycling_segment_save_confirm)
             }
         }
+    }
+
+    /**
+     * Zones as a proportional bar - but only once the rider has given their own maximum.
+     *
+     * The store defaults to 190 because the maths needs a number, and zones drawn from that guess
+     * would look exactly as authoritative as real ones while being a whole band out for anyone it
+     * does not fit. Offering to fix it is more use than a confidently wrong chart.
+     */
+    private fun showZones(view: View) {
+        val store = SensorHub.from(requireContext()).store
+        val zoneBar: ZoneBarView = view.findViewById(R.id.ride_zone_bar)
+        val title: TextView = view.findViewById(R.id.ride_zones_title)
+        val prompt: TextView = view.findViewById(R.id.ride_zones_prompt)
+
+        if (samples.none { it.heartRateBpm != null }) {
+            // No strap, nothing to place in zones, no prompt worth showing.
+            return
+        }
+        title.visibility = View.VISIBLE
+
+        if (!store.hasSetMaxHeartRate) {
+            prompt.visibility = View.VISIBLE
+            prompt.setOnClickListener {
+                app.organicmaps.settings.SettingsActivity.startForCycling(requireContext())
+            }
+            return
+        }
+
+        val zones = HeartRateZones.timeInZones(samples, store.maxHeartRateBpm)
+        zoneBar.timeInZones = zones
+        title.visibility = if (zones.values.sum() > 0) View.VISIBLE else View.GONE
+    }
+
+    /**
+     * Says when a sensor was missing for a meaningful part of the ride.
+     *
+     * A strap that slips or a battery that dies leaves the averages computed over whatever was
+     * recorded. Those figures are not wrong, but reading them as the whole ride is, and nothing
+     * previously distinguished "148 bpm average" from "148 bpm average over the first twenty
+     * minutes".
+     */
+    private fun showCoverage(view: View) {
+        val coverage: TextView = view.findViewById(R.id.ride_coverage)
+        if (samples.isEmpty()) {
+            return
+        }
+
+        val lines = listOfNotNull(
+            coverageLine(R.string.cycling_metric_heart_rate) { it.heartRateBpm != null },
+            coverageLine(R.string.cycling_metric_cadence) { it.cadenceRpm != null },
+            coverageLine(R.string.cycling_metric_power) { it.powerWatts != null },
+        )
+        if (lines.isEmpty()) {
+            return
+        }
+        coverage.visibility = View.VISIBLE
+        coverage.text = lines.joinToString("\n")
+    }
+
+    private fun coverageLine(metricRes: Int, present: (RideSample) -> Boolean): String? {
+        val count = samples.count(present)
+        // Nothing at all means the sensor was never connected, which is not a dropout worth
+        // reporting; near-complete means the odd missed packet, which is normal for Bluetooth.
+        if (count == 0 || count >= samples.size * COMPLETE_COVERAGE) {
+            return null
+        }
+        val percent = (count * 100 / samples.size).coerceAtLeast(1)
+        return getString(R.string.cycling_coverage, getString(metricRes), percent)
+    }
+
+    /**
+     * The keep-or-discard block, shown only when this screen opened straight from the finish.
+     *
+     * Nothing here saves the ride: recording writes as it goes, so it is already on disk and a Save
+     * button would be theatre. What is genuinely wanted at the line is naming it while the memory
+     * is fresh, and being able to throw away a false start before it sits in the list for good.
+     */
+    private fun wireFinishHeader(view: View, file: File) {
+        if (arguments?.getBoolean(EXTRA_JUST_FINISHED) != true) {
+            return
+        }
+        val header: LinearLayout = view.findViewById(R.id.ride_finish_header)
+        header.visibility = View.VISIBLE
+
+        // Segments beaten, listed rather than fired off as a queue of toasts nobody can re-read.
+        val bests = RideRecorder.from(requireContext()).lastPersonalBests
+        val bestsView: TextView = view.findViewById(R.id.ride_finish_bests)
+        if (bests.isNotEmpty()) {
+            bestsView.visibility = View.VISIBLE
+            bestsView.text = bests.joinToString("\n") { (name, millis) ->
+                val seconds = millis / 1000
+                getString(
+                    R.string.cycling_ride_new_best,
+                    name,
+                    String.format(java.util.Locale.getDefault(), "%d:%02d", seconds / 60, seconds % 60),
+                )
+            }
+        }
+
+        view.findViewById<Button>(R.id.ride_finish_name).setOnClickListener { nameRide(file) }
+        view.findViewById<Button>(R.id.ride_finish_discard).setOnClickListener { confirmDiscard(file) }
+    }
+
+    private fun nameRide(file: File) {
+        val recorder = RideRecorder.from(requireContext())
+        val input = EditText(requireContext()).apply {
+            setSingleLine()
+            hint = getString(R.string.cycling_ride_name_hint)
+            setText(recorder.titleOf(file).orEmpty())
+        }
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.cycling_ride_name_title)
+            .setView(input)
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                recorder.setTitle(file, input.text.toString())
+                requireActivity().title = input.text.toString().ifBlank {
+                    getString(R.string.cycling_rides_detail_title)
+                }
+            }
+            .show()
+    }
+
+    /** A false start is worth discarding; three hours of riding is not, so it asks. */
+    private fun confirmDiscard(file: File) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.cycling_ride_delete_title)
+            .setMessage(R.string.cycling_ride_delete_message)
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.delete) { _, _ ->
+                RideRecorder.from(requireContext()).deleteRide(file)
+                requireActivity().finish()
+            }
+            .show()
     }
 
     /** Re-derives samples through the recorder so the file format stays in one place. */
@@ -293,6 +424,12 @@ class RideDetailFragment : BaseMwmFragment() {
 
     companion object {
         const val EXTRA_FILE_NAME = "ride_file_name"
+
+        /** Set when the screen opens straight from the finish, which adds the keep-or-discard block. */
+        const val EXTRA_JUST_FINISHED = "ride_just_finished"
+
+        /** Above this share of samples, the gaps are dropped Bluetooth packets rather than a dropout. */
+        private const val COMPLETE_COVERAGE = 0.95
 
         /** Three tiles read comfortably on a phone; four starts truncating the numbers. */
         private const val TILES_PER_ROW = 3

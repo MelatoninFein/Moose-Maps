@@ -110,6 +110,7 @@ class RideRecorder private constructor(context: Context) : LocationListener {
         MwmApplication.from(appContext).getLocationHelper().removeListener(this)
         RideMode.setRiding(false)
         currentFile = null
+        lastFinishedFileName = null
 
         val summary = RideStatistics.summarise(readSamples(file))
         if (summary == null) {
@@ -120,8 +121,18 @@ class RideRecorder private constructor(context: Context) : LocationListener {
         }
         writeSummary(file, summary)
         recordSegmentBests(readSamples(file), file.nameWithoutExtension)
+        lastFinishedFileName = file.name
         return summary
     }
+
+    /**
+     * The ride just finished, so the map can open its summary.
+     *
+     * Ending a ride used to drop the rider back on the map with a toast, leaving the one thing they
+     * wanted - the numbers for the last three hours - four taps away behind Settings.
+     */
+    var lastFinishedFileName: String? = null
+        private set
 
     override fun onLocationUpdated(location: Location) {
         val file = currentFile ?: return

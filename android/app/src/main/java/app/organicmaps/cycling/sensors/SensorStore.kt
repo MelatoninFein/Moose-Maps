@@ -32,6 +32,17 @@ class SensorStore(context: Context) {
         set(value) = prefs.edit().putBoolean(KEY_ENABLED, value).apply()
 
     /**
+     * Whether the rider has actually told us their maximum heart rate.
+     *
+     * The default of 190 has to be *some* number for the zone maths, but presenting zones computed
+     * from a guess as though they were fact is worse than showing nothing: a rider whose real
+     * maximum is 165 would read every band one zone too easy and train to it.
+     */
+    var hasSetMaxHeartRate: Boolean
+        get() = prefs.getBoolean(KEY_MAX_HR_SET, false)
+        set(value) = prefs.edit().putBoolean(KEY_MAX_HR_SET, value).apply()
+
+    /**
      * Whether the rider has dismissed the explanation of what this fork adds.
      *
      * Nothing described sensors, rides or racing anywhere: the features were discoverable only by
@@ -105,6 +116,7 @@ class SensorStore(context: Context) {
         private const val KEY_ENABLED = "enabled"
         private const val KEY_OVERLAY = "overlay_visible"
         private const val KEY_SEEN_INTRO = "seen_intro"
+        private const val KEY_MAX_HR_SET = "max_heart_rate_set"
         private const val KEY_MAX_HR = "max_heart_rate_bpm"
 
         private const val FIELD_ADDRESS = "address"

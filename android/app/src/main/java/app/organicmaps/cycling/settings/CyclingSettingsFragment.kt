@@ -217,6 +217,7 @@ class CyclingSettingsFragment : BaseMwmFragment() {
             return
         }
         store.maxHeartRateBpm = entered
+        store.hasSetMaxHeartRate = true
     }
 
     private fun onScanClicked() {

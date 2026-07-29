@@ -17,6 +17,62 @@
       android:text="@string/cycling_rides_unreadable"
       android:textAppearance="@style/MwmTextAppearance.Body4"
       android:visibility="gone" />
+    <!--
+      Shown only when arriving straight from the finish.
+
+      The ride is already on disk by this point - recording writes as it goes, so there is nothing
+      to "save" and a Save button would be theatre. What a rider actually needs at the line is the
+      chance to name it while they still remember what it was, to keep a copy outside the app, and
+      to throw away a false start before it clutters the list forever.
+    -->
+    <LinearLayout
+      android:id="@+id/ride_finish_header"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/margin_base"
+      android:background="@drawable/cycling_panel_bg"
+      android:orientation="vertical"
+      android:padding="@dimen/margin_base"
+      android:visibility="gone"
+      tools:visibility="visible">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cycling_ride_finished"
+        android:textAppearance="@style/MwmTextAppearance.Body2" />
+
+      <!-- Segments beaten, listed rather than fired off as a queue of toasts nobody can re-read. -->
+      <TextView
+        android:id="@+id/ride_finish_bests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:lineSpacingExtra="3dp"
+        android:textAppearance="@style/MwmTextAppearance.Body3"
+        android:visibility="gone"
+        tools:text="Höllviken runt — 14:02, a personal best" />
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_half"
+        android:orientation="horizontal">
+
+        <Button
+          android:id="@+id/ride_finish_name"
+          style="@style/CyclingPrimaryButton"
+          android:text="@string/cycling_ride_name_title" />
+
+        <Button
+          android:id="@+id/ride_finish_discard"
+          style="@style/CyclingMediaAppButton"
+          android:layout_width="wrap_content"
+          android:layout_marginStart="@dimen/margin_half"
+          android:text="@string/cycling_ride_discard" />
+      </LinearLayout>
+    </LinearLayout>
+
     <app.organicmaps.cycling.rides.RideTraceView
       android:id="@+id/ride_trace"
       android:layout_width="match_parent"
@@ -112,6 +168,31 @@
       android:layout_height="@dimen/cycling_zone_bar_height"
       android:layout_marginTop="@dimen/margin_quarter"
       android:visibility="gone" />
+
+    <!-- Shown instead of the bar until the rider has given their own maximum. Zones drawn from the
+         default guess would look exactly as authoritative while being wrong by a whole band. -->
+    <TextView
+      android:id="@+id/ride_zones_prompt"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_quarter"
+      android:background="?selectableItemBackground"
+      android:paddingTop="@dimen/margin_half"
+      android:paddingBottom="@dimen/margin_half"
+      android:text="@string/cycling_zones_need_max"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      android:visibility="gone" />
+
+    <!-- Said only when a sensor was missing for a meaningful part of the ride. An average computed
+         over two thirds of a ride is not wrong, but reading it as the whole ride is. -->
+    <TextView
+      android:id="@+id/ride_coverage"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_half"
+      android:textAppearance="@style/MwmTextAppearance.Body4"
+      android:visibility="gone"
+      tools:text="Heart rate recorded for 62% of this ride" />
 
     <TextView
       android:id="@+id/ride_detail_stats"

@@ -59,6 +59,7 @@ import app.organicmaps.cycling.CyclingController;
 import app.organicmaps.cycling.CyclingFormatter;
 import app.organicmaps.cycling.RideMode;
 import app.organicmaps.cycling.rides.RideRecorder;
+import app.organicmaps.cycling.rides.RideSummaryActivity;
 import app.organicmaps.cycling.rides.RidesActivity;
 import app.organicmaps.cycling.rides.SegmentsActivity;
 import app.organicmaps.downloader.DownloaderActivity;
@@ -1996,14 +1997,12 @@ public class MwmActivity extends BaseMwmFragmentActivity
     TrackRecordingService.stopService(getApplicationContext());
     final RideRecorder rideRecorder = RideRecorder.from(this);
     rideRecorder.stop();
-    // A personal best is the point of racing yourself, so say so rather than letting it land
-    // silently in a file the rider has to go looking for.
-    for (final kotlin.Pair<String, Long> best : rideRecorder.getLastPersonalBests())
-    {
-      final long seconds = best.getSecond() / 1000;
-      final String time = String.format(java.util.Locale.getDefault(), "%d:%02d", seconds / 60, seconds % 60);
-      Toast.makeText(this, getString(R.string.cycling_ride_new_best, best.getFirst(), time), Toast.LENGTH_LONG).show();
-    }
+    // The ride's own numbers, at the one moment a rider wants them. This used to be a queue of
+    // toasts for any segments beaten and nothing else at all, leaving three hours of riding four
+    // taps away behind Settings with nothing saying it was there.
+    final String finished = rideRecorder.getLastFinishedFileName();
+    if (finished != null)
+      RideSummaryActivity.Companion.start(this, finished);
     mMapButtonsViewModel.setTrackRecorderState(false);
     if (mPlacePageViewModel.getMapObject().getValue() != null
         && mPlacePageViewModel.getMapObject().getValue().isTrackRecording())

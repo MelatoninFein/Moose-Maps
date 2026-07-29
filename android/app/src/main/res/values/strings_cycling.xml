@@ -112,6 +112,11 @@
   <string name="cycling_lap_personal_best">PERSONAL BEST</string>
   <!-- %1$s is the gap in seconds, already signed, e.g. "-3" or "+4". -->
   <string name="cycling_lap_delta">%1$ss on your best</string>
+  <string name="cycling_zones_need_max">Set your maximum heart rate to see training zones.</string>
+  <!-- %1$s is the metric, %2$d the percentage of the ride it was recorded for. -->
+  <string name="cycling_coverage">%1$s recorded for %2$d%% of this ride</string>
+  <string name="cycling_ride_finished">Ride finished</string>
+  <string name="cycling_ride_discard">Discard</string>
   <string name="cycling_ride_pause">Pause recording</string>
   <string name="cycling_ride_resume">Resume recording</string>
   <string name="cycling_ride_finish_title">Finish this ride?</string>
