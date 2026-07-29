@@ -39,6 +39,18 @@
     android:textAppearance="@style/MwmTextAppearance.Body3"
     tools:text="1:24:06 · 38.2 km" />
 
+  <!-- Pause and finish are different actions and now look it. A café stop is not the end of a
+       ride, and the only control here used to be one that ended it. -->
+  <ImageView
+    android:id="@+id/ride_status_pause"
+    android:layout_width="@dimen/cycling_icon_size"
+    android:layout_height="@dimen/cycling_icon_size"
+    android:layout_marginStart="@dimen/margin_half"
+    android:background="?selectableItemBackgroundBorderless"
+    android:contentDescription="@string/cycling_ride_pause"
+    app:srcCompat="@drawable/ic_cycling_pause"
+    app:tint="?iconTint" />
+
   <ImageView
     android:id="@+id/ride_status_stop"
     android:layout_width="@dimen/cycling_icon_size"
@@ -46,6 +58,6 @@
     android:layout_marginStart="@dimen/margin_half"
     android:background="?selectableItemBackgroundBorderless"
     android:contentDescription="@string/cycling_ride_stop"
-    app:srcCompat="@drawable/ic_cycling_pause"
+    app:srcCompat="@drawable/ic_close"
     app:tint="?iconTint" />
 </LinearLayout>

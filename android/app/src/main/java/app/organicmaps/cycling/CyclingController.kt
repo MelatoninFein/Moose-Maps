@@ -52,6 +52,8 @@ class CyclingController(
 
     private val rideStatus: LinearLayout = root.findViewById(R.id.cycling_ride_status)
     private val rideStatusText: TextView = root.findViewById(R.id.ride_status_text)
+    private val ridePause: android.widget.ImageView = root.findViewById(R.id.ride_status_pause)
+    private val rideDot: View = root.findViewById(R.id.ride_status_dot)
 
 
     private val segmentBanner: LinearLayout = root.findViewById(R.id.cycling_segment_banner)
@@ -73,18 +75,36 @@ class CyclingController(
     /** Last speed reported by GPS, in m/s. Null until the first fix with a speed. */
     private var gpsSpeedMps: Double? = null
 
+    private var systemBarInsets: androidx.core.graphics.Insets? = null
+
+    /**
+     * Places the compass under the map's own compass rather than beside it.
+     *
+     * Upstream draws a small compass in the very corner, and tapping it returns the map to
+     * north-up - a real function worth keeping. This one used to dodge it sideways with a fixed
+     * 64dp end margin, which cleared it but left the dial floating off-corner with dead space to
+     * its right. Stacking instead keeps the whole right side one column: map compass, this dial,
+     * then the sensor tiles.
+     *
+     * The status bar inset is read rather than guessed because its height varies with the device
+     * and its cutout, and recording shifts the map's compass down by a button, so this follows.
+     */
+    private fun applyCompassInsets() {
+        val insets = systemBarInsets ?: return
+        val params = compass.layoutParams as? ViewGroup.MarginLayoutParams ?: return
+        val resources = compass.resources
+        val recordingShift = if (RideMode.isRiding) resources.getDimensionPixelSize(R.dimen.map_button_size) else 0
+
+        params.topMargin = insets.top + recordingShift +
+            resources.getDimensionPixelSize(R.dimen.cycling_compass_top_allowance)
+        params.rightMargin = insets.right + resources.getDimensionPixelSize(R.dimen.margin_half)
+        compass.layoutParams = params
+    }
+
     init {
-        // The compass sits in the top-right corner, which is exactly where the status bar puts the
-        // clock, wifi and battery icons. Offset it by the status bar inset rather than guessing a
-        // fixed margin, since that height varies with the device and its cutout.
-        ViewCompat.setOnApplyWindowInsetsListener(compass) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            (view.layoutParams as? ViewGroup.MarginLayoutParams)?.let { params ->
-                params.topMargin = systemBars.top + view.resources.getDimensionPixelSize(R.dimen.margin_base)
-                params.rightMargin =
-                    systemBars.right + view.resources.getDimensionPixelSize(R.dimen.cycling_compass_margin_end)
-                view.layoutParams = params
-            }
+        ViewCompat.setOnApplyWindowInsetsListener(compass) { _, insets ->
+            systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            applyCompassInsets()
             insets
         }
 
@@ -96,6 +116,13 @@ class CyclingController(
         // Ending a ride is not undoable, so this confirms rather than stopping on the first tap.
         root.findViewById<View>(R.id.ride_status_stop).setOnClickListener {
             (activity as? app.organicmaps.MwmActivity)?.confirmAndFinishRide()
+        }
+
+        // Pausing is reversible and frequent, so it acts immediately - no dialog for a café stop.
+        ridePause.setOnClickListener {
+            val recorder = RideRecorder.from(activity)
+            recorder.setPaused(!recorder.isPaused)
+            applyPauseState()
         }
 
         // Nothing else on the map says whether a paired sensor is actually connected, so the tiles
@@ -225,6 +252,26 @@ class CyclingController(
     private fun applyRideMode(riding: Boolean) {
         compass.visibility = View.VISIBLE
         rideStatus.visibility = if (riding) View.VISIBLE else View.GONE
+        if (riding) {
+            applyPauseState()
+        }
+        // Recording pushes the map's own compass down a button's height; this follows it.
+        applyCompassInsets()
+    }
+
+    /**
+     * The recording dot goes out while paused, and the button offers the opposite action.
+     *
+     * A red dot that keeps blinking while nothing is being recorded is a lie, and it is the one
+     * thing on this bar a rider glances at to check the ride is still running.
+     */
+    private fun applyPauseState() {
+        val paused = RideRecorder.from(activity).isPaused
+        ridePause.setImageResource(if (paused) R.drawable.ic_cycling_play else R.drawable.ic_cycling_pause)
+        ridePause.contentDescription =
+            activity.getString(if (paused) R.string.cycling_ride_resume else R.string.cycling_ride_pause)
+        rideDot.visibility = if (paused) View.INVISIBLE else View.VISIBLE
+        updateRideStatus()
     }
 
     /** Elapsed and distance while riding, so a rider can see the ride is actually being recorded. */

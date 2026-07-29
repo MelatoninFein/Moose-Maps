@@ -105,6 +105,8 @@
   <string name="cycling_metric_average">Average</string>
   <string name="cycling_totals_title">This month</string>
   <string name="cycling_metric_rides">Rides</string>
+  <string name="cycling_ride_pause">Pause recording</string>
+  <string name="cycling_ride_resume">Resume recording</string>
   <string name="cycling_ride_finish_title">Finish this ride?</string>
   <!-- %1$s is the ride so far, e.g. "1:24:06 · 38.2 km". -->
   <string name="cycling_ride_finish_message">%1$s will be saved and the recording stopped.</string>

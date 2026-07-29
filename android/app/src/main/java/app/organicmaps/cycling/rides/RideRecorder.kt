@@ -45,7 +45,42 @@ class RideRecorder private constructor(context: Context) : LocationListener {
      * itself under-reported any ride where the rider pocketed the phone.
      */
     val liveProgress: Pair<Long, Double>?
-        get() = if (isRecording) (System.currentTimeMillis() - startedAtMs) to distanceMetres else null
+        get() = if (isRecording) {
+            (System.currentTimeMillis() - startedAtMs - pausedTotalMs - currentPauseMs()) to distanceMetres
+        } else {
+            null
+        }
+
+    /**
+     * Whether recording is suspended.
+     *
+     * A café stop or a puncture is not riding, and without this it landed in the ride as an hour of
+     * standing still - dragging the average down and leaving a knot of GPS noise on the trace where
+     * the bike never moved.
+     */
+    var isPaused: Boolean = false
+        private set
+
+    private var pausedAtMs = 0L
+    private var pausedTotalMs = 0L
+
+    private fun currentPauseMs() = if (isPaused) System.currentTimeMillis() - pausedAtMs else 0L
+
+    @MainThread
+    fun setPaused(paused: Boolean) {
+        if (!isRecording || paused == isPaused) {
+            return
+        }
+        if (paused) {
+            pausedAtMs = System.currentTimeMillis()
+        } else {
+            pausedTotalMs += System.currentTimeMillis() - pausedAtMs
+            // Drop the last position: the gap since pausing is not distance the rider covered, and
+            // counting it would add the length of a café to the ride.
+            lastPosition = null
+        }
+        isPaused = paused
+    }
 
     @MainThread
     fun start() {
@@ -60,6 +95,9 @@ class RideRecorder private constructor(context: Context) : LocationListener {
         startedAtMs = System.currentTimeMillis()
         distanceMetres = 0.0
         lastPosition = null
+        isPaused = false
+        pausedAtMs = 0L
+        pausedTotalMs = 0L
         Logger.i(TAG, "Recording ride to ${file.name}")
         RideMode.setRiding(true)
         MwmApplication.from(appContext).getLocationHelper().addListener(this)
@@ -87,6 +125,10 @@ class RideRecorder private constructor(context: Context) : LocationListener {
 
     override fun onLocationUpdated(location: Location) {
         val file = currentFile ?: return
+        if (isPaused) {
+            // Nothing is written while paused, so a stationary bike leaves no drift on the trace.
+            return
+        }
 
         // One sample per second is plenty for a ride trace and keeps the file small; GPS can
         // deliver faster than that when navigating.

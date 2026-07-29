@@ -60,8 +60,8 @@
       android:layout_height="@dimen/cycling_compass_size"
       android:layout_alignParentTop="true"
       android:layout_alignParentEnd="true"
-      android:layout_marginTop="@dimen/margin_base"
-      android:layout_marginEnd="@dimen/cycling_compass_margin_end" />
+      android:layout_marginTop="@dimen/cycling_compass_top_allowance"
+      android:layout_marginEnd="@dimen/margin_half" />
 
     <!-- Heart rate, cadence and power. Under the compass and end-aligned with it; each tile hides
          itself when nothing is reporting, so a rider with no sensors sees nothing at all. -->
